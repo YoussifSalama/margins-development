@@ -1,0 +1,22 @@
+/* Unified interaction layer.
+   Every anchor and button gets the same transition timing/easing and the
+   same focus-visible ring, so simple color/opacity hover states stay
+   consistent without each component redeclaring `transition-*` itself.
+   Transform-based hover (lift, scale, shift) is Motion's job now — see
+   lib/motion.ts — so `transform` is deliberately excluded here to avoid
+   fighting Motion's own inline-style animation on the same property. */
+
+a,
+button,
+a *,
+button * {
+  transition-property: color, background-color, border-color, opacity, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

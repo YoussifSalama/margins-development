@@ -1,0 +1,328 @@
+{
+  "notFound": {
+    "eyebrow": "404",
+    "heading": "This Address <gold>Doesn't Exist</gold>",
+    "description": "The page you're looking for has been relocated, renamed, or never broke ground in the first place. Let's get you back to solid foundations.",
+    "cta": "Back to Home",
+    "ctaSecondary": "View Projects"
+  },
+  "nav": {
+    "brand": "MARGINS",
+    "home": "Home",
+    "projects": "Projects",
+    "news": "News",
+    "careers": "Careers",
+    "contactCta": "Contact Us"
+  },
+  "footer": {
+    "cta": "Ready to invest with Margins Development?",
+    "contactCta": "Contact Us",
+    "aboutCta": "About Us",
+    "addressLabel": "Address",
+    "address": "Building 340, South 90 St., New Cairo, Egypt.",
+    "emailLabel": "Enter your email*",
+    "emailPlaceholder": "hello@marginsdevelopment.com",
+    "join": "Join us",
+    "disclaimer": "* By subscribing you agree to with our <link>Privacy Policy</link> and provide consent to receive updates from our company.",
+    "columns": {
+      "navigation": {
+        "title": "Navigation",
+        "links": ["Overview", "Investments", "Strategies", "Our team", "Initiatives"]
+      },
+      "information": {
+        "title": "Information",
+        "links": ["FAQ", "Contact", "Privacy policy"]
+      },
+      "socials": {
+        "title": "Socials",
+        "links": ["Instagram", "Linkedin", "Twitter (X)"]
+      }
+    },
+    "copyright": "© Copyright {year} Margins Development - All rights reserved."
+  },
+  "home": {
+    "title": "Building places people are proud to call home.",
+    "subtitle": "Margins develops residential, commercial, and mixed-use communities designed for long-term value.",
+    "cta": "View Projects",
+    "featured": "Featured Projects"
+  },
+  "about": {
+    "heroTitle": "About Us",
+    "heroDescription": "Established to redefine and create impactful entities that base their success on innovation, up to date designs, safety approaches, and global standard construction systems.",
+    "title": "About Margins",
+    "p1": "Margins is a real estate development company focused on building residential, commercial, and mixed-use communities that stand the test of time. Since our founding, we've delivered projects that balance design, sustainability, and long-term value for the communities we build in.",
+    "p2": "Our team spans architecture, engineering, and community planning — every project is managed end-to-end, from land acquisition through handover.",
+    "whoWeAre": "Who we are",
+    "section2Title": "<gold>Upholding</gold> its reputation as an upcoming and progressive property developer, <gold>Margins Corporation</gold> for Development and Project Management",
+    "section2Description": "was established to redefine and create impactful entities that base their success on innovation, up to date designs, safety approaches, and global standard construction systems.\nThrough a team of dedicated and quality expert architects, engineers, construction experts, and real estate professionals in the fields of development and contracting.",
+    "stats": {
+      "homes": { "value": "250+", "label": "Homes Sold", "caption": "Successful deals completed with confidence." },
+      "satisfaction": { "value": "98%", "label": "Client Satisfaction", "caption": "Trusted service from first call to final keys." },
+      "neighborhoods": { "value": "12", "label": "Key Neighborhoods", "caption": "Local expertise across the city's most wanted areas." }
+    },
+    "section3Title": "<gold>Margins Developments</gold> had been established to envision and actualize sustainable human design solutions",
+    "section3Description": "that sets the company apart from any competition as it has worked to be an exclusively integrative and globally certified entity. Committed to delivering excellence through signature 'health first' buildings that promote personal wellbeing, environmental design awareness, and complete inclusivity, Margins promotes its distinctively designed buildings and spaces that endorse aesthetics, dynamism and are eco-friendly for its occupants and tenants",
+    "chairman": {
+      "eyebrow": "Message From",
+      "title": "The Chairman",
+      "description": "Providing quality with the safest measures is what every other developer thinks about while we, on the other hand, are giving our people a whole experience, we think about the tiniest detail in every design in order to make every project, the ideal project. The world is taking a different direction to establish sustainability in distinct projects, that's the direction we're bringing to our projects in Egypt.",
+      "people": [
+        { "name": "Eng. MOHAMED EL AASAR", "credential": "Bachelor Degree in Civil Engineering from Cairo University" },
+        { "name": "Eng. ASHRAF SHAHEEN", "credential": "Bachelor Degree in Architectural Engineering from Cairo University" }
+      ]
+    }
+  },
+  "projects": {
+    "heroTitle": "Our Projects",
+    "heroDescription": "Established to redefine and create impactful entities that base their success on innovation, up to date designs, safety approaches, and global standard construction systems.",
+    "ctaOurProjects": "Our Projects",
+    "ctaAboutUs": "About Us",
+    "title": "Projects",
+    "status": {
+      "Planning": "Planning",
+      "Under Construction": "Under Construction",
+      "Completed": "Completed"
+    },
+    "facts": {
+      "year": "Year",
+      "location": "Location",
+      "sector": "Sector",
+      "size": "Size",
+      "status": "Status"
+    },
+    "story": {
+      "block1": {
+        "heading": "Minor Hotels To Debut in Egypt with Oaks Hotels Resorts & Suites",
+        "p1": "With creating a unique and distinct character to the project, Creative Kingdom; the largest company specialized in modern and high - end designs that sends out the vibes of serenity mixed with luxury in collaboration with MMAC Designs for the internal designs to achieve the extravagant stay.",
+        "p2": "In line with our vision to elevate the real estate market, the project took the field by storm and brought things to another level by being one of the first branded residences that is not only introducing a brand-new concept to the sector, but it rather grants you the highest return on the investment."
+      },
+      "block2": {
+        "heading": "Joinery and Detail",
+        "p1": "All joinery was designed in-house and fabricated by a local workshop. The kitchen runs along an entire wall of the open-plan ground floor, finished in a painted sage with unlacquered brass hardware that will patinate over time. A built-in window seat in the reading nook doubles as storage, with cushions upholstered in a durable wool check.",
+        "p2": "Upstairs, each bedroom was treated as a distinct space rather than a repeated formula. The children's rooms feature built-in beds with integrated shelving, while the primary suite opens through glazed doors onto a private terrace framed by trees."
+      }
+    },
+    "exploreLine1": "Explore",
+    "exploreLine2": "Margins Development",
+    "vision": {
+      "title": "Vision",
+      "description": "As we are committed to prioritize our customer contentment levels, we see our customer as a main pillar in our success journey. We understand the importance of human-centric architecture, design aesthetics, and building a suitable community in which all the amenities come together for the sole reason of reaching impressive levels of customer satisfaction. As such, we aim to establish ourselves as a world-class Real Estate Development Company in the MENA region."
+    },
+    "mission": {
+      "title": "Mission",
+      "description": "As an evolving real estate development company in a field that undergoes continuous development, it is our mission to continuously improve our performance to surpass previous achievements; we aim to deliver impeccable establishments by applying exceptional architectural, administrative and corporate strategies that prioritize wellness, whether it is within our company or our developed communities. Our projects mobilize an unconditional vision of life across an attractive and evergrowing portfolio of specialized properties. With skyline-defining architecture, an up to date take on interiors and our focus on seamless amenities and services; we are committed to developing destinations that are both authentic and bench-mark standard."
+    },
+    "bannerEyebrow": "Margins Development",
+    "bannerTitle": "PAVINGA NEW WAY",
+    "valuesLine2": "Our Values",
+    "values": {
+      "integrity": {
+        "title": "Corporate Integrity",
+        "description": "By being transparent and straightforward. We say what we mean, and mean what we say. Margins Developments takes pride in its integrity; promoting balanced constructions and buildings that are optimized towards optimum wellbeing."
+      },
+      "people": {
+        "title": "Valuing people",
+        "description": "We care about people and place value on cooperating, and assisting our community; hence we take strides to bridge the gap between both our company and our valued tenants."
+      },
+      "opportunities": {
+        "title": "Seizing opportunities",
+        "description": "Margins Developments is always open to new opportunities and original ideas. We are keen for flexible and creative approaches that draw the guidelines on ways to upcoming novel endeavors."
+      },
+      "excellence": {
+        "title": "Pursuing Excellence",
+        "description": "We strive to be the very best in the field, by focusing on always producing the highest safety standard and quality product possible. Margins Developments ensures excellence as a staple priority to its success."
+      },
+      "helping": {
+        "title": "Helping our people",
+        "description": "Just as we develop in lands, we develop in the community we live in. we aim to give back to the people by improving our strategies whenever we can in order to have a hand in a productive environment."
+      }
+    },
+    "locationLine1": "Project",
+    "locationLine2": "Location",
+    "locationDescription": "By being member of OAKS's family, your branded residence is located in the heart of the new capital's downtown.",
+    "facilitiesLine1": "Project",
+    "facilitiesLine2": "Facilities",
+    "facilitiesDescription": "By being member of OAKS's family, your branded residence is located in the heart of the new capital's downtown.",
+    "amenities": {
+      "transport": "Transport",
+      "education": "Education",
+      "shopping": "Shopping",
+      "food": "Food"
+    },
+    "places": {
+      "categories": {
+        "transport": [
+          { "name": "Metro Station", "distance": "0.8 KM" },
+          { "name": "Bus Stop", "distance": "0.3 KM" },
+          { "name": "Airport", "distance": "25 KM" },
+          { "name": "Highway Access", "distance": "1 KM" },
+          { "name": "Taxi Stand", "distance": "0.2 KM" },
+          { "name": "Train Station", "distance": "5 KM" }
+        ],
+        "education": [
+          { "name": "American International School", "distance": "1.3 KM" },
+          { "name": "Cairo University", "distance": "6 KM" },
+          { "name": "British School", "distance": "2 KM" },
+          { "name": "Nursery", "distance": "0.5 KM" },
+          { "name": "Language Center", "distance": "1.8 KM" },
+          { "name": "Public Library", "distance": "2.5 KM" }
+        ],
+        "shopping": [
+          { "name": "Shopping Mall", "distance": "2 KM" },
+          { "name": "Supermarket", "distance": "0.6 KM" },
+          { "name": "Boutique Street", "distance": "1.4 KM" },
+          { "name": "Electronics Store", "distance": "1.9 KM" },
+          { "name": "Pharmacy", "distance": "0.4 KM" },
+          { "name": "Bookstore", "distance": "2.2 KM" }
+        ],
+        "food": [
+          { "name": "Fine Dining", "distance": "1.1 KM" },
+          { "name": "Cafe", "distance": "0.3 KM" },
+          { "name": "Fast Food", "distance": "0.9 KM" },
+          { "name": "Bakery", "distance": "0.5 KM" },
+          { "name": "Grocery Store", "distance": "0.7 KM" },
+          { "name": "Food Court", "distance": "2.3 KM" }
+        ]
+      }
+    },
+    "openMap": "Open Map",
+    "features": {
+      "backYard": "Back yard",
+      "garage": "Garage Attached",
+      "frontYard": "Front yard",
+      "swimmingPool": "Swimming Pool",
+      "kitchen": "Equipped Kitchen",
+      "mediaRoom": "Media Room",
+      "gym": "Gym",
+      "laundry": "Laundry",
+      "kitchen2": "Equipped Kitchen",
+      "mediaRoom2": "Media Room",
+      "electricity": "Electricity",
+      "ventilation": "Ventilation",
+      "centralAir": "Central Air",
+      "naturalGas": "Natural Gas",
+      "wifi": "WiFi",
+      "washerDryer": "Washer and dryer",
+      "smokeDetectors": "Smoke detectors",
+      "fireplace": "Fireplace"
+    },
+    "unitsLine1": "Project",
+    "unitsLine2": "Units",
+    "units": {
+      "apartments": "H Apartments",
+      "residential": "Residential",
+      "commercial": "Commercial"
+    },
+    "unitsDescription": "OAKS Egypt New Capital comprises 14 floors, two floors for retail (Ground and first floor) which will host the most famous and prestigious brands, second floor will host other hotel services and premium facilities, the remainder of the building will accommodate hotel apartments perfectly as the facilities are varied, of high quality, and convenient.",
+    "moreProjectsLine1": "More",
+    "moreProjectsLine2": "Projects",
+    "faqHeading": "Your Questions, <gold>Answered</gold>",
+    "faqDescription": "Everything you need to know—explained simply to help you make confident decisions.",
+    "faq": [
+      {
+        "question": "How do I start buying a property?",
+        "answer": "Start by defining your budget and requirements, then browse our available units and book a private viewing with our sales team. We'll guide you through reservation, financing options, and paperwork every step of the way."
+      },
+      {
+        "question": "What documents are required?",
+        "answer": "You'll need a valid national ID or passport, proof of income, and — if you're financing the purchase — recent bank statements. Our sales team will confirm the exact list based on your payment plan."
+      },
+      {
+        "question": "How long does the process take?",
+        "answer": "Reservation to signed contract typically takes one to two weeks, depending on how quickly financing and documentation are finalized. Delivery timelines vary by project and are shared upfront."
+      },
+      {
+        "question": "Do you offer investment support?",
+        "answer": "Yes. Our team advises on unit selection, expected rental yield, and resale potential, and can connect you with trusted property management partners after handover."
+      },
+      {
+        "question": "Are there additional costs?",
+        "answer": "Beyond the unit price, expect a one-time maintenance deposit and standard registration fees. Any club or facility membership costs are disclosed before you sign."
+      }
+    ]
+  },
+  "careers": {
+    "heroTitle": "We hired <gold>people</gold> who are Always <gold>Passionate</gold> about what they <gold>do</gold>",
+    "heroDescription": "If you are creative in one of the vital jobs, there is an opportunity to work within a professional framework.",
+    "discoverDescription": "What sets us apart is what brings us together – a shared passion for solving business challenges through strategy, design, and engineering. We are the sum total of our team, their unique perspectives, capabilities, and our ability to collaborate from ideation to deployment.",
+    "hiringHeading": "We're Currently <gold>hiring</gold>",
+    "valuesTitle": "Why <gold>you</gold> should attach our <gold>expert</gold> member!",
+    "valuesDescription": "We bet on brands that shift categories and add value to people's lives; and on founders who are motivated to shape",
+    "values": {
+      "innovation": { "title": "Innovation", "description": "We thrive on fresh ideas, driving us pioneer solutions that redefine norm and position us as a trailblazing team." },
+      "collaboration": { "title": "Collaboration", "description": "Diverse viewpoints unite in seamless collaboration, nurturing a rich an ecosystem of creativity, ensuring we deliver excellence!" },
+      "empathy": { "title": "Empathy", "description": "Our empathetic approach enables us to understand user needs deeply resulting designs that truly resonate and set us apart." },
+      "excellence": { "title": "Excellence", "description": "Striving hallmark propelling us to craft extraordinary work that showcases our team's exceptional dedicat competence." },
+      "adaptability": { "title": "Adaptability", "description": "Thriving amidst change showcases to swiftly navigate challenges cementing our status as a resilient and agile team." },
+      "accountability": { "title": "Accountability", "description": "Ownership breed trustor moment to meeting exceeding expected amplifies our reputation as reliable accomplished team." }
+    },
+    "title": "Careers",
+    "subtitle": "We're always looking for people who care about building things well. Open roles below.",
+    "openRoles": "Open Roles",
+    "apply": "Apply Now",
+    "applyForJob": "Apply for the job",
+    "whatYouWillDo": "What you will do",
+    "requirements": "Requirements",
+    "educationalQualification": "Educational Qualification",
+    "perksAndBenefits": "Perks & Benefits",
+    "meta": { "location": "Location", "date": "Date", "jobType": "Job Type" },
+    "facts": {
+      "experience": "Experience",
+      "workingHours": "Working Hours",
+      "workingDays": "Working Days",
+      "salary": "Salary",
+      "vacancy": "Vacancy",
+      "deadline": "Deadline",
+      "vacanciesValue": "No of Vacancies: {count}"
+    }
+  },
+  "contact": {
+    "heroTitle": "Contact Us",
+    "heroDescription": "Do you have any questions!",
+    "formTitle": "Let's Build\nIntelligent Things",
+    "methods": {
+      "whatsapp": { "label": "Whatsapp", "value": "+201012877474" },
+      "email": { "label": "E-mail address", "value": "info@marginsdevelopments.com" },
+      "phone": { "label": "Phone number", "value": "16930" },
+      "location": { "label": "Location", "value": "Building 340, South 90 St., New Cairo, Egypt." }
+    },
+    "followUsOn": "Follow Us On",
+    "formCardTitle": "Fill this form below",
+    "nameLabel": "Your Name",
+    "namePlaceholder": "Enter your full name",
+    "emailLabel2": "Email",
+    "emailPlaceholder2": "Enter the e-mail",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "unitLabel": "Unit Type",
+    "unitPlaceholder": "Select unite type",
+    "messageLabel": "Your Messages",
+    "messagePlaceholder": "Type your message",
+    "submit": "Submit Message",
+    "title": "Contact",
+    "subtitle": "Get in touch — we'll get back to you within one business day.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send"
+  },
+  "posts": {
+    "heroTitleNews": "Margins News",
+    "heroTitleBlogs": "Margins Blogs",
+    "heroDescription": "Explore Our News, Events & Blogs",
+    "tabs": { "all": "All News", "events": "Events", "blogs": "Blogs" },
+    "backToNews": "Back to News",
+    "backToBlogs": "Back to Blogs",
+    "meta": {
+      "date": "Publication Date",
+      "category": "Category",
+      "readingTime": "Reading Time",
+      "author": "Author Name"
+    },
+    "shareTo": "share to",
+    "linkCopied": "Copied!",
+    "relatedNews": "Related <gold>News</gold>",
+    "relatedBlogs": "Related <gold>Blogs</gold>",
+    "tableOfContents": "Table of Contents"
+  }
+}
