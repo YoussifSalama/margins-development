@@ -56,7 +56,7 @@ export default function Home() {
         description={t("subtitle")}
         ctaProjects={t("ctaProjects")}
         ctaAbout={t("ctaAbout")}
-        media="/pages/home/hero.mp4"
+        media="/pages/home/hero.png"
       />
 
       <div className="relative">
