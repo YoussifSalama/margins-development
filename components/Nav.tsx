@@ -13,7 +13,9 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const links = [
     { href: "/", label: t("home") },
+    { href: "/about", label: t("about") },
     { href: "/projects", label: t("projects") },
+    { href: "/blogs", label: t("blogs") },
     { href: "/news", label: t("news") },
     { href: "/careers", label: t("careers") },
   ];

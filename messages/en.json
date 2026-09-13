@@ -9,7 +9,9 @@
   "nav": {
     "brand": "MARGINS",
     "home": "Home",
+    "about": "About",
     "projects": "Projects",
+    "blogs": "Blogs",
     "news": "News",
     "careers": "Careers",
     "contactCta": "Contact Us"
@@ -27,7 +29,7 @@
     "columns": {
       "navigation": {
         "title": "Navigation",
-        "links": ["Overview", "Investments", "Strategies", "Our team", "Initiatives"]
+        "links": ["Home", "Projects", "Blogs", "News", "Careers"]
       },
       "information": {
         "title": "Information",
@@ -41,10 +43,43 @@
     "copyright": "© Copyright {year} Margins Development - All rights reserved."
   },
   "home": {
-    "title": "Building places people are proud to call home.",
-    "subtitle": "Margins develops residential, commercial, and mixed-use communities designed for long-term value.",
-    "cta": "View Projects",
-    "featured": "Featured Projects"
+    "title": "Margins Developments",
+    "subtitle": "Established to redefine and create impactful entities that base their success on innovation, up to date designs, safety approaches, and global standard construction systems.",
+    "ctaProjects": "Our Projects",
+    "ctaAbout": "About Us",
+    "aboutText": "<gold>Margins Corporation</gold> for Development and Project Management was established to <gold>redefine</gold> and <gold>create</gold> impactful entities that base their <gold>success</gold> on innovation, <gold>up to date designs</gold>, safety approaches, and global standard construction systems.",
+    "stats": {
+      "properties": { "value": "50+", "label": "Properties Delivered" },
+      "teams": { "value": "100+", "label": "Expert Teams" },
+      "transactions": { "value": "EGP 3.5M", "label": "Successful Transactions" },
+      "highestValue": { "value": "EGP 49.9M", "label": "Highest Value" }
+    },
+    "approach": {
+      "headingLine1": "More Than Development.",
+      "headingLine2": "We Create Experiences",
+      "headingLine3": "That Last.",
+      "description1": "Our approach brings together thoughtful architecture, innovative construction, strategic locations, international expertise, and a deep understanding of the people who will experience every space we create.",
+      "description2": "From the first idea to the final detail, we look beyond conventional development to create destinations that balance aesthetics, functionality, wellbeing, sustainability, and long-term value.",
+      "items": {
+        "humanCentered": {
+          "title": "Human-Centered",
+          "description": "We put people at the heart of every development. Every space is carefully considered around how people live, work, connect, and experience their surroundings. From natural light and movement to amenities and community spaces, our designs are created to support comfort, productivity, wellbeing, and a better quality of life."
+        },
+        "globalStandards": {
+          "title": "Global Standards",
+          "description": "We believe the strongest developments come from bringing together local market knowledge with international expertise. Through partnerships with globally recognized hospitality and design organizations, we integrate international standards and service experiences into developments designs."
+        },
+        "designInnovation": {
+          "title": "Design & Innovation",
+          "description": "We combine contemporary architecture, efficient planning, thoughtful interiors, natural elements, and intelligent use of space to create environments that are both visually distinctive and practical. Every architectural decision is made with the experience of the end user in mind."
+        }
+      }
+    },
+    "newsEvents": {
+      "headingLine1": "Our Latest",
+      "headingLine2": "News & Events",
+      "description": "Everything you need to know—explained simply to help you make informed real estate decisions."
+    }
   },
   "about": {
     "heroTitle": "About Us",

@@ -14,9 +14,9 @@ const columnKeys = ["navigation", "information", "socials"] as const;
 
 const linkClass = "text-[16px] leading-[24px] tracking-[-0.16px] text-white-80 hover:text-accent";
 
-// ponytail: "#" until real pages exist for these — Contact is the one live route
+// ponytail: FAQ and Privacy policy stay "#" — no dedicated page exists for either yet
 const columnHrefs: Record<(typeof columnKeys)[number], { href: string; external?: boolean }[]> = {
-  navigation: [{ href: "#" }, { href: "#" }, { href: "#" }, { href: "#" }, { href: "#" }],
+  navigation: [{ href: "/" }, { href: "/projects" }, { href: "/blogs" }, { href: "/news" }, { href: "/careers" }],
   information: [{ href: "#" }, { href: "/contact" }, { href: "#" }],
   socials: [
     { href: "https://instagram.com/marginsdevelopment", external: true },
