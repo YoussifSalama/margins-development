@@ -1,5 +1,10 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "motion/react";
 import Button from "@/components/Button";
+import { enterSpring, heroEnterVariants, heroEnterDelay } from "@/lib/motion";
+import { useSplashDone } from "@/hooks/useSplashDone";
 
 export default function ProjectHero({
   name,
@@ -14,11 +19,19 @@ export default function ProjectHero({
   ctaProjects: string;
   ctaAboutUs: string;
 }) {
+  const ready = useSplashDone();
+
   return (
     <section className="relative isolate flex min-h-125 items-end overflow-hidden bg-dark sm:min-h-160 lg:min-h-242">
       <Image src={image} alt={name} fill sizes="100vw" className="-z-10 object-cover" priority />
 
-      <div className="container flex w-full flex-col gap-11.5 pb-12 sm:pb-16 lg:pb-24.75">
+      <motion.div
+        initial="hidden"
+        animate={ready ? "visible" : "hidden"}
+        variants={heroEnterVariants}
+        transition={{ ...enterSpring, delay: heroEnterDelay }}
+        className="container flex w-full flex-col gap-11.5 pb-12 sm:pb-16 lg:pb-24.75"
+      >
         <div className="flex flex-col items-end justify-between gap-10 lg:flex-row lg:items-end">
           <h1 className="font-heading text-[clamp(2.5rem,4vw+2rem,6rem)] uppercase leading-[1.05] tracking-[2px] text-white">
             {name}
@@ -37,7 +50,7 @@ export default function ProjectHero({
         </div>
 
         <div className="h-px w-full bg-hero-divider" />
-      </div>
+      </motion.div>
     </section>
   );
 }

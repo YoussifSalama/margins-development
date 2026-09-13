@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from "motion/react";
 import { Link } from "@/i18n/navigation";
 import Button from "@/components/Button";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
-import { spring, lightTextVariants, underlineVariants } from "@/lib/motion";
+import { spring, enterSpring, lightTextVariants, underlineVariants, navEnterVariants } from "@/lib/motion";
+import { useSplashDone } from "@/hooks/useSplashDone";
 
 export default function Nav() {
   const t = useTranslations("nav");
+  const ready = useSplashDone();
   const [open, setOpen] = useState(false);
   const links = [
     { href: "/", label: t("home") },
@@ -21,8 +23,14 @@ export default function Nav() {
   ];
 
   return (
-    <header className="absolute inset-x-0 top-0 z-20">
-      <nav className="mx-auto flex max-w-[1720px] items-center justify-between rounded-full px-5 py-3">
+    <header className="fixed inset-x-0 top-0 z-40">
+      <motion.nav
+        initial="hidden"
+        animate={ready ? "visible" : "hidden"}
+        variants={navEnterVariants}
+        transition={enterSpring}
+        className="mx-auto flex max-w-[1720px] items-center justify-between rounded-full px-5 py-3"
+      >
         <Link href="/" className="text-lg font-semibold tracking-tight text-white">
           {t("brand")}
         </Link>
@@ -70,7 +78,7 @@ export default function Nav() {
             </span>
           </button>
         </div>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {open && (

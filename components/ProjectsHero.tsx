@@ -1,5 +1,10 @@
+"use client";
+
+import { motion } from "motion/react";
 import VerticalMarquee from "@/components/VerticalMarquee";
 import Breadcrumb from "@/components/Breadcrumb";
+import { enterSpring, heroEnterVariants, heroEnterDelay } from "@/lib/motion";
+import { useSplashDone } from "@/hooks/useSplashDone";
 
 const leftImages = [
   "/pages/projects/hero/left-1.png",
@@ -25,6 +30,8 @@ export default function ProjectsHero({
   description: string;
   current: string;
 }) {
+  const ready = useSplashDone();
+
   return (
     <section className="relative isolate flex min-h-125 items-center justify-center overflow-hidden bg-dark py-10 sm:min-h-140 lg:min-h-173">
       <div
@@ -43,13 +50,19 @@ export default function ProjectsHero({
         <VerticalMarquee images={rightImages} direction="down" />
       </div>
 
-      <div className="flex flex-col items-center gap-10 px-6 text-center text-white sm:gap-16 lg:gap-20">
+      <motion.div
+        initial="hidden"
+        animate={ready ? "visible" : "hidden"}
+        variants={heroEnterVariants}
+        transition={{ ...enterSpring, delay: heroEnterDelay }}
+        className="flex flex-col items-center gap-10 px-6 text-center text-white sm:gap-16 lg:gap-20"
+      >
         <div className="flex flex-col items-center gap-5">
           <h1 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">{title}</h1>
           <p className="max-w-lg text-[16px] leading-6 tracking-[-0.16px]">{description}</p>
         </div>
         <Breadcrumb items={[{ label: current }]} />
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -3,6 +3,9 @@ import { getPosts } from "@/lib/posts";
 import HomeHero from "@/components/HomeHero";
 import Marquee from "@/components/Marquee";
 import ApproachCard from "@/components/ApproachCard";
+import AboutStats from "@/components/AboutStats";
+import ProjectsShowcase from "@/components/ProjectsShowcase";
+import Splash from "@/components/Splash";
 import NewsEventsSlide from "@/components/NewsEventsSlide";
 import Faq from "@/components/Faq";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
@@ -30,6 +33,14 @@ const approachImages = [
   "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1600&q=80&auto=format&fit=crop",
 ];
 
+// ponytail: Unsplash stand-ins until real renders for these 4 projects land
+const showcaseImages = [
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80&auto=format&fit=crop",
+];
+
 export default function Home() {
   const t = useTranslations("home");
   const tProjects = useTranslations("projects");
@@ -39,6 +50,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
+      <Splash />
       <HomeHero
         title={t("title")}
         description={t("subtitle")}
@@ -47,26 +59,36 @@ export default function Home() {
         media="/pages/home/hero.mp4"
       />
 
-      <section className="bg-background py-16">
-        <Marquee items={partnerWords} />
+      <div className="relative">
+        <section className="sticky top-0 z-0 flex flex-col bg-background pt-8 pb-16">
+          <Marquee items={partnerWords} />
 
-        <p className="container mt-16 max-w-284 text-center text-[28px] leading-[1.4] tracking-[-0.6px] text-foreground sm:mt-24 sm:text-[34px] lg:mt-36">
-          {t.rich("aboutText", {
-            gold: (chunks) => <span className="text-accent">{chunks}</span>,
-          })}
-        </p>
+          <AboutStats
+            aboutText={t.rich("aboutText", {
+              gold: (chunks) => <span className="text-accent">{chunks}</span>,
+            })}
+            stats={(["properties", "teams", "transactions", "highestValue"] as const).map((key) => ({
+              key,
+              value: t(`stats.${key}.value`),
+              label: t(`stats.${key}.label`),
+            }))}
+          />
+        </section>
 
-        <div className="container mt-16 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4">
-          {(["properties", "teams", "transactions", "highestValue"] as const).map((key) => (
-            <div key={key} className="text-center lg:text-left">
-              <p className="text-[clamp(2rem,4vw,3rem)] font-bold tracking-[-1px] text-foreground">
-                {t(`stats.${key}.value`)}
-              </p>
-              <p className="mt-2 text-[15px] text-muted">{t(`stats.${key}.label`)}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+        <section>
+          {(() => {
+            const showcaseProjects = t
+              .raw("projectsShowcase.items")
+              .map((item: { title: string; location: string }, i: number) => ({
+                ...item,
+                eyebrow: t("projectsShowcase.eyebrow"),
+                image: showcaseImages[i],
+              }));
+
+            return <ProjectsShowcase projects={showcaseProjects} />;
+          })()}
+        </section>
+      </div>
 
       <section className="bg-dark py-24 lg:py-32">
         <div className="container flex flex-col gap-16 lg:gap-24">

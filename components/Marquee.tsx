@@ -1,28 +1,30 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 // import Image from "next/image";
 
 export type MarqueeItem = { label: string; src?: string; alt?: string };
 
+function wrapPercent(v: number) {
+  return (((v % 50) + 50) % 50) - 50;
+}
+
 function MarqueeRow({
   items,
   direction = "left",
-  duration = 30,
+  speed = 0.05,
 }: {
   items: MarqueeItem[];
   direction?: "left" | "right";
-  duration?: number;
+  speed?: number;
 }) {
   const track = [...items, ...items];
-  const x = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
+  const { scrollY } = useScroll();
+  const sign = direction === "left" ? -1 : 1;
+  const x = useTransform(scrollY, (latest) => `${wrapPercent(sign * latest * speed)}%`);
 
   return (
-    <motion.div
-      className="flex items-center"
-      animate={{ x }}
-      transition={{ duration, ease: "linear", repeat: Infinity }}
-    >
+    <motion.div className="flex items-center" style={{ x }}>
       {track.map((item, i) => (
         <div key={i} className="flex items-center">
           {i > 0 && <span aria-hidden className="mx-8 h-8 w-px bg-divider/10" />}
@@ -40,12 +42,12 @@ function MarqueeRow({
 export default function Marquee({
   items,
   mode = "single",
-  duration = 30,
+  speed = 0.05,
 }: {
   items: MarqueeItem[];
   /** "single" — one row, one direction (default). "stacked" — two rows, opposite directions. */
   mode?: "single" | "stacked";
-  duration?: number;
+  speed?: number;
 }) {
   return (
     <div className="relative mx-auto container overflow-hidden">
@@ -53,11 +55,11 @@ export default function Marquee({
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent" />
       {mode === "stacked" ? (
         <div className="flex flex-col gap-6">
-          <MarqueeRow items={items} direction="left" duration={duration} />
-          <MarqueeRow items={items} direction="right" duration={duration} />
+          <MarqueeRow items={items} direction="left" speed={speed} />
+          <MarqueeRow items={items} direction="right" speed={speed} />
         </div>
       ) : (
-        <MarqueeRow items={items} direction="left" duration={duration} />
+        <MarqueeRow items={items} direction="left" speed={speed} />
       )}
     </div>
   );

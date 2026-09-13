@@ -79,6 +79,15 @@
       "headingLine1": "Our Latest",
       "headingLine2": "News & Events",
       "description": "Everything you need to know—explained simply to help you make informed real estate decisions."
+    },
+    "projectsShowcase": {
+      "eyebrow": "Rooted in Nature Elevated in Spirit",
+      "items": [
+        { "title": "Lusail Residence", "location": "New Cairo" },
+        { "title": "Sheraton Residence", "location": "Mostakbal City" },
+        { "title": "Oaks Egypt New Capital", "location": "New Capital" },
+        { "title": "Zia Business Complex", "location": "New Capital" }
+      ]
     }
   },
   "about": {

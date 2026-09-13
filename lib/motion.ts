@@ -47,3 +47,17 @@ export const footerItemVariants: Variants = {
   rest: { color: "rgba(255,255,255,0.8)", x: 0 },
   hover: { color: accentColor, x: 4 },
 };
+
+export const enterSpring: Transition = { type: "spring", stiffness: 35, damping: 11 };
+
+export const navEnterVariants: Variants = {
+  hidden: { y: "-100%" },
+  visible: { y: 0 },
+};
+
+export const heroEnterVariants: Variants = {
+  hidden: { y: "100%" },
+  visible: { y: 0 },
+};
+
+export const heroEnterDelay = 0.3;
