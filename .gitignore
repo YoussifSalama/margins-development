@@ -42,3 +42,4 @@ next-env.d.ts
 
 # large media not tracked in git (host on CDN/S3, or add via git-lfs)
 *.mp4
+!public/pages/home/splash.mp4
