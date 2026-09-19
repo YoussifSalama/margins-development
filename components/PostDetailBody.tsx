@@ -26,7 +26,7 @@ export default function PostDetailBody({
 
   return (
     <div>
-      <section className="relative isolate flex min-h-95 items-end overflow-hidden px-6 pb-10 sm:min-h-107.5 sm:pb-12 lg:min-h-131.5 lg:pb-13.5">
+      <section className="relative isolate flex min-h-95 items-end overflow-hidden px-6 pt-28 pb-10 sm:min-h-107.5 sm:pt-32 sm:pb-12 lg:min-h-131.5 lg:pb-13.5">
         <Image
           src={post.image}
           alt=""
@@ -50,8 +50,9 @@ export default function PostDetailBody({
             <Breadcrumb
               items={[
                 { label: t("heroTitle"), href: mediaHref() },
-                { label: post.categoryName, href: mediaHref(post.category) },
-                { label: post.title },
+                // the title is the <h1> right above — repeating it here only wraps onto three lines on a
+                // phone. The full trail (incl. the title) is still in the BreadcrumbList structured data.
+                { label: post.categoryName },
               ]}
             />
           </motion.div>

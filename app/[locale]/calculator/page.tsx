@@ -19,7 +19,7 @@ export default async function CalculatorPage({ params }: PageProps<"/[locale]/ca
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "calculator" });
   const { seo, page } = await getCalculatorPage(locale);
-  const { intro, destinations, horizons, defaultHorizon } = page;
+  const { intro, disclaimer, destinations, horizons, defaultHorizon } = page;
 
   return (
     <div className="bg-background py-24 sm:py-28">
@@ -50,7 +50,7 @@ export default async function CalculatorPage({ params }: PageProps<"/[locale]/ca
 
       <div className="container mt-16">
         {destinations.length > 0 ? (
-          <InvestmentCalculator destinations={destinations} horizons={horizons} defaultHorizon={defaultHorizon} />
+          <InvestmentCalculator destinations={destinations} horizons={horizons} defaultHorizon={defaultHorizon} disclaimer={disclaimer} />
         ) : (
           <p className="mx-auto max-w-md text-center text-base text-muted">{t("empty")}</p>
         )}

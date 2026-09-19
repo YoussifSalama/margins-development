@@ -47,10 +47,12 @@ export default function InvestmentCalculator({
   destinations,
   horizons,
   defaultHorizon,
+  disclaimer,
 }: {
   destinations: Destination[];
   horizons: number[];
   defaultHorizon: number;
+  disclaimer?: string;
 }) {
   const locale = useLocale();
   const t = useTranslations("calculator");
@@ -208,6 +210,7 @@ export default function InvestmentCalculator({
                   destination={destination}
                   unitType={unitType}
                   years={years}
+                  disclaimer={disclaimer}
                   onEdit={() => setStep(2)}
                   onStartOver={reset}
                   onRequest={() => setStep(4)}

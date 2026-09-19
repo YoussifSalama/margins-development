@@ -21,7 +21,10 @@ export default function PotentialStep({
   onEdit,
   onStartOver,
   onRequest,
+  disclaimer,
 }: {
+  /** CMS legal text; {date} is replaced with the assumption set's effective date */
+  disclaimer?: string;
   destination: Destination;
   unitType: UnitTypeAssumption;
   years: number;
@@ -278,7 +281,8 @@ export default function PotentialStep({
       </motion.div>
 
       <p className="max-w-2xl text-center text-xs text-muted">
-        {t("disclaimer", { date: destination.effectiveDate })}
+        {/* legal text from the CMS (Pages → Calculator → Disclaimer); the translation file is only the fallback */}
+        {(disclaimer || t("disclaimer", { date: "{date}" })).replaceAll("{date}", destination.effectiveDate)}
       </p>
     </motion.div>
   );

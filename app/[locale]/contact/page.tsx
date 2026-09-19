@@ -47,7 +47,7 @@ export default async function Contact({ params }: PageProps<"/[locale]/contact">
   const methods = { whatsapp: site.contact.whatsapp, email: site.contact.email, phone: site.contact.phone, location: site.contact.address };
 
   return (
-    <div>
+    <div className="bg-dark">
       <PageSeoScripts seo={seo} />
       <PageHero title={hero.title} description={hero.description} current={hero.title} image={hero.image || heroImage} />
 
