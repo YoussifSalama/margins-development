@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import PageShell from "@/components/cms/page-shell";
+import { requireUser } from "@/server/auth/session";
 import StatusBadge from "@/components/cms/status-badge";
 import { getProject } from "@/server/projects/queries";
 import { listAmenities, listUnitTypes } from "@/server/lists/queries";
@@ -34,6 +35,7 @@ export default async function EditProjectPage({ params }: PageProps<"/admin/cont
         id={project.id}
         slugLocked={project.status !== "draft"}
         calculatorDefaults={calculatorDefaults}
+        canEditFigures={(await requireUser()).role === "admin"}
         inCalculator={calculatorIds.includes(project.id)}
         unitTypes={unitTypes.map((type) => ({ id: type.id, label: type.name }))}
         amenities={amenities.map((amenity) => ({ id: amenity.id, label: amenity.label }))}

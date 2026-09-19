@@ -84,7 +84,7 @@ export async function buildDestinations(locale: "en" | "ar", publishedOnly: bool
       name: pick(project.name),
       location: pick(project.location),
       phaseLabel: pick(overrides?.phaseLabel),
-      image: project.coverImage ?? "",
+      image: project.coverImage ?? "", // host-checked by the public loader before it reaches next/image
       occupancyPct: overrides?.occupancyPct ?? setup.occupancyPct,
       appreciationPct: overrides?.appreciationPct ?? setup.appreciationPct,
       deliveryMonth: overrides?.deliveryMonth ?? setup.deliveryMonth,

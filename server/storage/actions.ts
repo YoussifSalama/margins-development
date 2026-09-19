@@ -33,6 +33,8 @@ export async function signMediaUpload(raw: z.input<typeof input>): Promise<Signe
     const uploadUrl = await presignPut(publicBucket(), key, parsed.data.contentType, parsed.data.size);
     return { ok: true, uploadUrl, url: publicUrl(key) };
   } catch (error) {
-    return { ok: false, error: error instanceof Error ? error.message : "Upload failed." };
+    // the real reason (which variable is missing, what storage said) belongs in the server log
+    console.error("media upload signing failed:", error);
+    return { ok: false, error: "Uploads aren't available right now. You can paste a link instead." };
   }
 }

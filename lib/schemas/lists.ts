@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localized, mediaUrl, slug } from "./common";
+import { localized, mediaUrl, safeUrl, slug } from "./common";
 
 export const faqInput = z.object({
   question: localized(300),
@@ -10,7 +10,7 @@ export const faqInput = z.object({
 export const partnerInput = z.object({
   name: localized(120),
   logo: mediaUrl,
-  url: z.union([z.literal(""), z.url("Must be a full URL (https://…)")]),
+  url: safeUrl,
 });
 
 const key = z.string().trim().min(1, "Key is required").max(60).regex(/^[a-z][a-zA-Z0-9]*$/, "camelCase, letters and numbers only");

@@ -10,11 +10,11 @@ import { changeOwnPassword } from "@/server/users/actions";
 
 export default function PasswordForm() {
   const [pending, startTransition] = useTransition();
-  const form = useForm({ defaultValues: { password: "" } });
+  const form = useForm({ defaultValues: { currentPassword: "", password: "" } });
 
   const submit = form.handleSubmit((values) =>
     startTransition(async () => {
-      if (handleResult(form, await changeOwnPassword(values), "Password changed")) form.reset({ password: "" });
+      if (handleResult(form, await changeOwnPassword(values), "Password changed")) form.reset({ currentPassword: "", password: "" });
     }),
   );
 
@@ -22,7 +22,10 @@ export default function PasswordForm() {
     <FormProvider {...form}>
       <form onSubmit={submit} className="max-w-md">
         <SectionCard title="Change password">
-          <Field name="password" label="New password" hint="At least 10 characters.">
+          <Field name="currentPassword" label="Current password">
+            <Input id="currentPassword" type="password" autoComplete="current-password" {...form.register("currentPassword")} />
+          </Field>
+          <Field name="password" label="New password" hint="At least 10 characters. Changing it signs you out on every other device.">
             <Input id="password" type="password" autoComplete="new-password" {...form.register("password")} />
           </Field>
           <Button type="submit" disabled={pending} className="w-fit">{pending ? "Saving…" : "Change password"}</Button>

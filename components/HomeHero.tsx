@@ -12,13 +12,17 @@ import Gold from "@/components/Gold";
 export default function HomeHero({
   title,
   description,
+  descriptionHtml,
   ctaProjects,
   ctaAbout,
   media,
   children,
 }: {
   title: string;
-  description: string;
+  /** plain text — always rendered as text */
+  description?: string;
+  /** sanitised CMS rich text — the only way HTML gets in here */
+  descriptionHtml?: string;
   ctaProjects?: string;
   ctaAbout?: string;
   media: string;
@@ -48,7 +52,13 @@ export default function HomeHero({
             <h1 className="font-heading text-[clamp(2.5rem,4vw+2rem,3.5rem)] leading-[1.05] tracking-[2px]">
               <Gold text={title} />
             </h1>
-            <RichText html={description} className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80" />
+            {/* `description` is plain text and is rendered as text. Only `descriptionHtml` — CMS rich text,
+                sanitised on save AND again on read — may be rendered as HTML. */}
+            {descriptionHtml ? (
+              <RichText html={descriptionHtml} className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80" />
+            ) : (
+              <p className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80">{description}</p>
+            )}
             {children ?? (
               <div className="mt-4 flex items-center gap-4">
                 <Button href="/projects" variant="solid">

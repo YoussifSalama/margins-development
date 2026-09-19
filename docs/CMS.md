@@ -148,9 +148,40 @@ visitor (unit type, project) are only stored if they resolve.
 live posts, open jobs) × both languages with hreflang alternates; `app/robots.ts` allows everything except
 `/admin` and `/api/`. Both use `NEXT_PUBLIC_SITE_URL`.
 
+### Security model (what the code enforces)
+- **Auth.** scrypt N=2^17 with the cost stored in the hash (older hashes verify and are upgraded on login). Sessions are
+  hashed in the DB; cookie is `__Host-session` (httpOnly, Secure, SameSite=Lax) in production. Login is *throttled*, not
+  locked (per IP, per email+IP, per email) so nobody can lock the admin out, and the message never reveals whether an
+  account exists. Changing your own password needs the current one and signs out every other session.
+- **Authorisation** lives inside every action/query (`defineAction`, `requireUser`, `requireAdmin` → 404 for editors).
+  Calculator figures (unit prices, per-project overrides) are admin-only **on the server** — an editor's values are ignored.
+- **Audit log** (`server/audit.ts`, Admin → Audit log, kept 400 days): sign-ins, failed sign-ins, user changes, admin-only
+  sections, calculator figures (before → after), deletions, every CV download.
+- **HTML.** Only fields of kind `rich` are ever rendered as HTML; they are sanitised on save **and again on read**
+  (`server/public/core.ts`). Plain-text props stay text (`HomeHero.description` vs `descriptionHtml`).
+- **URLs.** Links: `https://`, `mailto:`, `tel:` only (`safeUrl`). Media: a site path or `https://`, no quotes/parens;
+  on the way out `media()` drops any host the site isn't configured to show, so one bad link can't crash `next/image`.
+- **Public endpoints.** Loader arguments are normalised before they become cache keys (locale, page 1–500, page size from a
+  fixed list, slug-shaped strings only) — malformed input answers "not found" with no query and no cache entry.
+- **Rate limiting** trusts only platform-set IP headers (`x-vercel-forwarded-for`, `x-real-ip`); otherwise all visitors
+  share one bucket (fails closed).
+- **Uploads.** CVs: link for one server-chosen key in `cv/tmp/`, token signed with `APP_SECRET`; on submit the server checks
+  size, type and the file's first bytes, moves it to `cv/<year>/`, and rejects + deletes anything else. Abandoned uploads are
+  swept after a day; a site-wide hourly cap limits how many links can be issued.
+- **Headers** (`next.config.ts`): CSP (no foreign scripts, `frame-ancestors 'none'`, uploads only to R2), X-Frame-Options,
+  nosniff, Referrer-Policy, Permissions-Policy, HSTS, COOP; no `x-powered-by`; `/admin` is `no-store` + `noindex`.
+- **Seed.** `--force` refuses to wipe a non-local database without `--yes-wipe-remote-database`.
+
+### Needs you (can't be done from code)
+- **Rotate the R2 API token**, and **change the default admin password** (Account → Change password).
+- **`APP_SECRET`** (≥ 32 random characters) must be set in Vercel — CV uploads fail without it.
+- **Private bucket for CVs** → `CLOUDFLARE_PRIVATE_BUCKET_NAME` (+ the same CORS). Until then CVs sit in the public media bucket.
+- **Separate dev database and bucket** — `.env.local` currently points at the production cluster.
+- **Atlas:** a DB user limited to `readWrite` on `margins`; network access is necessarily `0.0.0.0/0` for Vercel.
+- Optional: TOTP for admins, an IP allowlist / Vercel protection on `/admin`, Turnstile on the public forms.
+
 ### Still to do
 - **Create a private bucket for CVs** and set `CLOUDFLARE_PRIVATE_BUCKET_NAME` (its CORS must allow `PUT` from the site's origins, like the media bucket). Until then CVs are stored in the media bucket under `cv/` with 256-bit random keys — never linked publicly and blocked by `/files`, but that bucket has public access enabled.
-- Turnstile on the public forms if the honeypot + rate limit ever prove too weak.
 - Draft preview (`draftMode`) from the CMS forms.
 - Production: MongoDB Atlas (`MONGODB_URI`), the `CLOUDFLARE_*` variables and `NEXT_PUBLIC_SITE_URL` in Vercel;
   R2 CORS must allow the production origin.

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emptyLocalized, emptyLocalizedList, localized, localizedList, localizedOptional, mediaUrl } from "@/lib/schemas/common";
+import { emptyLocalized, emptyLocalizedList, localized, localizedList, localizedOptional, mediaUrl, safeUrl } from "@/lib/schemas/common";
 
 // A section is declared once, as a list of fields. The zod schema, the empty value
 // and the CMS form are all derived from it, so they can't drift apart.
@@ -13,6 +13,8 @@ export type FieldDef =
   // basic = bold / italic / lists / links only (descriptions); full adds headings, quotes, images (articles)
   | (Base & { kind: "rich"; basic?: boolean; required?: boolean; max?: number })
   | (Base & { kind: "plain"; max?: number })
+  // a link that will be rendered as an href: https://, mailto: or tel: only
+  | (Base & { kind: "url" })
   | (Base & { kind: "media"; accept?: string })
   | (Base & { kind: "mediaList" })
   | (Base & { kind: "list" })
@@ -34,10 +36,12 @@ function fieldSchema(field: FieldDef): z.ZodType {
     }
     case "plain":
       return z.string().trim().max(field.max ?? 500);
+    case "url":
+      return safeUrl;
     case "media":
       return mediaUrl;
     case "mediaList":
-      return z.array(mediaUrl);
+      return z.array(mediaUrl).max(40);
     case "list":
       return localizedList();
     case "number":
@@ -63,6 +67,7 @@ function emptyField(field: FieldDef): unknown {
     case "rich":
       return emptyLocalized;
     case "plain":
+    case "url":
     case "media":
     case "date":
       return "";

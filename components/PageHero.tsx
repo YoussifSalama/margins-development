@@ -18,7 +18,7 @@ export default function PageHero({
   image: string;
 }) {
   return (
-    <HomeHero title={title} description={description} media={image}>
+    <HomeHero title={title} descriptionHtml={description} media={image}>
       <div className="mt-4">
         <Breadcrumb items={crumbs ?? [{ label: current }]} />
       </div>

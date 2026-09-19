@@ -10,7 +10,7 @@ const coordinate = (limit: number) => z.number().min(-limit).max(limit).nullable
 export const storyBlockInput = z.object({
   heading: localized(200),
   body: localized(5000),
-  images: z.array(mediaUrl),
+  images: z.array(mediaUrl).max(12),
 });
 
 export const placeInput = z.object({
@@ -63,13 +63,13 @@ export const projectInput = z
     coverImage: mediaUrl,
     heroMedia: mediaUrl,
     mapImage: mediaUrl,
-    gallery: z.array(mediaUrl),
+    gallery: z.array(mediaUrl).max(40),
     lat: coordinate(90),
     lng: coordinate(180),
-    storyBlocks: z.array(storyBlockInput),
-    places: z.array(placeInput),
-    amenityIds: z.array(id),
-    units: z.array(unitInput),
+    storyBlocks: z.array(storyBlockInput).max(20),
+    places: z.array(placeInput).max(80),
+    amenityIds: z.array(id).max(100),
+    units: z.array(unitInput).max(30),
     investment: investmentOverrides,
     seo,
   })

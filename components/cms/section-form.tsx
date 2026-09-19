@@ -61,6 +61,7 @@ function RenderField({ field, prefix = "", dynamic }: { field: FieldDef; prefix?
     case "rich":
       return <BilingualRichText name={name} label={field.label} hint={field.hint} help={field.help} basic={field.basic} />;
     case "plain":
+    case "url":
       return <Field name={name} label={field.label} hint={field.hint} help={field.help} />;
     case "media":
       return <MediaField name={name} label={field.label} hint={field.hint} help={field.help} accept={field.accept} />;

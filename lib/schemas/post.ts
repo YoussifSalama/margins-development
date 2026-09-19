@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emptyLocalized, emptySeo, id, localized, localizedOptional, mediaUrl, seo, slug } from "./common";
+import { emptyLocalized, emptySeo, id, localized, localizedOptional, mediaUrl, safeUrl, seo, slug } from "./common";
 
 export const PUBLISH_STATUSES = ["draft", "published", "archived"] as const;
 
@@ -21,11 +21,11 @@ export const makePostInput = (eventCategoryIds: string[]) => z
     body: localizedOptional(200_000),
     authorLabel: localizedOptional(120),
     coverImage: mediaUrl,
-    gallery: z.array(mediaUrl),
+    gallery: z.array(mediaUrl).max(40),
     startsAt: isoOrEmpty,
     endsAt: isoOrEmpty,
     venue: localizedOptional(200),
-    registrationUrl: z.union([z.literal(""), z.url("Must be a full URL (https://…)")]),
+    registrationUrl: safeUrl,
     seo,
   })
   .superRefine((post, ctx) => {

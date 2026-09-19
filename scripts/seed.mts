@@ -23,8 +23,15 @@ const day = (value: string) => new Date(`${value} UTC`);
 const isoDay = (value: string) => day(value).toISOString().slice(0, 10);
 const now = new Date();
 
-await ready; // unique indexes must exist before the first insert
 const force = process.argv.includes("--force");
+// --force deletes every content collection. Against anything that isn't a local database that
+// takes a second, explicit flag — .env.local often points at the real one.
+const isLocal = /^mongodb:\/\/(127\.0\.0\.1|localhost|\[::1\])[:/]/.test(process.env.MONGODB_URI ?? "");
+if (force && !isLocal && !process.argv.includes("--yes-wipe-remote-database")) {
+  console.error("Refusing to --force against a remote database. If you really mean it, add --yes-wipe-remote-database.");
+  process.exit(1);
+}
+await ready; // unique indexes must exist before the first insert
 if ((await db.projects.countDocuments()) > 0 && !force) {
   console.error("Content already exists. Re-run with --force to wipe content collections and re-import.");
   process.exit(1);

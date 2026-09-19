@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Building2, Newspaper, Briefcase, HelpCircle, Handshake, LayoutTemplate,
-  Landmark, Settings, ListTree, Inbox, FileUser, MailPlus, Users, BookOpen,
+  Landmark, Settings, ListTree, Inbox, FileUser, MailPlus, Users, BookOpen, ScrollText,
 } from "lucide-react";
 
 export type NavItem = { label: string; href: string; icon: LucideIcon; description: string; adminOnly?: boolean };
@@ -51,6 +51,9 @@ export const cmsNav: NavGroup[] = [
   {
     label: "Admin",
     description: "Access to this CMS.",
-    items: [{ label: "Users", description: "Who can sign in to this CMS, and whether they are an admin or an editor.", href: "/admin/users", icon: Users, adminOnly: true }],
+    items: [
+      { label: "Users", description: "Who can sign in to this CMS, and whether they are an admin or an editor.", href: "/admin/users", icon: Users, adminOnly: true },
+      { label: "Audit log", description: "Who signed in, who changed users or calculator figures, what was deleted, and every CV download.", href: "/admin/audit", icon: ScrollText, adminOnly: true },
+    ],
   },
 ];

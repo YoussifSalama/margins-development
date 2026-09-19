@@ -62,6 +62,7 @@ export default function ProjectForm({
   amenities,
   calculatorDefaults,
   inCalculator = false,
+  canEditFigures = false,
 }: {
   id?: string;
   values: ProjectInput;
@@ -70,6 +71,8 @@ export default function ProjectForm({
   amenities: Option[];
   calculatorDefaults: CalculatorDefaults;
   inCalculator?: boolean;
+  /** admins only — the server ignores these fields from anyone else */
+  canEditFigures?: boolean;
 }) {
   return (
     <EntityForm<ProjectInput> noun="Project" basePath="/admin/content/projects" id={id} schema={projectInput} values={values} save={saveProject} remove={deleteProject}>
@@ -170,11 +173,12 @@ export default function ProjectForm({
                     <SelectField name={`${path}.unitTypeId`} label="Unit type" options={unitTypes.map((type) => ({ value: type.id, label: type.label.en }))} />
                     <BilingualField name={`${path}.sizeRange`} label="Size range" hint='e.g. "75 – 100 m²"' />
                     <MediaField name={`${path}.image`} label="Image" />
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <fieldset disabled={!canEditFigures} className="grid grid-cols-1 gap-4 disabled:opacity-60 md:grid-cols-3">
                       <NumberField name={`${path}.avgPrice`} label="Average price (EGP)" nullable />
                       <NumberField name={`${path}.annualGrossRent`} label="Yearly rent (EGP)" nullable />
                       <NumberField name={`${path}.annualOpCosts`} label="Yearly running costs (EGP)" nullable />
-                    </div>
+                    </fieldset>
+                    {!canEditFigures && <p className="text-xs text-muted-foreground">Prices, rents and costs can only be changed by an admin.</p>}
                     <UnitYield path={path} defaults={calculatorDefaults} />
                   </>
                 )}
@@ -190,6 +194,7 @@ export default function ProjectForm({
                 : "This project is not in the calculator yet — an admin adds it under Pages → Calculator → Calculator setup. You can still prepare its figures here."
             }
           >
+            <fieldset disabled={!canEditFigures} className="flex flex-col gap-5 disabled:opacity-60">
             <BilingualField name="investment.phaseLabel" label="Phase label" hint='e.g. "Off-Plan · Phase 1". Shown on the project card in the calculator.' />
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               <NumberField name="investment.occupancyPct" label="Occupancy %" hint={`Default: ${calculatorDefaults.occupancyPct}%`} nullable />
@@ -197,6 +202,8 @@ export default function ProjectForm({
               <NumberField name="investment.deliveryMonth" label="Delivery (month #)" hint={`Default: ${calculatorDefaults.deliveryMonth}`} nullable />
               <NumberField name="investment.rentalStartMonth" label="Rent starts (month #)" hint={`Default: ${calculatorDefaults.rentalStartMonth}`} nullable />
             </div>
+            </fieldset>
+            {!canEditFigures && <p className="text-xs text-muted-foreground">Only an admin can change these.</p>}
           </SectionCard>
         </TabsContent>
 

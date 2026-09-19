@@ -210,4 +210,7 @@ export type JobApplicationDoc = {
 // per (action, ip, time window) counter for the public forms; expires by itself
 export type RateLimitDoc = { _id: string; count: number; expiresAt: Date };
 
+// security-relevant events; kept 400 days (TTL index)
+export type AuditLogDoc = { _id: string; userId: string | null; email: string | null; action: string; detail: Record<string, unknown>; ip: string; createdAt: Date };
+
 export type SubscriberDoc = { _id: string; email: string; locale: string; createdAt: Date };

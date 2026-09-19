@@ -55,7 +55,7 @@ export default async function Contact({ params }: PageProps<"/[locale]/contact">
         className="bg-dark bg-cover bg-center py-16 lg:py-24"
         style={{
           backgroundImage:
-            `linear-gradient(var(--dark-overlay), var(--dark-overlay)), url(${form.backgroundImage || "/pages/contact/contact-form-bg.jpg"})`,
+            `linear-gradient(var(--dark-overlay), var(--dark-overlay)), url("${form.backgroundImage || "/pages/contact/contact-form-bg.jpg"}")`,
         }}
       >
         <div className="container grid grid-cols-1 gap-16 lg:grid-cols-2">

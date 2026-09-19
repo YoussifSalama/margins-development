@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { MongoClient } from "mongodb";
 import type {
-  AmenityDoc, CalculatorDoc, FaqDoc, HomeShowcaseDoc, JobApplicationDoc, JobDoc, LeadDoc, MainPostDoc, PageSectionDoc, PartnerDoc,
+  AmenityDoc, AuditLogDoc, CalculatorDoc, FaqDoc, HomeShowcaseDoc, JobApplicationDoc, JobDoc, LeadDoc, MainPostDoc, PageSectionDoc, PartnerDoc,
   PostCategoryDoc, PostDoc, RateLimitDoc, ProjectDoc, SessionDoc, SubscriberDoc, UnitTypeDoc, UserDoc,
 } from "./types";
 
@@ -33,6 +33,7 @@ export const db = {
   jobApplications: database.collection<JobApplicationDoc>("jobApplications"),
   subscribers: database.collection<SubscriberDoc>("subscribers"),
   rateLimits: database.collection<RateLimitDoc>("rateLimits"),
+  auditLogs: database.collection<AuditLogDoc>("auditLogs"),
 };
 
 // MongoDB has no schema to migrate, but uniqueness and expiry are enforced by indexes.
@@ -56,6 +57,7 @@ async function ensureIndexes() {
     db.jobApplications.createIndex({ jobId: 1, createdAt: -1 }),
     db.subscribers.createIndex({ email: 1 }, { unique: true }),
     db.rateLimits.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
+    db.auditLogs.createIndex({ createdAt: 1 }, { expireAfterSeconds: 400 * 24 * 60 * 60 }),
   ]);
 }
 

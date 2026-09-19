@@ -6,7 +6,8 @@ import type {
   AboutPage, CalculatorPage, CareersPage, Company, ContactPage, FaqItem, HomePage, JobCard, JobPage, Locale, MediaPage,
   PagePayload, Partner, Post, PostCard, PostPage, PrivacyPage, ProjectCard, ProjectDetail, ProjectPage, ProjectsPage,
 } from "@/lib/content";
-import { asLocale, cachedLoader, formatDate, loadSections, loadSite, pick } from "./core";
+import { cleanHtml } from "@/server/html";
+import { asLocale, cachedLoader, formatDate, LIMITS, loadSections, loadSite, media, pick } from "./core";
 import { buildSeo, schema } from "./seo";
 
 // ONE loader per page. Each returns everything that page renders — SEO (tags + structured
@@ -21,7 +22,7 @@ const stripGold = (value: string) => value.replace(/<\/?gold>/g, "").replace(/\s
 
 const livePosts = () => ({ status: "published" as const, publishedAt: { $lte: new Date() } });
 
-const projectCard = (p: ProjectDoc, locale: Locale): ProjectCard => ({ slug: p.slug, name: pick(p.name, locale), location: pick(p.location, locale), image: p.coverImage ?? "" });
+const projectCard = (p: ProjectDoc, locale: Locale): ProjectCard => ({ slug: p.slug, name: pick(p.name, locale), location: pick(p.location, locale), image: media(p.coverImage) });
 
 function postCard(p: PostDoc, categories: PostCategoryDoc[], locale: Locale): PostCard {
   const category = categories.find((c) => c._id === p.categoryId);
@@ -32,7 +33,7 @@ function postCard(p: PostDoc, categories: PostCategoryDoc[], locale: Locale): Po
     title: pick(p.title, locale),
     excerpt: pick(p.excerpt, locale),
     date: formatDate(p.publishedAt, locale),
-    image: p.coverImage ?? "",
+    image: media(p.coverImage),
   };
 }
 
@@ -50,7 +51,7 @@ const loadFaqs = async (locale: Locale): Promise<FaqItem[]> =>
   (await db.faqs.find({ published: true }).sort({ position: 1 }).toArray()).map((f) => ({ question: pick(f.question, locale), answer: pick(f.answer, locale) }));
 
 const loadPartners = async (locale: Locale): Promise<Partner[]> =>
-  (await db.partners.find().sort({ position: 1 }).toArray()).map((p) => ({ name: pick(p.name, locale), logo: p.logo, url: p.url }));
+  (await db.partners.find().sort({ position: 1 }).toArray()).map((p) => ({ name: pick(p.name, locale), logo: media(p.logo) || null, url: p.url }));
 
 /** ids → published projects, in the given order; ids that no longer resolve are skipped */
 async function projectsByIds(ids: string[], locale: Locale) {
@@ -130,7 +131,7 @@ export const getProjectsPage = cachedLoader(
   ["page:projects", "page:company", "page:settings", "projects"],
   async (localeArg: string, pageArg?: number, limitArg?: number): Promise<PagePayload<ProjectsPage>> => {
     const locale = asLocale(localeArg);
-    const limit = Math.min(Math.max(limitArg || 4, 1), 48);
+    const limit = limitArg && LIMITS.includes(limitArg) ? limitArg : 4; // page size only from the allowed list
     const [site, s, company, total] = await Promise.all([
       loadSite(locale), loadSections("projects", locale), loadCompany(locale), db.projects.countDocuments({ status: "published" }),
     ]);
@@ -178,12 +179,12 @@ export const getProjectPage = cachedLoader(
       tagline: pick(p.tagline, locale),
       summary: pick(p.summary, locale),
       description: pick(p.description, locale),
-      heroMedia: p.heroMedia || p.coverImage || "",
-      gallery: p.gallery,
+      heroMedia: media(p.heroMedia) || media(p.coverImage),
+      gallery: p.gallery.map(media).filter(Boolean),
       facts: { year: p.year ? String(p.year) : "", location: pick(p.location, locale), sector: pick(p.sector, locale), size: pick(p.sizeLabel, locale), status: p.buildStatus },
-      storyBlocks: p.storyBlocks.map((b) => ({ heading: pick(b.heading, locale), paragraphs: pick(b.body, locale).split(/\n{2,}/).filter(Boolean), images: b.images })),
+      storyBlocks: p.storyBlocks.map((b) => ({ heading: pick(b.heading, locale), paragraphs: pick(b.body, locale).split(/\n{2,}/).filter(Boolean), images: b.images.map(media).filter(Boolean) })),
       locationDescription: pick(p.locationDescription, locale),
-      mapImage: p.mapImage ?? "",
+      mapImage: media(p.mapImage),
       mapUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`,
       placeCategories: categories.map((key) => ({ key, places: p.places.filter((place) => place.category === key).map((place) => ({ name: pick(place.name, locale), distance: distance(place.distanceKm, locale) })) })),
       facilitiesDescription: pick(p.facilitiesDescription, locale),
@@ -191,7 +192,7 @@ export const getProjectPage = cachedLoader(
       unitsDescription: pick(p.unitsDescription, locale),
       units: p.units.map((u) => {
         const type = unitTypes.find((t) => t._id === u.unitTypeId);
-        return { key: type?.key ?? u.id, title: pick(type?.name, locale), image: u.image ?? "", sizeRange: pick(u.sizeRange, locale) };
+        return { key: type?.key ?? u.id, title: pick(type?.name, locale), image: media(u.image), sizeRange: pick(u.sizeRange, locale) };
       }),
     };
 
@@ -221,7 +222,7 @@ export const getMediaPage = cachedLoader(
   ["page:media", "page:settings", "posts"],
   async (localeArg: string, categoryKey?: string, pageArg?: number, limitArg?: number): Promise<PagePayload<MediaPage> | null> => {
     const locale = asLocale(localeArg);
-    const limit = Math.min(Math.max(limitArg || 5, 1), 48);
+    const limit = limitArg && LIMITS.includes(limitArg) ? limitArg : 5; // page size only from the allowed list
     const categoryDocs = await db.postCategories.find().sort({ position: 1 }).toArray();
     const categoryDoc = categoryKey ? categoryDocs.find((c) => c.key === categoryKey) : undefined;
     if (categoryKey && !categoryDoc) return null;
@@ -282,13 +283,14 @@ export const getPostPage = cachedLoader("page:post", ["posts", "page:media", "pa
   const locale = asLocale(localeArg);
   const p = await db.posts.findOne({ slug, ...livePosts() });
   if (!p) return null;
-  const [site, media, categories, relatedDocs] = await Promise.all([
+  const [site, mediaSections, categories, relatedDocs] = await Promise.all([
     loadSite(locale), loadSections("media", locale), db.postCategories.find().toArray(),
     db.posts.find({ ...livePosts(), _id: { $ne: p._id } }).sort({ publishedAt: -1 }).limit(40).toArray(),
   ]);
   const category = categories.find((c) => c._id === p.categoryId);
   const card = postCard(p, categories, locale);
-  const body = pick(p.body, locale);
+  // sanitised on save; cleaned again on the way out (see server/public/core.ts)
+  const body = cleanHtml(pick(p.body, locale));
   const minutes = Math.max(1, Math.round(body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length / 200));
   // same category first, so "related" is actually related
   const related = [...relatedDocs.filter((d) => d.categoryId === p.categoryId), ...relatedDocs.filter((d) => d.categoryId !== p.categoryId)].slice(0, 2);
@@ -300,13 +302,13 @@ export const getPostPage = cachedLoader("page:post", ["posts", "page:media", "pa
     dateIso: p.publishedAt!.toISOString(),
     readingTime: locale === "ar" ? `${minutes} دقائق` : `${minutes} Min`,
     author: pick(p.authorLabel, locale),
-    gallery: p.gallery,
+    gallery: p.gallery.map(media).filter(Boolean),
     event: isEvent
       ? { startsAt: p.startsAt!.toISOString(), endsAt: p.endsAt?.toISOString() ?? null, venue: pick(p.venue, locale), registrationUrl: p.registrationUrl, upcoming: (p.endsAt ?? p.startsAt)! > new Date() }
       : null,
   };
   const path = `/media/${card.category}/${p.slug}`;
-  const mediaTitle = stripGold(as<{ title: string }>(media.hero).title);
+  const mediaTitle = stripGold(as<{ title: string }>(mediaSections.hero).title);
   return {
     site,
     page: { post, related: related.map((d) => postCard(d, categories, locale)) },
@@ -406,7 +408,7 @@ export const getCalculatorPage = cachedLoader("page:calculator", ["page:calculat
       disclaimer: as<{ text: string }>(s.disclaimer).text,
       // DTO: CMS-only fields (status, skippedUnits) never reach the browser
       destinations: rows.map((row) => ({
-        id: row.id, slug: row.slug, name: row.name, location: row.location, phaseLabel: row.phaseLabel, image: row.image,
+        id: row.id, slug: row.slug, name: row.name, location: row.location, phaseLabel: row.phaseLabel, image: media(row.image),
         occupancyPct: row.occupancyPct, appreciationPct: row.appreciationPct, deliveryMonth: row.deliveryMonth,
         rentalStartMonth: row.rentalStartMonth, assumptionCode: row.assumptionCode, effectiveDate: row.effectiveDate, unitTypes: row.unitTypes,
       })),

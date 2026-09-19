@@ -3,43 +3,48 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { hashPassword, verifyPassword } from "./password";
+import { audit } from "@/server/audit";
+import { allowKey, clientIp } from "@/server/rate-limit";
+import { hashPassword, needsRehash, verifyPassword } from "./password";
 import { createSession, destroySession } from "./session";
 
-const MAX_FAILED = 5;
-const LOCK_MS = 15 * 60 * 1000;
-
-const loginSchema = z.object({ email: z.email().trim().toLowerCase(), password: z.string().min(1) });
+const loginSchema = z.object({ email: z.email().trim().toLowerCase(), password: z.string().min(1).max(200) });
 
 // Verified against when the email is unknown so response time doesn't leak which emails exist.
 const dummyHash = hashPassword("dummy-password");
 
 export type LoginState = { error?: string };
 
+const INVALID = "Invalid email or password.";
+const THROTTLED = "Too many attempts. Try again in a few minutes.";
+
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const parsed = loginSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) return { error: "Invalid email or password." };
+  if (!parsed.success) return { error: INVALID };
   const { email, password } = parsed.data;
+  const ip = await clientIp();
+
+  // Throttling instead of locking the account: a hard lock lets anyone keep the only admin out
+  // just by failing logins. Budgets are keyed by what the ATTACKER controls (their IP, the email
+  // they typed) and apply whether or not the account exists — so the message reveals nothing.
+  const [perIp, perPair, perEmail] = await Promise.all([
+    allowKey(`login:ip:${ip}`, 10, 600), // one source hammering any account
+    allowKey(`login:pair:${email}:${ip}`, 5, 900), // one source guessing one account
+    allowKey(`login:email:${email}`, 40, 900), // many sources on one account — high, so it can't be used to lock the owner out cheaply
+  ]);
+  if (!perIp || !perPair || !perEmail) return { error: THROTTLED };
 
   const user = await db.users.findOne({ email });
-  if (user?.lockedUntil && user.lockedUntil > new Date()) {
-    return { error: "Too many attempts. Try again in a few minutes." };
-  }
-
   const ok = await verifyPassword(password, user?.passwordHash ?? (await dummyHash));
   if (!user || !ok) {
-    if (user) {
-      // $inc is atomic, so parallel guesses can't each read the same stale counter
-      const updated = await db.users.findOneAndUpdate({ _id: user._id }, { $inc: { failedLogins: 1 } }, { returnDocument: "after" });
-      if ((updated?.failedLogins ?? 0) >= MAX_FAILED) {
-        await db.users.updateOne({ _id: user._id }, { $set: { failedLogins: 0, lockedUntil: new Date(Date.now() + LOCK_MS) } });
-      }
-    }
-    return { error: "Invalid email or password." };
+    await audit(null, "login.failed", { email });
+    return { error: INVALID };
   }
 
-  await db.users.updateOne({ _id: user._id }, { $set: { failedLogins: 0, lockedUntil: null } });
+  // hashes written with a weaker cost get upgraded the moment we see the password
+  if (needsRehash(user.passwordHash)) await db.users.updateOne({ _id: user._id }, { $set: { passwordHash: await hashPassword(password) } });
   await createSession(user._id);
+  await audit({ id: user._id, email: user.email }, "login.ok");
   redirect("/admin");
 }
 

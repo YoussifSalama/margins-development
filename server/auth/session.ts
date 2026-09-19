@@ -1,11 +1,13 @@
 import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createHash, randomBytes } from "node:crypto";
 import { db } from "@/server/db";
 
-const COOKIE = "session";
+// __Host- = the browser only accepts it over HTTPS, for this exact host, path "/" — it can't be
+// planted by a subdomain. Needs Secure, so plain "session" is used on http://localhost.
+const COOKIE = process.env.NODE_ENV === "production" ? "__Host-session" : "session";
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 const sha256 = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -30,6 +32,12 @@ export async function destroySession() {
   store.delete(COOKIE);
 }
 
+/** id of the session making this request (the token's hash) — so "sign out everywhere else" can keep it */
+export async function currentSessionId() {
+  const token = (await cookies()).get(COOKIE)?.value;
+  return token ? sha256(token) : null;
+}
+
 export type SessionUser = { id: string; name: string; email: string; role: "admin" | "editor" };
 
 // Memoized per render pass; every query/action calls this, not just layouts.
@@ -51,6 +59,7 @@ export async function requireUser() {
 
 export async function requireAdmin() {
   const user = await requireUser();
-  if (user.role !== "admin") throw new Error("Forbidden: admin role required");
+  // an editor asking for an admin screen gets "not found", not a crash page or a hint that it exists
+  if (user.role !== "admin") notFound();
   return user;
 }

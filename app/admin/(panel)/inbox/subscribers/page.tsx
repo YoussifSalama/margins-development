@@ -10,7 +10,9 @@ export const metadata = { title: "Subscribers" };
 
 export default async function SubscribersPage() {
   const subscribers = await listSubscribers();
-  const csv = ["email,locale,subscribed_at", ...subscribers.map((s) => `${s.email},${s.locale},${s.createdAt.toISOString()}`)].join("\n");
+  // a cell that starts with = + - @ is executed as a formula by Excel/Sheets → neutralise it
+  const cell = (value: string) => `"${(/^[=+\-@\t\r]/.test(value) ? `'${value}` : value).replace(/"/g, '""')}"`;
+  const csv = ["email,locale,subscribed_at", ...subscribers.map((s) => [s.email, s.locale, s.createdAt.toISOString()].map(cell).join(","))].join("\n");
 
   return (
     <PageShell

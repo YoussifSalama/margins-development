@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { defineAction, UserError } from "@/server/action";
+import { audit } from "@/server/audit";
 import { db } from "@/server/db";
 import { cleanHtml } from "@/server/html";
 import { buildSchema, mapRich } from "@/lib/cms/fields";
@@ -42,6 +43,8 @@ export const saveSection = defineAction(sectionInput, async ({ page, section, da
     { $set: { data: clean, updatedAt: new Date() }, $setOnInsert: { _id: `${page}.${section}` } },
     { upsert: true },
   );
+  // settings, the calculator setup and legal text: keep a record of who changed them
+  if (def.adminOnly) await audit(user, "section.saved", { page, section });
   revalidateTag(`page:${page}`, { expire: 0 });
   if (page === "calculator") revalidateTag("calculator", { expire: 0 });
 });
@@ -58,9 +61,10 @@ export const saveHomeShowcase = defineAction(orderedIds.max(12), async (projectI
 // The Calculator page owns which projects it offers and in what order.
 export const saveCalculatorDestinations = defineAction(
   orderedIds.max(30),
-  async (projectIds) => {
+  async (projectIds, user) => {
     const existing = await db.projects.find({ _id: { $in: projectIds } }, { projection: { _id: 1 } }).toArray();
     const valid = projectIds.filter((id) => existing.some((project) => project._id === id));
+    await audit(user, "calculator.destinations-changed", { projectIds: valid });
     await db.calculator.updateOne({ _id: "calculator" }, { $set: { projectIds: valid } }, { upsert: true });
     revalidateTag("calculator", { expire: 0 });
   },

@@ -349,7 +349,7 @@ export const pages = {
           { kind: "plain", name: "whatsapp", label: "WhatsApp number", hint: "International format, digits only after +." },
           { kind: "plain", name: "email", label: "Email" },
           { kind: "text", name: "address", label: "Address" },
-          { kind: "plain", name: "mapUrl", label: "Google Maps link" },
+          { kind: "url", name: "mapUrl", label: "Google Maps link" },
         ],
       },
       socials: {
@@ -364,7 +364,7 @@ export const pages = {
                 kind: "choice", name: "platform", label: "Platform",
                 options: ["facebook", "instagram", "linkedin", "x", "tiktok", "youtube", "whatsapp"].map((value) => ({ value, label: value })),
               },
-              { kind: "plain", name: "url", label: "URL" },
+              { kind: "url", name: "url", label: "URL" },
             ],
           },
         ],

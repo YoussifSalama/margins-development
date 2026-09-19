@@ -63,6 +63,37 @@ export async function headObject(bucket: string, key: string) {
   return { size: Number(response.headers.get("content-length") ?? 0), contentType: response.headers.get("content-type") ?? "" };
 }
 
+/** First bytes of an object — enough to check a file signature without downloading it. */
+export async function readStart(bucket: string, key: string, bytes = 8) {
+  const response = await r2().fetch(objectUrl(bucket, key).toString(), { headers: { range: `bytes=0-${bytes - 1}` } });
+  return response.ok || response.status === 206 ? new Uint8Array(await response.arrayBuffer()) : null;
+}
+
+/** Server-side copy inside the bucket (S3 CopyObject). */
+export async function copyObject(bucket: string, from: string, to: string) {
+  const response = await r2().fetch(objectUrl(bucket, to).toString(), { method: "PUT", headers: { "x-amz-copy-source": `/${bucket}/${from}` } });
+  return response.ok;
+}
+
+/**
+ * Deletes objects under `prefix` older than `maxAgeMs`. Upload links are handed out before an
+ * application exists, so abandoned files are inevitable; this keeps them from piling up.
+ * Best effort: a token without list permission just logs once (use a bucket lifecycle rule then).
+ */
+export async function sweep(bucket: string, prefix: string, maxAgeMs: number) {
+  const url = objectUrl(bucket, "");
+  url.searchParams.set("list-type", "2");
+  url.searchParams.set("prefix", prefix);
+  url.searchParams.set("max-keys", "200");
+  const response = await r2().fetch(url.toString());
+  if (!response.ok) return console.warn(`sweep(${prefix}): listing not permitted (${response.status}) — add an R2 lifecycle rule for this prefix instead`);
+  const xml = await response.text();
+  const cutoff = Date.now() - maxAgeMs;
+  for (const [, key, modified] of xml.matchAll(/<Contents>[\s\S]*?<Key>([\s\S]*?)<\/Key>[\s\S]*?<LastModified>([\s\S]*?)<\/LastModified>[\s\S]*?<\/Contents>/g)) {
+    if (new Date(modified).getTime() < cutoff) await deleteObject(bucket, key);
+  }
+}
+
 export const deleteObject = (bucket: string, key: string) => r2().fetch(objectUrl(bucket, key).toString(), { method: "DELETE" });
 /**
  * Where a browser loads an uploaded file from. With CLOUDFLARE_PUBLIC_URL set, straight from

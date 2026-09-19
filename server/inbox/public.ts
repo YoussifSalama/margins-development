@@ -4,9 +4,10 @@ import { z } from "zod";
 import { db, newId } from "@/server/db";
 import { computeEstimate } from "@/lib/calculator";
 import { getCalculatorPage } from "@/server/public/pages";
-import { createHmac, randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
-import { allow } from "@/server/rate-limit";
-import { cvBucket, headObject, presignPut } from "@/server/storage/r2";
+import { randomBytes, randomUUID } from "node:crypto";
+import { sign, verify } from "@/server/secret";
+import { allow, allowKey } from "@/server/rate-limit";
+import { copyObject, cvBucket, deleteObject, headObject, presignPut, readStart, sweep } from "@/server/storage/r2";
 import { CV_MAX_BYTES, CV_TYPES } from "@/lib/schemas/inbox";
 import type { ActionResult } from "@/lib/schemas/common";
 
@@ -158,13 +159,14 @@ export async function subscribeNewsletter(raw: z.input<typeof subscription>): Pr
 // 3. submitApplication → the token proves the key is one we issued, then the stored object is
 //    checked again (exists, size, type) before anything is written to the database.
 
-// The token is an HMAC of the key, so an applicant can only attach the object they uploaded —
-// never somebody else's CV or an arbitrary object in the bucket.
-const signKey = (key: string) => createHmac("sha256", process.env.CLOUDFLARE_SECRET_ACCESS_KEY ?? "").update(`cv:${key}`).digest("hex");
-const validToken = (key: string, token: string) => {
-  const expected = Buffer.from(signKey(key));
-  const given = Buffer.from(token);
-  return expected.length === given.length && timingSafeEqual(expected, given);
+// The token is an HMAC of the key (server/secret.ts), so an applicant can only attach the object
+// they uploaded — never somebody else's CV or an arbitrary object in the bucket.
+
+// What the file really is, from its first bytes — the declared Content-Type is just a claim.
+const SIGNATURES: Record<string, number[]> = {
+  pdf: [0x25, 0x50, 0x44, 0x46, 0x2d], // %PDF-
+  doc: [0xd0, 0xcf, 0x11, 0xe0], // OLE2 container
+  docx: [0x50, 0x4b, 0x03, 0x04], // zip
 };
 
 const cvUpload = z.object({ contentType: z.string().max(120), size: z.number().int().positive(), website: z.string().max(0) });
@@ -176,13 +178,17 @@ export async function signCvUpload(raw: z.input<typeof cvUpload>): Promise<CvUpl
   const extension = parsed.success ? CV_TYPES[parsed.data.contentType] : undefined;
   if (!parsed.success || !extension) return { ok: false, error: "type" };
   if (parsed.data.size > CV_MAX_BYTES) return { ok: false, error: "size" };
-  if (!(await allow("cv-upload", 6, 600))) return { ok: false, error: "rate" };
+  // per visitor, and for the whole site: upload links are free to request, so the total is capped too
+  if (!(await allow("cv-upload", 6, 600)) || !(await allowKey("cv-upload:all", 120, 3600))) return { ok: false, error: "rate" };
 
   // extension from our own map, never from the visitor's filename; 256 random bits in the key
-  const key = `cv/${new Date().getFullYear()}/${randomUUID()}-${randomBytes(16).toString("hex")}.${extension}`;
+  // uploads land in cv/tmp/ and only move to their final place once an application is submitted;
+  // whatever is abandoned there is swept after a day
+  const key = `cv/tmp/${randomUUID()}-${randomBytes(16).toString("hex")}.${extension}`;
+  if (Math.random() < 0.1) void sweep(cvBucket(), "cv/tmp/", 24 * 60 * 60 * 1000).catch(() => {});
   try {
     const uploadUrl = await presignPut(cvBucket(), key, parsed.data.contentType, parsed.data.size);
-    return { ok: true, uploadUrl, key, token: signKey(key) };
+    return { ok: true, uploadUrl, key, token: sign("cv", key) };
   } catch (error) {
     console.error(error);
     return { ok: false, error: "unavailable" };
@@ -195,7 +201,7 @@ const application = z.object({
   email: z.string().trim().toLowerCase().email().max(200),
   phone: z.string().trim().min(6).max(40),
   note: z.string().trim().max(3000).optional(),
-  cvKey: z.string().regex(/^cv\/\d{4}\/[0-9a-f-]{36}-[0-9a-f]{32}\.(pdf|doc|docx)$/),
+  cvKey: z.string().regex(/^cv\/tmp\/[0-9a-f-]{36}-[0-9a-f]{32}\.(pdf|doc|docx)$/),
   cvToken: z.string().max(200),
   website: z.string().max(0), // honeypot
 });
@@ -205,21 +211,32 @@ export async function submitApplication(raw: z.input<typeof application>): Promi
   if (!parsed.success) return { ok: false, error: "Some fields need attention.", fieldErrors: fieldErrorsOf(parsed.error) };
   if (!(await allow("job-application", 3, 600))) return TOO_MANY;
   const { jobSlug, name, email, phone, note, cvKey, cvToken } = parsed.data;
-  if (!validToken(cvKey, cvToken)) return { ok: false, error: "Please upload your CV again." };
+  if (!verify("cv", cvKey, cvToken)) return { ok: false, error: "Please upload your CV again." };
 
   try {
     const job = await db.jobs.findOne({ slug: jobSlug, status: "open" }, { projection: { title: 1 } });
     if (!job) return { ok: false, error: "This job is no longer open." };
 
-    // trust the bucket, not the browser: the file must really be there, and within the rules
-    const stored = await headObject(cvBucket(), cvKey);
-    if (!stored || stored.size > CV_MAX_BYTES || !CV_TYPES[stored.contentType]) return { ok: false, error: "Please upload your CV again." };
+    // trust the bucket, not the browser: the file must really be there, within the rules, and BE
+    // the type it claims (first bytes) — a renamed executable or an HTML page is rejected and removed
+    const bucket = cvBucket();
+    const stored = await headObject(bucket, cvKey);
+    const extension = cvKey.split(".").pop()!;
+    const start = stored && (await readStart(bucket, cvKey, 8));
+    const genuine = start && SIGNATURES[extension]?.every((byte, index) => start[index] === byte);
+    if (!stored || stored.size > CV_MAX_BYTES || !CV_TYPES[stored.contentType] || !genuine) {
+      if (stored) await deleteObject(bucket, cvKey).catch(() => {});
+      return { ok: false, error: "Please upload your CV again." };
+    }
 
-    // one application per key — re-submitting the same upload doesn't create duplicates
-    if (await db.jobApplications.findOne({ cvKey }, { projection: { _id: 1 } })) return { ok: true, data: undefined };
+    // move it out of tmp/ (copy + delete). The final key is what the record keeps; a second
+    // submit of the same upload finds tmp/ empty and stops above, so no duplicates.
+    const finalKey = cvKey.replace("cv/tmp/", `cv/${new Date().getFullYear()}/`);
+    if (!(await copyObject(bucket, cvKey, finalKey))) return { ok: false, error: "Something went wrong. Please try again." };
+    await deleteObject(bucket, cvKey).catch(() => {});
 
     await db.jobApplications.insertOne({
-      _id: newId(), jobId: job._id, jobTitle: job.title.en, name, email, phone, note: note || null, cvKey, status: "new", createdAt: new Date(),
+      _id: newId(), jobId: job._id, jobTitle: job.title.en, name, email, phone, note: note || null, cvKey: finalKey, status: "new", createdAt: new Date(),
     });
     return { ok: true, data: undefined };
   } catch (error) {

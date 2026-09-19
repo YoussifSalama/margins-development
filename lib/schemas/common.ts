@@ -34,7 +34,20 @@ export const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-export const mediaUrl = z.string().trim().max(1000);
+// Anything that ends up in an href: only schemes a browser can't be tricked into executing.
+// (z.url() alone accepts "javascript:alert(1)".)
+export const safeUrl = z.union([
+  z.literal(""),
+  z.string().trim().max(1000).regex(/^(https?:\/\/|mailto:|tel:)[^\s<>"']+$/i, "Must start with https://, mailto: or tel:"),
+]);
+
+// Uploaded / pasted media: a path on this site or an https URL — never javascript:, data: or a
+// string that could break out of a CSS url(). Which HOSTS may be shown is decided on the way
+// out (server/public/core.ts → media()), because that list depends on server configuration.
+export const mediaUrl = z.union([
+  z.literal(""),
+  z.string().trim().max(1000).regex(/^(\/(?!\/)|https:\/\/)[^\s<>"'()\\]*$/, "Upload a file, or paste a link starting with https://"),
+]);
 
 export const seo = z.object({
   title: localizedOptional(70),
