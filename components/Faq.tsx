@@ -1,9 +1,18 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useRef, useState, type ReactNode } from "react";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 import { FiPlus } from "react-icons/fi";
 import { spring } from "@/lib/motion";
+import { useForwardInView } from "@/lib/useForwardInView";
+import RichText from "@/components/RichText";
+
+// heading → description, then the items one after another, each fading up on every forward scroll into view
+const stagger: Variants = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24, transition: { duration: 0 } }, // reset happens off-screen, keep it instant
+  visible: { opacity: 1, y: 0, transition: { type: "spring", duration: 0.9, bounce: 0.45 } },
+};
 
 export type FaqItem = { question: string; answer: string };
 
@@ -17,19 +26,43 @@ export default function Faq({
   items: FaqItem[];
 }) {
   const [openIndex, setOpenIndex] = useState(0);
+  const headRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const headShown = useForwardInView(headRef, 0.2);
+  const listShown = useForwardInView(listRef, 0.2);
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-12">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h2 className="font-heading text-[40px] leading-[1.15] tracking-[-0.8px] text-foreground">{heading}</h2>
-        <p className="max-w-xl text-base text-muted">{description}</p>
-      </div>
+      <motion.div
+        ref={headRef}
+        initial="hidden"
+        animate={headShown ? "visible" : "hidden"}
+        variants={stagger}
+        className="flex flex-col items-center gap-4 text-center"
+      >
+        <motion.h2
+          variants={fadeUp}
+          className="font-heading text-[40px] leading-[1.15] tracking-[-0.8px] text-foreground"
+        >
+          {heading}
+        </motion.h2>
+        {/* div, not p: the CMS description is rich text and may contain its own paragraphs */}
+        <motion.div variants={fadeUp} className="max-w-xl text-base text-muted">
+          <RichText html={description} />
+        </motion.div>
+      </motion.div>
 
-      <div className="flex flex-col gap-3">
+      <motion.div
+        ref={listRef}
+        initial="hidden"
+        animate={listShown ? "visible" : "hidden"}
+        variants={stagger}
+        className="flex flex-col gap-3"
+      >
         {items.map((item, i) => {
           const open = i === openIndex;
           return (
-            <div key={item.question} className="rounded-[10px] bg-faq-item px-6">
+            <motion.div key={item.question} variants={fadeUp} className="rounded-[10px] bg-faq-item px-6">
               <motion.button
                 type="button"
                 onClick={() => setOpenIndex(open ? -1 : i)}
@@ -62,10 +95,10 @@ export default function Faq({
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 }

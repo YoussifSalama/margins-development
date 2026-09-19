@@ -6,23 +6,21 @@ import Image from "next/image";
 import { spring, zoomVariants, cardTextVariants } from "@/lib/motion";
 
 export default function PostCard({
-  slug,
+  href,
   category,
   title,
   date,
   image,
-  base = "news",
 }: {
-  slug: string;
+  href: string;
   category: string;
   title: string;
   date: string;
   image: string;
-  base?: "news" | "blogs";
 }) {
   return (
     <motion.div initial="rest" whileHover="hover" className="flex flex-col gap-4">
-      <Link href={`/${base}/${slug}`} className="flex flex-col gap-4">
+      <Link href={href} className="flex flex-col gap-4">
         <div className="relative aspect-774/512 overflow-hidden rounded-[10px]">
           <motion.div className="absolute inset-0" variants={zoomVariants} transition={spring}>
             <Image

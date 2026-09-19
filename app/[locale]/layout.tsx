@@ -5,6 +5,8 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { SITE_URL } from "@/lib/site";
+import { getSite } from "@/server/public/core";
 import "../globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -25,6 +27,7 @@ const alexandria = Alexandria({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Margins",
   description: "Margins — real estate development.",
 };
@@ -54,7 +57,8 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <Nav />
           <main className="flex-1">{children}</main>
-          <Footer />
+          {/* the layout can't receive a page's payload, so it reads the same site data (same cache) itself */}
+          <Footer site={await getSite(locale)} />
         </NextIntlClientProvider>
       </body>
     </html>

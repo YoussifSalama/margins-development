@@ -1,25 +1,28 @@
 import { Link } from "@/i18n/navigation";
 
-// SSR-only — page links carry category/limit forward via query params,
-// no client-side page state
+// SSR-only — page links are real URLs, no client-side page state. The category lives
+// in basePath (/media/news). With `defaultLimit`, page 1 and the default page size produce
+// a clean URL, so /media/news and /media/news?page=1&limit=5 aren't two addresses for one page.
 export default function Pagination({
   basePath,
   page,
   totalPages,
-  category,
   limit,
+  defaultLimit,
 }: {
-  basePath: "/news" | "/blogs" | "/projects";
+  basePath: string;
   page: number;
   totalPages: number;
-  category?: string;
   limit: number;
+  defaultLimit?: number;
 }) {
   if (totalPages <= 1) return null;
 
   function queryFor(p: number) {
-    const query: Record<string, string> = { page: String(p), limit: String(limit) };
-    if (category) query.category = category;
+    if (defaultLimit === undefined) return { page: String(p), limit: String(limit) };
+    const query: Record<string, string> = {};
+    if (p > 1) query.page = String(p);
+    if (limit !== defaultLimit) query.limit = String(limit);
     return query;
   }
 

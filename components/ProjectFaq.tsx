@@ -1,18 +1,13 @@
-import { getTranslations } from "next-intl/server";
 import Faq, { type FaqItem } from "@/components/Faq";
+import Gold from "@/components/Gold";
 
-export default async function ProjectFaq({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "projects" });
-  const items = t.raw("faq") as FaqItem[];
-
+// the shared FAQ list (CMS → Content → FAQs) arrives with the page payload
+export default function ProjectFaq({ heading, description, items }: { heading: string; description: string; items: FaqItem[] }) {
+  if (items.length === 0) return null;
   return (
     <section className="bg-background pb-24">
       <div className="container">
-        <Faq
-          heading={t.rich("faqHeading", { gold: (chunks) => <span className="text-accent">{chunks}</span> })}
-          description={t("faqDescription")}
-          items={items}
-        />
+        <Faq heading={<Gold text={heading} />} description={description} items={items} />
       </div>
     </section>
   );

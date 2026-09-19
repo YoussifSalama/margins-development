@@ -1,0 +1,78 @@
+"use server";
+
+import { revalidateTag } from "next/cache";
+import { defineAction, UserError } from "@/server/action";
+import { db, newId } from "@/server/db";
+import { reorder } from "@/server/db/reorder";
+import type { ProjectUnit } from "@/server/db/types";
+import { id, orderedIds } from "@/lib/schemas/common";
+import { projectInput } from "@/lib/schemas/project";
+
+const bust = (slug: string) => {
+  revalidateTag("projects", { expire: 0 });
+  revalidateTag(`project:${slug}`, { expire: 0 });
+};
+
+const orNull = (value: string) => value || null;
+
+// Story blocks, places, amenity ids and units are embedded, so a project save is one
+// atomic document write — a half-saved project is impossible, without transactions.
+export const saveProject = defineAction(projectInput.safeExtend({ id: id.optional() }), async ({ id, ...input }) => {
+  const now = new Date();
+  const existing = id ? await db.projects.findOne({ _id: id }, { projection: { slug: 1, status: 1, units: 1 } }) : null;
+  if (id && !existing) throw new UserError("This project no longer exists.");
+
+  // a unit keeps its id across saves (matched by unit type), so anything that references it stays valid
+  const units: ProjectUnit[] = input.units.map((unit) => ({
+    ...unit,
+    id: existing?.units.find((u) => u.unitTypeId === unit.unitTypeId)?.id ?? newId(),
+    image: orNull(unit.image),
+  }));
+
+  // all-empty overrides are stored as null = "this project just uses the calculator defaults"
+  const { phaseLabel, ...numbers } = input.investment;
+  const hasOverrides = Boolean(phaseLabel.en || phaseLabel.ar) || Object.values(numbers).some((value) => value !== null);
+  const investment = hasOverrides ? { ...numbers, phaseLabel: phaseLabel.en || phaseLabel.ar ? phaseLabel : null } : null;
+
+  const values = {
+    ...input,
+    // a project that is or was live keeps its URL
+    slug: existing && existing.status !== "draft" ? existing.slug : input.slug,
+    coverImage: orNull(input.coverImage),
+    heroMedia: orNull(input.heroMedia),
+    mapImage: orNull(input.mapImage),
+    units,
+    investment,
+    updatedAt: now,
+  };
+
+  if (id) {
+    await db.projects.updateOne({ _id: id }, { $set: values });
+  } else {
+    id = newId();
+    const [last] = await db.projects.find({}, { projection: { position: 1 } }).sort({ position: -1 }).limit(1).toArray();
+    await db.projects.insertOne({ _id: id, ...values, position: (last?.position ?? -1) + 1, createdAt: now });
+  }
+
+  bust(values.slug);
+  revalidateTag("calculator", { expire: 0 }); // unit prices and overrides feed the calculator
+  return { id, slug: values.slug };
+});
+
+export const deleteProject = defineAction(id, async (projectId) => {
+  const deleted = await db.projects.findOneAndDelete({ _id: projectId }, { projection: { slug: 1 } });
+  // What foreign keys did in SQL: cascade out of the Home showcase, null out old leads.
+  await Promise.all([
+    db.homeShowcase.updateOne({ _id: "homeShowcase" }, { $pull: { projectIds: projectId } }),
+    db.calculator.updateOne({ _id: "calculator" }, { $pull: { projectIds: projectId } }),
+    db.leads.updateMany({ projectId }, { $set: { projectId: null } }),
+  ]);
+  if (deleted) bust(deleted.slug);
+  revalidateTag("page:home", { expire: 0 });
+  revalidateTag("calculator", { expire: 0 });
+});
+
+export const reorderProjects = defineAction(orderedIds, async (ids) => {
+  await reorder(db.projects, ids);
+  revalidateTag("projects", { expire: 0 });
+});

@@ -61,3 +61,10 @@ export const heroEnterVariants: Variants = {
 };
 
 export const heroEnterDelay = 0.3;
+
+// fade-up that settles with a bounce — for children of a StaggerReveal (or any
+// hidden/visible parent). hidden snaps back instantly: resets happen off-screen.
+export const fadeUpBounce: Variants = {
+  hidden: { opacity: 0, y: 24, transition: { duration: 0 } },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", duration: 0.9, bounce: 0.45 } },
+};

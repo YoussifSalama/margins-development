@@ -112,7 +112,7 @@ body {
 
 @media (max-width: 750px) {
   .container {
-    max-width: 98%;
+    max-width: 95%;
   }
 }
 
@@ -133,4 +133,68 @@ body {
   to {
     transform: translateY(0);
   }
+}
+
+/* Image frames inside a RisingBackdrop section: held at half width until the
+   backdrop is 20% up (it flips data-revealed on the section), then wipe open.
+   clip-path, not width, so the text beside them doesn't reflow. No attribute
+   (no JS / card used elsewhere) = fully visible. */
+[data-revealed="false"] .reveal-frame {
+  clip-path: inset(0 50% 0 0 round 1rem);
+}
+[dir="rtl"] [data-revealed="false"] .reveal-frame {
+  clip-path: inset(0 0 0 50% round 1rem);
+}
+/* second pattern: cut equally from both sides, opens outward from the center */
+[data-revealed="false"] .reveal-frame.reveal-center {
+  clip-path: inset(0 25% round 1rem);
+}
+[data-revealed="true"] .reveal-frame {
+  clip-path: inset(0 round 1rem);
+  transition: clip-path 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* CMS rich text (components/RichText.tsx): only the tags the editor can produce */
+.rich-text > * + * {
+  margin-top: 0.85em;
+}
+.rich-text ul,
+.rich-text ol {
+  padding-inline-start: 1.4em;
+}
+.rich-text ul {
+  list-style: disc;
+}
+.rich-text ol {
+  list-style: decimal;
+}
+.rich-text a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rich-text a:hover {
+  color: var(--accent);
+}
+.rich-text h2 {
+  font-family: var(--font-heading);
+  font-size: 1.875rem;
+  line-height: 1.2;
+  color: var(--dark);
+  margin-top: 2.5rem;
+  scroll-margin-top: 6rem;
+}
+.rich-text h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+}
+.rich-text blockquote {
+  border-inline-start: 3px solid var(--accent);
+  padding-inline-start: 1rem;
+  font-style: italic;
+}
+.rich-text img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  height: auto;
 }

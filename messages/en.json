@@ -1,4 +1,102 @@
 {
+  "calculator": {
+    "empty": "Our investment figures are being updated. Please check back soon.",
+    "eyebrow": "Investment Potential",
+    "headingLine1": "Estimate Your",
+    "headingLine2": "Return",
+    "subtitle": "Based on current average assumptions for each project and unit type. Figures are illustrative estimates, not guarantees.",
+    "steps": {
+      "destination": "Destination",
+      "unitType": "Unit Type",
+      "horizon": "Horizon",
+      "potential": "Potential",
+      "request": "Request"
+    },
+    "destinationStep": {
+      "heading": "Choose a destination",
+      "select": "Select project"
+    },
+    "unitTypeStep": {
+      "heading": "Select a unit type",
+      "avgPrice": "Avg price",
+      "estGrossYield": "Est. gross yield"
+    },
+    "horizonStep": {
+      "heading": "Set your investment horizon",
+      "outlook": "{years}-Year Outlook · EGP",
+      "estAnnualReturn": "Est. annual return",
+      "projectedValue": "Projected value",
+      "rentalNote": "Rental income begins month {month} after booking",
+      "viewPotential": "View Potential"
+    },
+    "requestStep": {
+      "heading": "Request a tailored illustration",
+      "back": "Back to results",
+      "summaryHeading": "Your selection",
+      "destination": "Destination",
+      "unitType": "Unit type",
+      "horizon": "Horizon",
+      "years": "{years} years",
+      "avgUnitPrice": "Avg. unit price",
+      "projectedValue": "Projected value",
+      "roi": "Total ROI",
+      "avgAnnualReturn": "Avg. annual return (est.)",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Anything we should know — budget, timing, preferred floor…",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "error": "We couldn't send your request. Please check the fields and try again.",
+      "sentHeading": "Request received",
+      "sentBody": "Our team will prepare an illustration for your selection and get back to you shortly.",
+      "startOver": "Start over"
+    },
+    "potentialStep": {
+      "editSelection": "Edit selection",
+      "summary": "{destination} · {unitType} · {years}-Year Horizon",
+      "avgAnnualReturn": "Estimated Average Annual Return",
+      "description": "Based on current average assumptions for the selected project and unit type. Rental income is modeled from the expected rental-start date (month {month} after booking).",
+      "avgUnitPrice": "Average unit price",
+      "netRentalYield": "Est. net rental yield",
+      "cumulativeNetRent": "Cumulative net rent",
+      "projectedValueHorizon": "Projected value ({years}y)",
+      "timeline": {
+        "heading": "Investment Timeline",
+        "calculationDate": "Calculation date",
+        "expectedDelivery": "Expected delivery",
+        "rentalStarts": "Rental income starts",
+        "horizonEnd": "Horizon end",
+        "month": "Month {month}"
+      },
+      "breakdown": {
+        "heading": "Return Breakdown",
+        "rentalIncome": "Rental income",
+        "capitalAppreciation": "Capital appreciation",
+        "totalGrossReturn": "Total gross return",
+        "roi": "Holding-period ROI"
+      },
+      "assumptions": {
+        "toggle": "How this is calculated",
+        "assumptionSet": "Assumption set",
+        "effectiveDate": "Effective date",
+        "weightingMethod": "Weighting method",
+        "weightingMethodValue": "Value-weighted aggregate",
+        "occupancy": "Occupancy assumption",
+        "appreciation": "Annual appreciation",
+        "opCosts": "Annual op. costs",
+        "grossRent": "Annual gross rent",
+        "currency": "Currency",
+        "currencyValue": "EGP",
+        "acquisitionCosts": "Acquisition/exit costs",
+        "acquisitionCostsValue": "Excluded — see disclaimer"
+      },
+      "requestCta": "Request a tailored illustration",
+      "startOver": "Start over",
+      "disclaimer": "This calculator provides an illustrative estimate based on current average assumptions for the selected project and unit type. It does not represent a guaranteed return, rental commitment, valuation, offer, or financial, legal, or tax advice. Actual prices, delivery dates, occupancy, rental income, operating costs, market values, and returns may differ. Property appreciation is unrealized until a sale occurs. Effective date: {date}."
+    }
+  },
   "notFound": {
     "eyebrow": "404",
     "heading": "This Address <gold>Doesn't Exist</gold>",
@@ -11,12 +109,15 @@
     "home": "Home",
     "about": "About",
     "projects": "Projects",
-    "blogs": "Blogs",
-    "news": "News",
+    "media": "Media Center",
     "careers": "Careers",
+    "calculator": "Calculator",
     "contactCta": "Contact Us"
   },
   "footer": {
+    "subscribing": "Joining…",
+    "subscribed": "You're on the list — thank you.",
+    "subscribeError": "We couldn't add that address. Please check it and try again.",
     "cta": "Ready to invest with Margins Development?",
     "contactCta": "Contact Us",
     "aboutCta": "About Us",
@@ -29,7 +130,7 @@
     "columns": {
       "navigation": {
         "title": "Navigation",
-        "links": ["Home", "Projects", "Blogs", "News", "Careers"]
+        "links": ["Home", "Projects", "Media Center", "Careers", "Calculator"]
       },
       "information": {
         "title": "Information",
@@ -76,6 +177,8 @@
       }
     },
     "newsEvents": {
+      "previous": "Previous",
+      "next": "Next",
       "headingLine1": "Our Latest",
       "headingLine2": "News & Events",
       "description": "Everything you need to know—explained simply to help you make informed real estate decisions."
@@ -286,6 +389,30 @@
     ]
   },
   "careers": {
+    "applyForm": {
+      "heading": "Apply for this job",
+      "intro": "You're applying for {job}. Attach your CV and we'll get back to you.",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "cv": "Your CV",
+      "cvPlaceholder": "Choose a file…",
+      "cvHint": "PDF, DOC or DOCX — up to 5 MB.",
+      "note": "Cover note (optional)",
+      "notePlaceholder": "Tell us briefly why you're a good fit…",
+      "submit": "Send application",
+      "uploading": "Uploading CV…",
+      "sending": "Sending…",
+      "privacy": "Your details and CV are only used to review this application.",
+      "sentHeading": "Application received",
+      "sentBody": "Thank you for applying for {job}. Our team will review your CV and contact you if there's a match.",
+      "errorNoFile": "Please attach your CV.",
+      "errorType": "The CV must be a PDF, DOC or DOCX file.",
+      "errorSize": "The CV must be 5 MB or smaller.",
+      "errorRate": "Too many attempts. Please try again in a few minutes.",
+      "errorUpload": "We couldn't upload your CV. Please try again.",
+      "errorSubmit": "We couldn't send your application. Please check the fields and try again."
+    },
     "heroTitle": "We hired <gold>people</gold> who are Always <gold>Passionate</gold> about what they <gold>do</gold>",
     "heroDescription": "If you are creative in one of the vital jobs, there is an opportunity to work within a professional framework.",
     "discoverDescription": "What sets us apart is what brings us together – a shared passion for solving business challenges through strategy, design, and engineering. We are the sum total of our team, their unique perspectives, capabilities, and our ability to collaborate from ideation to deployment.",
@@ -321,6 +448,11 @@
     }
   },
   "contact": {
+    "formSending": "Sending…",
+    "formError": "We couldn't send your message. Please check the fields and try again.",
+    "formSentHeading": "Message received",
+    "formSentBody": "Thank you — our team will get back to you within one business day.",
+    "formSendAnother": "Send another message",
     "heroTitle": "Contact Us",
     "heroDescription": "Do you have any questions!",
     "formTitle": "Let's Build\nIntelligent Things",
@@ -351,12 +483,10 @@
     "send": "Send"
   },
   "posts": {
-    "heroTitleNews": "Margins News",
-    "heroTitleBlogs": "Margins Blogs",
+    "heroTitle": "Media Center",
     "heroDescription": "Explore Our News, Events & Blogs",
-    "tabs": { "all": "All News", "events": "Events", "blogs": "Blogs" },
-    "backToNews": "Back to News",
-    "backToBlogs": "Back to Blogs",
+    "tabs": { "all": "All" },
+    "backToCategory": "Back to {category}",
     "meta": {
       "date": "Publication Date",
       "category": "Category",
@@ -365,8 +495,7 @@
     },
     "shareTo": "share to",
     "linkCopied": "Copied!",
-    "relatedNews": "Related <gold>News</gold>",
-    "relatedBlogs": "Related <gold>Blogs</gold>",
+    "related": "Related <gold>Posts</gold>",
     "tableOfContents": "Table of Contents"
   }
 }

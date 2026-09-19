@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import Button from "@/components/Button";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { spring, enterSpring, lightTextVariants, underlineVariants, navEnterVariants } from "@/lib/motion";
@@ -12,24 +12,51 @@ import { useSplashDone } from "@/hooks/useSplashDone";
 export default function Nav() {
   const t = useTranslations("nav");
   const ready = useSplashDone();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrollPastHero, setScrollPastHero] = useState(false);
+  // calculator page has no dark hero to overlay — nav stays blurred from the start
+  const scrolled = pathname === "/calculator" || scrollPastHero;
+
+  useEffect(() => {
+    // ponytail: "hero" = first <section> in <main> — every page opens on one
+    const heroEl = document.querySelector("main section") as HTMLElement | null;
+
+    const onScroll = () => {
+      const heroHeight = heroEl?.offsetHeight ?? window.innerHeight;
+      setScrollPastHero(window.scrollY > heroHeight * 0.4);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
   const links = [
     { href: "/", label: t("home") },
     { href: "/about", label: t("about") },
     { href: "/projects", label: t("projects") },
-    { href: "/blogs", label: t("blogs") },
-    { href: "/news", label: t("news") },
+    { href: "/media", label: t("media") },
     { href: "/careers", label: t("careers") },
+    { href: "/calculator", label: t("calculator") },
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
+        scrolled ? "bg-dark/60 shadow-lg shadow-black/10 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
       <motion.nav
         initial="hidden"
         animate={ready ? "visible" : "hidden"}
         variants={navEnterVariants}
         transition={enterSpring}
-        className="mx-auto flex max-w-[1720px] items-center justify-between rounded-full px-5 py-3"
+        className="container flex items-center justify-between py-3"
       >
         <Link href="/" className="text-lg font-semibold tracking-tight text-white">
           {t("brand")}

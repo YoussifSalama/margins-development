@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Button from "@/components/Button";
 import MediaBackground from "@/components/MediaBackground";
 import { enterSpring, heroEnterVariants, heroEnterDelay } from "@/lib/motion";
 import { useSplashDone } from "@/hooks/useSplashDone";
+import RichText from "@/components/RichText";
+import Gold from "@/components/Gold";
 
 export default function HomeHero({
   title,
@@ -13,12 +15,15 @@ export default function HomeHero({
   ctaProjects,
   ctaAbout,
   media,
+  children,
 }: {
   title: string;
   description: string;
-  ctaProjects: string;
-  ctaAbout: string;
+  ctaProjects?: string;
+  ctaAbout?: string;
   media: string;
+  // replaces the CTA row (inner pages pass their breadcrumb here)
+  children?: ReactNode;
 }) {
   const ready = useSplashDone();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,17 +46,19 @@ export default function HomeHero({
             className="flex h-full flex-col items-center justify-end gap-6 px-6 pb-20 text-center text-white"
           >
             <h1 className="font-heading text-[clamp(2.5rem,4vw+2rem,3.5rem)] leading-[1.05] tracking-[2px]">
-              {title}
+              <Gold text={title} />
             </h1>
-            <p className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80">{description}</p>
-            <div className="mt-4 flex items-center gap-4">
-              <Button href="/projects" variant="solid">
-                {ctaProjects}
-              </Button>
-              <Button href="/about" variant="ghost">
-                {ctaAbout}
-              </Button>
-            </div>
+            <RichText html={description} className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80" />
+            {children ?? (
+              <div className="mt-4 flex items-center gap-4">
+                <Button href="/projects" variant="solid">
+                  {ctaProjects}
+                </Button>
+                <Button href="/about" variant="ghost">
+                  {ctaAbout}
+                </Button>
+              </div>
+            )}
           </motion.div>
         </MediaBackground>
       </motion.section>

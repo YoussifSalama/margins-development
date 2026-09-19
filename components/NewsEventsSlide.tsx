@@ -1,9 +1,6 @@
 import NewsEventCard from "@/components/NewsEventCard";
-import type { Post } from "@/lib/posts";
+import { postHref as href, type PostCard as Post } from "@/lib/posts";
 
-function href(post: Post) {
-  return `/${post.category === "Blogs" ? "blogs" : "news"}/${post.slug}`;
-}
 
 // featured + left mini stack the left column; the other two fill the right column
 export default function NewsEventsSlide({ posts }: { posts: Post[] }) {
@@ -15,7 +12,7 @@ export default function NewsEventsSlide({ posts }: { posts: Post[] }) {
         {featured && (
           <NewsEventCard
             href={href(featured)}
-            eyebrow={featured.category}
+            eyebrow={featured.categoryName}
             title={featured.title}
             description={featured.excerpt}
             image={featured.image}
@@ -25,11 +22,12 @@ export default function NewsEventsSlide({ posts }: { posts: Post[] }) {
         {leftMini && (
           <NewsEventCard
             href={href(leftMini)}
-            eyebrow={leftMini.category}
+            eyebrow={leftMini.categoryName}
             title={leftMini.title}
             description={leftMini.excerpt}
             image={leftMini.image}
             variant="horizontal-sm"
+            reveal="center"
           />
         )}
       </div>
@@ -39,11 +37,12 @@ export default function NewsEventsSlide({ posts }: { posts: Post[] }) {
           <NewsEventCard
             key={post.slug}
             href={href(post)}
-            eyebrow={post.category}
+            eyebrow={post.categoryName}
             title={post.title}
             description={post.excerpt}
             image={post.image}
             variant="horizontal-lg"
+            reveal="center"
           />
         ))}
       </div>

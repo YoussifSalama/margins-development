@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import JobRow from "@/components/JobRow";
-import type { Role } from "@/lib/careers";
+import Reveal from "@/components/Reveal";
+import type { JobCard as Role } from "@/lib/content";
 
 const PAGE_SIZE = 4;
 
@@ -16,14 +17,15 @@ export default function JobList({ roles }: { roles: Role[] }) {
     <div>
       <div className="border-t border-white/10">
         {pageRoles.map((role, i) => (
-          <JobRow
-            key={role.slug}
-            index={start + i + 1}
-            slug={role.slug}
-            title={role.title}
-            openings={role.openings}
-            summary={role.summary}
-          />
+          <Reveal key={role.slug} delay={i * 0.08} amount={0.4}>
+            <JobRow
+              index={start + i + 1}
+              slug={role.slug}
+              title={role.title}
+              openings={role.openings}
+              summary={role.summary}
+            />
+          </Reveal>
         ))}
       </div>
 
@@ -36,7 +38,9 @@ export default function JobList({ roles }: { roles: Role[] }) {
               onClick={() => setPage(p)}
               aria-current={p === page}
               className={`flex size-10 items-center justify-center rounded-full text-sm transition-colors ${
-                p === page ? "bg-accent text-white" : "text-white/60 hover:text-white"
+                p === page
+                  ? "bg-accent text-white"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               {p}

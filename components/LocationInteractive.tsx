@@ -24,6 +24,7 @@ export default function LocationInteractive({
   features,
   openMapHref,
   openMapLabel,
+  mapImage,
 }: {
   locationLine1: string;
   locationLine2: string;
@@ -35,9 +36,10 @@ export default function LocationInteractive({
   features: Feature[];
   openMapHref: string;
   openMapLabel: string;
+  mapImage?: string;
 }) {
   const [active, setActive] = useState(0);
-  const activeCategory = categories[active];
+  const activeCategory = categories[active] ?? categories[0];
 
   return (
     <div className="grid gap-16 lg:grid-cols-2">
@@ -75,9 +77,10 @@ export default function LocationInteractive({
         </div>
 
         <div className="relative aspect-919/315 w-full overflow-hidden rounded-lg">
-          <Image src="/pages/projects/location/map.png" alt="" fill sizes="920px" className="object-cover" />
+          <Image src={mapImage || "/pages/projects/location/map.png"} alt="" fill sizes="920px" className="object-cover" />
         </div>
 
+        {activeCategory && (
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory.key}
@@ -102,6 +105,7 @@ export default function LocationInteractive({
             ))}
           </motion.div>
         </AnimatePresence>
+        )}
 
         <Button
           as="anchor"

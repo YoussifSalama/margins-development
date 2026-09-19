@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { FiMapPin } from "react-icons/fi";
@@ -52,7 +52,13 @@ function ProjectRevealCard({
 
 const DIRECTION_CYCLE = ["btt", "ltr", "rtl"] as const;
 
-export default function ProjectsShowcase({ projects }: { projects: ShowcaseProject[] }) {
+export default function ProjectsShowcase({
+  projects,
+  children,
+}: {
+  projects: ShowcaseProject[];
+  children?: ReactNode;
+}) {
   return (
     <div className="flex flex-col">
       {projects.map((project, i) => (
@@ -66,6 +72,15 @@ export default function ProjectsShowcase({ projects }: { projects: ShowcaseProje
       {/* guarantees the last card's own dwell range has real scroll room after it,
          instead of borrowing however much the next page section happens to provide */}
       <div className="h-dvh w-full" />
+      {/* children = the final card, always bottom-to-top. A btt reveal (y 100% → 0
+         over 100dvh of scroll) is exactly what in-flow content does by itself, so
+         no transform: the spacer above is its scroll slot (last project stays
+         pinned under it), and it may be taller than the viewport. */}
+      {children && (
+        <div className="relative" style={{ zIndex: 20 + projects.length }}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }

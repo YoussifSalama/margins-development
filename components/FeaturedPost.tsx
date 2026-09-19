@@ -6,25 +6,23 @@ import Image from "next/image";
 import { spring, zoomVariants, accentTextVariants } from "@/lib/motion";
 
 export default function FeaturedPost({
-  slug,
+  href,
   category,
   title,
   excerpt,
   date,
   image,
-  base = "news",
 }: {
-  slug: string;
+  href: string;
   category: string;
   title: string;
   excerpt: string;
   date: string;
   image: string;
-  base?: "news" | "blogs";
 }) {
   return (
     <motion.div initial="rest" whileHover="hover">
-      <Link href={`/${base}/${slug}`} className="flex flex-col items-center gap-8 lg:flex-row">
+      <Link href={href} className="flex flex-col items-center gap-8 lg:flex-row">
         <div className="relative aspect-770/467 w-full shrink-0 overflow-hidden rounded-2xl lg:w-[48%]">
           <motion.div className="absolute inset-0" variants={zoomVariants} transition={spring}>
             <Image

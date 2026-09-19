@@ -1,79 +1,78 @@
 import { useTranslations } from "next-intl";
-import type { Post, Category } from "@/lib/posts";
+import { mediaHref, postHref, type PostCard as PostCardData, type PostCategory } from "@/lib/posts";
 import FeaturedPost from "@/components/FeaturedPost";
 import PostCard from "@/components/PostCard";
-import CategoryTabs from "@/components/CategoryTabs";
+import CategoryTabs, { DEFAULT_LIMIT } from "@/components/CategoryTabs";
 import Pagination from "@/components/Pagination";
+import Reveal from "@/components/Reveal";
 
+// Filtering, the pinned main item and paging are all done server-side (getMediaPage);
+// this only lays out what it is given.
 export default function PostsListing({
-  posts,
-  base,
+  categories,
   category,
-  page,
-  limit,
+  featured,
+  posts,
+  pagination,
 }: {
-  posts: Post[];
-  base: "news" | "blogs";
-  category?: Category;
-  page: number;
-  limit: number;
+  // one tab per category, in this order — the list is data, so new categories just appear
+  categories: PostCategory[];
+  category?: string;
+  featured: PostCardData | null;
+  posts: PostCardData[];
+  pagination: { page: number; totalPages: number; limit: number };
 }) {
   const t = useTranslations("posts");
-  const basePath = `/${base}` as const;
-
-  const filtered = category ? posts.filter((p) => p.category === category) : posts;
-  const totalPages = Math.max(1, Math.ceil(filtered.length / limit));
-  const safePage = Math.min(Math.max(page, 1), totalPages);
-  const pageItems = filtered.slice((safePage - 1) * limit, safePage * limit);
-
-  const featured = safePage === 1 ? pageItems[0] : undefined;
-  const rest = safePage === 1 ? pageItems.slice(1) : pageItems;
+  // the category is part of the path (/media/news), not a query string, so each tab is its own indexable page
+  const basePath = mediaHref(category);
+  const { page: safePage, totalPages, limit } = pagination;
+  const rest = posts;
 
   return (
     <div className="rounded-t-2xl bg-background px-6 pt-8 pb-24">
       <div className="container">
         <CategoryTabs
-          basePath={basePath}
           active={category}
           limit={limit}
-          tabs={[
-            { label: t("tabs.all") },
-            { label: t("tabs.events"), category: "Events" },
-            { label: t("tabs.blogs"), category: "Blogs" },
-          ]}
+          tabs={[{ label: t("tabs.all"), href: mediaHref() }, ...categories.map((c) => ({ label: c.name, category: c.key, href: mediaHref(c.key) }))]}
         />
 
         {featured && (
-          <div className="mt-10">
+          <Reveal className="mt-10">
             <FeaturedPost
-              slug={featured.slug}
-              category={featured.category}
+              href={postHref(featured)}
+              category={featured.categoryName}
               title={featured.title}
               excerpt={featured.excerpt}
               date={featured.date}
               image={featured.image}
-              base={base}
             />
-          </div>
+          </Reveal>
         )}
 
         {rest.length > 0 && (
           <div className="mt-16 grid grid-cols-1 gap-x-13.5 gap-y-16 lg:grid-cols-2">
-            {rest.map((post) => (
-              <PostCard
-                key={post.slug}
-                slug={post.slug}
-                category={post.category}
-                title={post.title}
-                date={post.date}
-                image={post.image}
-                base={base}
-              />
+            {rest.map((post, i) => (
+              <Reveal key={post.slug} delay={(i % 2) * 0.12}>
+                <PostCard
+                  href={postHref(post)}
+                  category={post.categoryName}
+                  title={post.title}
+                  date={post.date}
+                  image={post.image}
+                />
+              </Reveal>
             ))}
           </div>
         )}
 
-        <Pagination basePath={basePath} page={safePage} totalPages={totalPages} category={category} limit={limit} />
+        <Pagination
+          basePath={basePath}
+          page={safePage}
+          totalPages={totalPages}
+          limit={limit}
+          defaultLimit={DEFAULT_LIMIT}
+        />
       </div>
     </div>
   );

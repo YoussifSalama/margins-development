@@ -10,6 +10,7 @@ export default function NewsEventCard({
   description,
   image,
   variant,
+  reveal = "side",
 }: {
   href: string;
   eyebrow: string;
@@ -17,11 +18,15 @@ export default function NewsEventCard({
   description: string;
   image: string;
   variant: Variant;
+  // image entrance inside a RisingBackdrop section (globals.css): open from one side, or from the center outward
+  reveal?: "side" | "center";
 }) {
+  const frame = reveal === "center" ? "reveal-frame reveal-center" : "reveal-frame";
+
   if (variant === "featured") {
     return (
       <Link href={href} className="group flex flex-col gap-6">
-        <div className="relative aspect-[987/456] w-full overflow-hidden rounded-2xl">
+        <div className={`${frame} relative aspect-[987/456] w-full overflow-hidden rounded-2xl`}>
           <Image
             src={image}
             alt=""
@@ -44,7 +49,7 @@ export default function NewsEventCard({
   return (
     <Link href={href} className="group flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
       <div
-        className={`relative w-full shrink-0 overflow-hidden rounded-2xl ${
+        className={`${frame} relative w-full shrink-0 overflow-hidden rounded-2xl ${
           compact ? "aspect-[327/206] sm:w-1/3" : "aspect-[511/414] sm:w-[47%]"
         }`}
       >

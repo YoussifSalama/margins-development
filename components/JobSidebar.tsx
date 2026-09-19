@@ -1,5 +1,3 @@
-import { Link } from "@/i18n/navigation";
-
 export default function JobSidebar({
   facts,
   applyLabel,
@@ -17,12 +15,12 @@ export default function JobSidebar({
           </div>
         ))}
       </div>
-      <Link
-        href="/contact"
+      <a
+        href="#apply"
         className="mt-10 flex min-h-18.25 items-center justify-center rounded-full bg-accent px-4 py-3 text-center text-[18px] font-semibold tracking-wide text-[#121212] uppercase hover:opacity-90"
       >
         {applyLabel}
-      </Link>
+      </a>
     </div>
   );
 }

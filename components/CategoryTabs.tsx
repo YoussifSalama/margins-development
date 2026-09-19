@@ -1,16 +1,16 @@
 import { Link } from "@/i18n/navigation";
 
-type Tab = { label: string; category?: string };
+export const DEFAULT_LIMIT = 5;
 
-// SSR-only — every tab is a real link carrying category/page/limit query
-// params, no client-side filter state
+type Tab = { label: string; category?: string; href: string };
+
+// SSR-only — every tab is a real link to its own path (/media, /media/news…),
+// no client-side filter state and no ?category= query for crawlers to dedupe
 export default function CategoryTabs({
-  basePath,
   active,
   limit,
   tabs,
 }: {
-  basePath: "/news" | "/blogs";
   active?: string;
   limit: number;
   tabs: Tab[];
@@ -19,13 +19,13 @@ export default function CategoryTabs({
     <div className="flex flex-wrap justify-center gap-3">
       {tabs.map((tab) => {
         const isActive = tab.category === active || (!tab.category && !active);
-        const query: Record<string, string> = { page: "1", limit: String(limit) };
-        if (tab.category) query.category = tab.category;
+        // only a non-default page size is worth a query string
+        const query = limit === DEFAULT_LIMIT ? undefined : { limit: String(limit) };
 
         return (
           <Link
             key={tab.label}
-            href={{ pathname: basePath, query }}
+            href={{ pathname: tab.href, query }}
             className={`flex h-13.75 items-center justify-center rounded-full px-6 text-sm ${
               isActive
                 ? "bg-accent font-semibold text-white"
