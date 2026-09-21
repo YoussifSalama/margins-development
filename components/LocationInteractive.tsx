@@ -77,7 +77,11 @@ export default function LocationInteractive({
         </div>
 
         <div className="relative aspect-919/315 w-full overflow-hidden rounded-lg">
-          <Image src={mapImage || "/pages/projects/location/map.png"} alt="" fill sizes="920px" className="object-cover" />
+          {mapImage && /\.(mp4|webm)(\?|$)/i.test(mapImage) ? (
+            <video src={mapImage} autoPlay muted loop playsInline className="absolute inset-0 size-full object-cover" />
+          ) : (
+            <Image src={mapImage || "/pages/projects/location/map.png"} alt="" fill sizes="920px" className="object-cover" />
+          )}
         </div>
 
         {activeCategory && (

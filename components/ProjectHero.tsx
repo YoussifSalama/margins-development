@@ -23,7 +23,11 @@ export default function ProjectHero({
 
   return (
     <section className="relative isolate flex min-h-125 items-end overflow-hidden bg-dark sm:min-h-160 lg:min-h-242">
-      <Image src={image} alt={name} fill sizes="100vw" className="-z-10 object-cover" priority />
+      {/\.(mp4|webm)(\?|$)/i.test(image) ? (
+        <video src={image} autoPlay muted loop playsInline className="absolute inset-0 -z-10 size-full object-cover" />
+      ) : (
+        <Image src={image} alt={name} fill sizes="100vw" className="-z-10 object-cover" priority />
+      )}
 
       <motion.div
         initial="hidden"

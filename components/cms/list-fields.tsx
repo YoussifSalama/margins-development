@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { MediaPreview, uploadMedia } from "./media-field";
 import { FieldError, Legend } from "./fields";
@@ -51,14 +52,25 @@ export function MediaListField({ name, label, hint, help }: { name: string; labe
   const { control, setValue } = useFormContext();
   const urls = (useWatch({ control, name }) as string[] | undefined) ?? [];
   const input = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState<number | null>(null);
 
   const add = async (files: FileList | null) => {
     if (!files?.length) return;
-    setUploading(true);
-    const uploaded = (await Promise.all([...files].map(uploadMedia))).filter((url): url is string => Boolean(url));
+    const perFile = new Array(files.length).fill(0);
+    const report = () => setProgress(Math.round(perFile.reduce((sum, pct) => sum + pct, 0) / perFile.length));
+    report();
+    const uploaded = (
+      await Promise.all(
+        [...files].map((file, i) =>
+          uploadMedia(file, (pct) => {
+            perFile[i] = pct;
+            report();
+          }),
+        ),
+      )
+    ).filter((url): url is string => Boolean(url));
     setValue(name, [...urls, ...uploaded], { shouldDirty: true });
-    setUploading(false);
+    setProgress(null);
     if (input.current) input.current.value = "";
   };
 
@@ -79,10 +91,11 @@ export function MediaListField({ name, label, hint, help }: { name: string; labe
             </button>
           </div>
         ))}
-        <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => add(e.target.files)} />
-        <Button type="button" variant="outline" className="h-24 w-36 flex-col" disabled={uploading} onClick={() => input.current?.click()}>
+        <input ref={input} type="file" accept="image/*,video/mp4" multiple hidden onChange={(e) => add(e.target.files)} />
+        <Button type="button" variant="outline" className="h-24 w-36 flex-col gap-2" disabled={progress !== null} onClick={() => input.current?.click()}>
           <Upload className="size-4" />
-          {uploading ? "Uploading…" : "Add images"}
+          {progress !== null ? `${progress}%` : "Add images"}
+          {progress !== null && <Progress value={progress} className="h-1 w-20" />}
         </Button>
       </div>
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}

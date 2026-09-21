@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Controller, get, useFormContext, type FieldValues, type UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import type { ActionResult } from "@/lib/schemas/common";
@@ -10,6 +11,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { fromLocalInput, toLocalInput } from "@/lib/dates";
 import { fieldHelp } from "@/lib/cms/help";
 import HelpHint from "./help-hint";
+
+/** Warns on tab close/refresh while a form has unsaved changes. */
+export function useUnsavedChangesWarning(isDirty: boolean) {
+  useEffect(() => {
+    if (!isDirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [isDirty]);
+}
 
 export function FieldError({ name }: { name: string }) {
   const { formState } = useFormContext();

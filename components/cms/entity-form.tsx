@@ -14,7 +14,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Field, handleResult } from "./fields";
+import { Field, handleResult, useUnsavedChangesWarning } from "./fields";
 
 /** Create/edit form for entities with their own page: sticky save bar, delete, redirect after create. */
 export default function EntityForm<Values extends FieldValues>({
@@ -40,6 +40,7 @@ export default function EntityForm<Values extends FieldValues>({
   const [pending, startTransition] = useTransition();
   const [confirming, setConfirming] = useState(false);
   const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues: values as DefaultValues<Values> });
+  useUnsavedChangesWarning(form.formState.isDirty);
 
   const submit = form.handleSubmit(
     (input) =>

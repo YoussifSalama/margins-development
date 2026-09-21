@@ -9,7 +9,7 @@ import { getSection } from "@/lib/cms/pages";
 import { saveSection } from "@/server/pages/actions";
 import { Button } from "@/components/ui/button";
 import { SectionCard } from "./page-shell";
-import { BilingualField, DateField, Field, FieldError, Legend, NumberField, SelectField, handleResult } from "./fields";
+import { BilingualField, DateField, Field, FieldError, Legend, NumberField, SelectField, handleResult, useUnsavedChangesWarning } from "./fields";
 import { fieldHelp } from "@/lib/cms/help";
 import HelpHint from "./help-hint";
 import { BilingualListField, MediaListField } from "./list-fields";
@@ -94,6 +94,7 @@ export default function SectionForm({ page, section, values, readOnly, dynamic =
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const form = useForm({ resolver: zodResolver(buildSchema(def.fields)), defaultValues: values });
+  useUnsavedChangesWarning(form.formState.isDirty);
 
   if (def.fields.length === 0) return null;
 

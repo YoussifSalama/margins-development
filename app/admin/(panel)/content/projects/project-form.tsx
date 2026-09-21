@@ -136,7 +136,7 @@ export default function ProjectForm({
               <NumberField name="lat" label="Latitude" nullable />
               <NumberField name="lng" label="Longitude" nullable />
             </div>
-            <MediaField name="mapImage" label="Map image" />
+            <MediaField name="mapImage" label="Map image or video" accept="image/*,video/mp4" />
           </SectionCard>
           <SectionCard title="Nearby places" hint="Grouped into the Transport / Education / Shopping / Food tabs on the project page.">
             <Repeater name="places" itemLabel="Place" empty={{ category: "transport", name: emptyLocalized, distanceKm: 0 }}>
