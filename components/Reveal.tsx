@@ -20,7 +20,8 @@ export default function Reveal({
   className?: string;
   delay?: number;
   amount?: number;
-  /** if set, the element also scales down from this value to 1 as it enters (e.g. a media card that starts oversized and settles into its frame) */
+  /** if set, replaces the fade-up entirely with a scale-down-to-1 (no opacity/y) — for a
+   * media card that starts oversized and settles into its frame */
   scale?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,10 +33,11 @@ export default function Reveal({
       initial="hidden"
       animate={shown ? "visible" : "hidden"}
       // the variant carries its own transition, so the delay has to live inside it
-      variants={{
-        hidden: scale === undefined ? fadeUpBounce.hidden : { ...fadeUpBounce.hidden, scale },
-        visible: { opacity: 1, y: 0, ...(scale === undefined ? {} : { scale: 1 }), transition: { type: "spring", duration: 0.9, bounce: 0.45, delay } },
-      }}
+      variants={
+        scale === undefined
+          ? { hidden: fadeUpBounce.hidden, visible: { opacity: 1, y: 0, transition: { type: "spring", duration: 0.9, bounce: 0.45, delay } } }
+          : { hidden: { scale, transition: { duration: 0 } }, visible: { scale: 1, transition: { type: "spring", duration: 0.9, bounce: 0.45, delay } } }
+      }
       className={className}
     >
       {children}
