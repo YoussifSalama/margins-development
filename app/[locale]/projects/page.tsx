@@ -26,29 +26,32 @@ export default async function Projects({
   const { hero, projects, pagination, company } = page;
 
   return (
-    <div>
+    <div className="bg-dark">
       <PageSeoScripts seo={seo} />
       <ProjectsHero title={hero.title} description={hero.description} current={hero.title} images={hero.images} />
-      <div className="container py-24">
-        <div className="grid gap-x-16.75 gap-y-14 lg:grid-cols-2">
-          {projects.map((project, i) => (
-            <Reveal key={project.slug} delay={(i % 2) * 0.12}>
-              <ProjectCard
-                slug={project.slug}
-                name={project.name}
-                location={project.location}
-                image={project.image}
-              />
-            </Reveal>
-          ))}
+      {/* bg-dark shows through the rounded top corners — matches Home/About */}
+      <section className="rounded-t-4xl bg-background py-24 sm:rounded-t-[48px]">
+        <div className="container">
+          <div className="grid gap-x-16.75 gap-y-14 lg:grid-cols-2">
+            {projects.map((project, i) => (
+              <Reveal key={project.slug} delay={(i % 2) * 0.12}>
+                <ProjectCard
+                  slug={project.slug}
+                  name={project.name}
+                  location={project.location}
+                  image={project.image}
+                />
+              </Reveal>
+            ))}
+          </div>
+          <Pagination
+            basePath="/projects"
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            limit={pagination.limit}
+          />
         </div>
-        <Pagination
-          basePath="/projects"
-          page={pagination.page}
-          totalPages={pagination.totalPages}
-          limit={pagination.limit}
-        />
-      </div>
+      </section>
       <ProjectsExplore locale={locale} company={company} />
     </div>
   );

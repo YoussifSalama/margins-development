@@ -36,7 +36,7 @@ export default async function ProjectDetail({ params }: PageProps<"/[locale]/pro
   const statusLabel = { planning: "Planning", under_construction: "Under Construction", completed: "Completed" }[project.facts.status];
 
   return (
-    <div>
+    <div className="bg-dark">
       <PageSeoScripts seo={payload.seo} />
       <ProjectHero
         name={project.name}
@@ -46,7 +46,8 @@ export default async function ProjectDetail({ params }: PageProps<"/[locale]/pro
         ctaProjects={t("ctaOurProjects")}
         ctaAboutUs={t("ctaAboutUs")}
       />
-      <div className="bg-white">
+      {/* bg-dark shows through the rounded top corners — matches Home/About */}
+      <div className="rounded-t-4xl bg-white sm:rounded-t-[48px]">
         <ProjectIntro name={project.name} description={project.description} />
         <ProjectStory
           locale={locale}
