@@ -7,7 +7,6 @@ import PageSeoScripts from "@/components/PageSeoScripts";
 import ProjectHero from "@/components/ProjectHero";
 import ProjectIntro from "@/components/ProjectIntro";
 import ProjectStory from "@/components/ProjectStory";
-import ProjectGallery from "@/components/ProjectGallery";
 import ProjectLocation from "@/components/ProjectLocation";
 import ProjectUnits from "@/components/ProjectUnits";
 import MoreProjects from "@/components/MoreProjects";
@@ -41,7 +40,8 @@ export default async function ProjectDetail({ params }: PageProps<"/[locale]/pro
       <PageSeoScripts seo={payload.seo} />
       <ProjectHero
         name={project.name}
-        image={project.heroMedia || project.image}
+        heroMedia={project.heroMedia}
+        gallery={project.gallery}
         tagline={project.tagline}
         ctaProjects={t("ctaOurProjects")}
         ctaAboutUs={t("ctaAboutUs")}
@@ -55,7 +55,6 @@ export default async function ProjectDetail({ params }: PageProps<"/[locale]/pro
           blocks={project.storyBlocks}
           facts={{ ...project.facts, status: t(`status.${statusLabel}`) }}
         />
-        <ProjectGallery images={project.gallery} />
       </div>
       <ProjectLocation locale={locale} project={project} />
       <ProjectUnits locale={locale} units={project.units} description={project.unitsDescription} />
