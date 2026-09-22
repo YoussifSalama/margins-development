@@ -5,6 +5,8 @@ type Props = {
   src: string;
   type?: "image" | "video";
   overlay?: boolean;
+  /** flat bg-dark/50 tint straight over the media — hero sections only, not the footer CTA */
+  tint?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -13,6 +15,7 @@ export default function MediaBackground({
   src,
   type,
   overlay = true,
+  tint = false,
   className = "",
   children,
 }: Props) {
@@ -32,6 +35,7 @@ export default function MediaBackground({
       ) : (
         <Image src={src} alt="" fill sizes="100vw" className="-z-10 object-cover" />
       )}
+      {tint && <div aria-hidden className="absolute inset-0 -z-10 bg-dark/50" />}
       {overlay && (
         <div
           aria-hidden

@@ -41,7 +41,7 @@ export default function HomeHero({
   return (
     <div ref={containerRef} className="relative h-dvh">
       <motion.section className="sticky top-0 bg-dark overflow-hidden" style={{ height }}>
-        <MediaBackground src={media} className="h-full">
+        <MediaBackground src={media} tint className="h-full">
           <motion.div
             initial="hidden"
             animate={ready ? "visible" : "hidden"}

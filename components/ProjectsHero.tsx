@@ -72,6 +72,9 @@ export default function ProjectsHero({
           <VerticalMarquee images={images.length > 1 ? images.slice(Math.ceil(images.length / 2)) : rightImages} direction="down" />
         </div>
 
+        {/* flat dark tint directly over the media, under the fade strips and the content */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-dark/50" />
+
         <motion.div
           initial="hidden"
           animate={ready ? "visible" : "hidden"}

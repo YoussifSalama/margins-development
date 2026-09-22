@@ -113,6 +113,9 @@ export default function ProjectHero({
           </motion.div>
         )}
 
+        {/* flat dark tint directly over the media, under the content */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-dark/50" />
+
         <div className="container flex w-full flex-col gap-11.5 pb-12 sm:pb-16 lg:pb-24.75">
           <div className="flex flex-col items-end justify-between gap-10 lg:flex-row lg:items-end">
             <motion.h1
