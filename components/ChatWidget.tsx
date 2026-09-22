@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { cva } from "class-variance-authority";
 import { AnimatePresence, motion } from "motion/react";
 import { FiArrowUp, FiExternalLink, FiMail, FiPhone, FiX } from "react-icons/fi";
+import { TbMessageChatbot } from "react-icons/tb";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { askChatbot, type ChatAction } from "@/server/chat/public";
 import { useAutoScroll } from "@/components/chat/use-auto-scroll";
@@ -99,8 +100,8 @@ export default function ChatWidget({ suggestions }: { suggestions: string[] }) {
             className="flex h-[68vh] max-h-[600px] w-96 max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl ring-1 ring-black/5"
           >
             <div className="flex items-center gap-3 bg-gradient-to-br from-banner-grad-start to-banner-grad-end px-5 py-4">
-              <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-accent/40">
-                <img src="/favicon.ico" alt="" className="size-full object-cover" />
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <TbMessageChatbot size={20} />
               </span>
               <div className="flex-1">
                 <p className="font-heading text-base text-white">{t("title")}</p>
@@ -184,7 +185,7 @@ export default function ChatWidget({ suggestions }: { suggestions: string[] }) {
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span key={open ? "close" : "chat"} initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-            {open ? <FiX size={22} /> : <img src="/favicon.ico" alt="" className="size-7 rounded-full" />}
+            {open ? <FiX size={22} /> : <TbMessageChatbot size={24} />}
           </motion.span>
         </AnimatePresence>
       </motion.button>
