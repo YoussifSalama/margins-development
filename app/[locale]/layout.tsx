@@ -7,9 +7,11 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/site";
 import { getSite } from "@/server/public/core";
+import { chatSuggestions } from "@/server/chat/public";
 import "../globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -59,6 +61,7 @@ export default async function RootLayout({
           <main className="flex-1">{children}</main>
           {/* the layout can't receive a page's payload, so it reads the same site data (same cache) itself */}
           <Footer site={await getSite(locale)} />
+          <ChatWidget suggestions={await chatSuggestions(locale)} />
         </NextIntlClientProvider>
       </body>
     </html>

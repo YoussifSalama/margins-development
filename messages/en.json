@@ -497,5 +497,14 @@
     "linkCopied": "Copied!",
     "related": "Related <gold>Posts</gold>",
     "tableOfContents": "Table of Contents"
+  },
+  "chat": {
+    "title": "Ask us anything",
+    "greeting": "Hi! Ask me about Margins or check our FAQs.",
+    "placeholder": "Type a message…",
+    "send": "Send",
+    "close": "Close",
+    "thinking": "Typing…",
+    "error": "Sorry, I couldn't respond right now. Please try again."
   }
 }

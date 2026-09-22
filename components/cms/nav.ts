@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Building2, Newspaper, Briefcase, HelpCircle, Handshake, LayoutTemplate,
-  Landmark, Settings, ListTree, Inbox, FileUser, MailPlus, Users, BookOpen, ScrollText,
+  Landmark, Settings, ListTree, Inbox, FileUser, MailPlus, Users, BookOpen, ScrollText, MessageCircle,
 } from "lucide-react";
 
 export type NavItem = { label: string; href: string; icon: LucideIcon; description: string; adminOnly?: boolean };
@@ -32,6 +32,7 @@ export const cmsNav: NavGroup[] = [
       { label: "Company", description: "Vision, mission and values. Written once, reused wherever the website shows them.", href: "/admin/shared/company", icon: Landmark },
       { label: "Site settings", description: "Phone, email, address, social links and the footer. Change here, updates everywhere.", href: "/admin/shared/settings", icon: Settings, adminOnly: true },
       { label: "Lookups", description: "The small shared lists other screens pick from: post categories, unit types and amenities.", href: "/admin/shared/lookups", icon: ListTree },
+      { label: "Chat assistant", description: "The chat widget's API key and system prompt. It answers from Content → FAQs.", href: "/admin/shared/chatbot", icon: MessageCircle, adminOnly: true },
     ],
   },
   {
