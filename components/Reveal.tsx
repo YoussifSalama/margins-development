@@ -14,11 +14,14 @@ export default function Reveal({
   className = "",
   delay = 0,
   amount = 0.2,
+  scale,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   amount?: number;
+  /** if set, the element also scales down from this value to 1 as it enters (e.g. a media card that starts oversized and settles into its frame) */
+  scale?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const shown = useForwardInView(ref, amount);
@@ -30,8 +33,8 @@ export default function Reveal({
       animate={shown ? "visible" : "hidden"}
       // the variant carries its own transition, so the delay has to live inside it
       variants={{
-        hidden: fadeUpBounce.hidden,
-        visible: { opacity: 1, y: 0, transition: { type: "spring", duration: 0.9, bounce: 0.45, delay } },
+        hidden: scale === undefined ? fadeUpBounce.hidden : { ...fadeUpBounce.hidden, scale },
+        visible: { opacity: 1, y: 0, ...(scale === undefined ? {} : { scale: 1 }), transition: { type: "spring", duration: 0.9, bounce: 0.45, delay } },
       }}
       className={className}
     >

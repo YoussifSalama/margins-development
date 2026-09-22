@@ -13,7 +13,7 @@ export default function ProjectIntro({
 }) {
   return (
     <section className="container flex flex-col items-center gap-10 py-24 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-      <Reveal className="relative aspect-112.25/121 w-56 shrink-0 overflow-hidden rounded-lg max-lg:hidden xl:w-112.25">
+      <Reveal scale={1.2} className="relative aspect-112.25/121 w-56 shrink-0 overflow-hidden rounded-lg max-lg:hidden xl:w-112.25">
         <Image
           src="/pages/projects/detail/intro-left.png"
           alt=""
@@ -40,6 +40,7 @@ export default function ProjectIntro({
 
       <Reveal
         delay={0.2}
+        scale={1.2}
         className="relative aspect-102.5/131 w-48 shrink-0 overflow-hidden rounded-lg max-lg:hidden xl:w-102.5"
       >
         <Image
