@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { motion } from "motion/react";
 import Button from "@/components/Button";
 import { heroEnterDelay } from "@/lib/motion";
@@ -17,15 +18,18 @@ function Media({ src, name, priority }: { src: string; name: string; priority?: 
   );
 }
 
-// One-shot intro: up to this many gallery shots walk in left-to-right (decorative, md+
-// only — cramped on a phone screen), landing beside the hero media, which arrives last,
-// centers, holds, then grows to fill the section. Card slot width drives their spacing.
+// One-shot intro: ONE flex row (real CSS `gap`, so spacing can't drift) carries the hero card
+// and up to this many gallery shots, sliding in together as a single train. The hero card is
+// always the train's back car — first in the row for LTR, so the row's resting offset is
+// tuned to land IT (not the row's own midpoint) dead-center; mirrored via scaleX for RTL.
+// Once it holds, it hands off to a separate fullscreen element via a shared `layoutId` — the
+// standard "card grows into a fullscreen view" transition, which survives moving to a
+// different parent (unlike a plain `layout` resize on a single persisting element).
 const FILLER_MAX = 4;
-const CARD_ASPECT = 1078 / 543; // design spec, ~1.985:1
-const CARD_W = "min(34vw, 560px)";
-const SLIDE_FROM = -140; // px — how far each card travels into place
-const STAGGER = 0.2;
-const CARD_ENTER = 0.6;
+const CARD_W = 1078; // design spec — literal px, not scaled
+const CARD_H = 543;
+const GAP = 32;
+const TRAIN_DURATION = 1.4;
 const HOLD = 0.35;
 const EXPAND = 0.9;
 
@@ -45,52 +49,62 @@ export default function ProjectHero({
   ctaAboutUs: string;
 }) {
   const ready = useSplashDone();
+  const rtl = useLocale() === "ar";
   const fillers = gallery.slice(0, FILLER_MAX);
   const [phase, setPhase] = useState<"intro" | "growing" | "filled">("intro");
 
   useEffect(() => {
     if (!ready) return;
-    const heroHoldMs = (heroEnterDelay + fillers.length * STAGGER + CARD_ENTER + HOLD) * 1000;
-    const timer = setTimeout(() => setPhase("growing"), heroHoldMs);
+    const timer = setTimeout(() => setPhase("growing"), (heroEnterDelay + TRAIN_DURATION + HOLD) * 1000);
     return () => clearTimeout(timer);
-  }, [ready, fillers.length]);
+  }, [ready]);
+
+  // The row is flex-centered as a whole; shifting it by half the fillers' combined width
+  // (+gaps) puts the FIRST child (hero) — not the row's own midpoint — at dead center.
+  const restX = (fillers.length * (CARD_W + GAP)) / 2;
+  // an extra 100vw (not a fixed px) guarantees the train starts fully off-screen no matter
+  // how wide the monitor is — a fixed px offset could still be partly visible on a wide one.
+  const fromX = `calc(${restX}px - 100vw)`;
 
   return (
     <section className="relative isolate flex min-h-125 items-end overflow-hidden bg-dark sm:min-h-160 lg:min-h-242">
-      {/* filmstrip row — real flex `gap` for spacing (no hand-rolled offsets). Fillers fade
-          out once the hero media starts growing; the hero card is the last row item, then
-          breaks out to `absolute inset-0` and grows to fill the section (Motion's `layout`
-          animates that resize automatically). */}
-      <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center gap-6 md:gap-10">
-        {fillers.map((src, i) => (
+      {phase !== "filled" && (
+        <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden" style={{ transform: rtl ? "scaleX(-1)" : undefined }}>
           <motion.div
-            key={src}
-            initial={{ opacity: 0, x: SLIDE_FROM }}
-            animate={ready ? { opacity: phase === "intro" ? 1 : 0, x: 0 } : { opacity: 0, x: SLIDE_FROM }}
-            transition={{ duration: phase === "intro" ? CARD_ENTER : 0.3, delay: phase === "intro" ? heroEnterDelay + i * STAGGER : 0, ease: "easeOut" }}
-            className="relative hidden shrink-0 overflow-hidden md:block"
-            style={{ width: CARD_W, aspectRatio: CARD_ASPECT }}
+            initial={{ x: fromX }}
+            animate={ready ? { x: restX } : { x: fromX }}
+            transition={{ duration: TRAIN_DURATION, delay: heroEnterDelay, ease: "easeOut" }}
+            className="flex"
+            style={{ gap: GAP }}
           >
-            <Media src={src} name="" />
+            {phase === "intro" && (
+              <motion.div layoutId="hero-media" className="relative shrink-0 overflow-hidden" style={{ width: CARD_W, height: CARD_H }}>
+                <div style={{ transform: rtl ? "scaleX(-1)" : undefined, position: "absolute", inset: 0 }}>
+                  <Media src={heroMedia} name={name} priority />
+                </div>
+              </motion.div>
+            )}
+            {fillers.map((src) => (
+              <div key={src} className="relative hidden shrink-0 overflow-hidden md:block" style={{ width: CARD_W, height: CARD_H }}>
+                <div style={{ transform: rtl ? "scaleX(-1)" : undefined, position: "absolute", inset: 0 }}>
+                  <Media src={src} name="" />
+                </div>
+              </div>
+            ))}
           </motion.div>
-        ))}
+        </div>
+      )}
 
+      {phase !== "intro" && (
         <motion.div
-          layout
-          initial={{ opacity: 0, x: SLIDE_FROM }}
-          animate={ready ? { opacity: 1, x: 0 } : { opacity: 0, x: SLIDE_FROM }}
-          transition={{
-            opacity: { duration: CARD_ENTER, delay: heroEnterDelay + fillers.length * STAGGER },
-            x: { duration: CARD_ENTER, delay: heroEnterDelay + fillers.length * STAGGER, ease: "easeOut" },
-            layout: { duration: EXPAND, ease: [0.22, 1, 0.36, 1] },
-          }}
+          layoutId="hero-media"
+          transition={{ duration: EXPAND, ease: [0.22, 1, 0.36, 1] }}
           onLayoutAnimationComplete={() => phase === "growing" && setPhase("filled")}
-          style={phase === "intro" ? { width: CARD_W, aspectRatio: CARD_ASPECT } : undefined}
-          className={phase === "intro" ? "relative shrink-0 overflow-hidden" : "absolute inset-0"}
+          className="absolute inset-0 -z-10"
         >
           <Media src={heroMedia} name={name} priority />
         </motion.div>
-      </div>
+      )}
 
       <div className="container flex w-full flex-col gap-11.5 pb-12 sm:pb-16 lg:pb-24.75">
         <div className="flex flex-col items-end justify-between gap-10 lg:flex-row lg:items-end">
