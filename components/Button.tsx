@@ -12,7 +12,7 @@ const base =
   "inline-flex items-center justify-center rounded-full px-8 py-4 text-base font-semibold leading-[25.6px] tracking-[-0.16px]";
 
 const variants: Record<Variant, string> = {
-  solid: "bg-accent text-white shadow-md shadow-accent/20 hover:shadow-xl hover:shadow-accent/50",
+  solid: "bg-accent text-black shadow-md shadow-accent/20 hover:shadow-xl hover:shadow-accent/50",
   ghost: "bg-white/15 text-white backdrop-blur-[16px] hover:bg-white/30 hover:shadow-xl hover:shadow-black/20",
   light: "bg-white text-[#111] shadow-md hover:bg-white hover:shadow-xl",
 };

@@ -57,7 +57,7 @@ export default function Splash() {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-hidden"
+      className="fixed inset-0 z-50 overflow-hidden mix-blend-multiply"
       style={{
         background:
           "radial-gradient(139% 111% at 50.8% -4950%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.34) 99%)",

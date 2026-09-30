@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -58,8 +59,8 @@ export default function Nav() {
         transition={enterSpring}
         className="container flex items-center justify-between py-3"
       >
-        <Link href="/" className="text-lg font-semibold tracking-tight text-white">
-          {t("brand")}
+        <Link href="/" aria-label={t("brand")}>
+          <Image src="/brand/logo.png" alt={t("brand")} width={1684} height={442} className="h-11 w-auto brightness-0 invert" priority />
         </Link>
         <ul className="hidden gap-10 text-sm font-medium tracking-tight md:flex">
           {links.map((link) => (

@@ -111,11 +111,11 @@ export default function Footer({ site }: { site: Site }) {
           {/* row 1: logo */}
           <div className="relative mb-14 h-[49px] w-[336px] max-w-full">
             <Image
-              src="/brand/logo.png"
+              src="/brand/logo-no-slogan.png"
               alt="Margins"
               fill
               sizes="336px"
-              className="object-contain object-left invert"
+              className="object-contain object-left brightness-0 invert"
               priority
             />
           </div>
