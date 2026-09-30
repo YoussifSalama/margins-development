@@ -96,6 +96,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* splash toggles overflow:hidden — reserve the gutter so the page doesn't shift when it unlocks */
+  scrollbar-gutter: stable;
 }
 
 body {
