@@ -82,7 +82,7 @@ export default function Splash() {
       {/* scaled-in box is 953x803 centered in a 1920x1080 frame (design spec) — kept as vw/vh
          ratios so it holds that same relative size/position at other viewport sizes */}
       <video
-        src="/pages/home/splash.mp4"
+        src="/pages/home/splash.mov"
         autoPlay
         muted
         playsInline
