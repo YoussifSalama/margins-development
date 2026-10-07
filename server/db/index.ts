@@ -1,6 +1,6 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { MongoClient } from "mongodb";
+import { MongoClient, type Collection } from "mongodb";
 import type {
   AmenityDoc, AuditLogDoc, CalculatorDoc, FaqDoc, HomeShowcaseDoc, JobApplicationDoc, JobDoc, LeadDoc, MainPostDoc, PageSectionDoc, PartnerDoc,
   PostCategoryDoc, PostDoc, RateLimitDoc, ProjectDoc, SessionDoc, SubscriberDoc, UnitTypeDoc, UserDoc,
@@ -8,33 +8,42 @@ import type {
 
 // One client per process; reused across dev hot reloads and warm serverless invocations.
 const globalForDb = globalThis as unknown as { mongo?: MongoClient; mongoReady?: Promise<void> };
-// Fail in 8s, not the default 30s, when the database can't be reached (IP not allow-listed
-// in Atlas, VPN, wrong URI) — so the CMS shows an error instead of hanging.
-const client = (globalForDb.mongo ??= new MongoClient(process.env.MONGODB_URI!, { serverSelectionTimeoutMS: 8000 }));
-const database = client.db(); // database name comes from the connection string
 
-export const db = {
-  users: database.collection<UserDoc>("users"),
-  sessions: database.collection<SessionDoc>("sessions"),
-  unitTypes: database.collection<UnitTypeDoc>("unitTypes"),
-  amenities: database.collection<AmenityDoc>("amenities"),
-  projects: database.collection<ProjectDoc>("projects"),
-  postCategories: database.collection<PostCategoryDoc>("postCategories"),
-  posts: database.collection<PostDoc>("posts"),
-  jobs: database.collection<JobDoc>("jobs"),
-  faqs: database.collection<FaqDoc>("faqs"),
-  partners: database.collection<PartnerDoc>("partners"),
-  pageSections: database.collection<PageSectionDoc>("pageSections"),
-  // two typed views of the same collection
-  homeShowcase: database.collection<HomeShowcaseDoc>("compositions"),
-  mainPost: database.collection<MainPostDoc>("compositions"),
-  calculator: database.collection<CalculatorDoc>("compositions"),
-  leads: database.collection<LeadDoc>("leads"),
-  jobApplications: database.collection<JobApplicationDoc>("jobApplications"),
-  subscribers: database.collection<SubscriberDoc>("subscribers"),
-  rateLimits: database.collection<RateLimitDoc>("rateLimits"),
-  auditLogs: database.collection<AuditLogDoc>("auditLogs"),
+// Never close this client during a request. If its topology closes anyway (or a connect
+// fails) drop it, so the next call builds a fresh one instead of reusing a dead client.
+function getClient() {
+  if (globalForDb.mongo) return globalForDb.mongo;
+  // Fail in 8s, not the default 30s, when the database can't be reached (IP not allow-listed
+  // in Atlas, VPN, wrong URI) — so the CMS shows an error instead of hanging.
+  const client = new MongoClient(process.env.MONGODB_URI!, { serverSelectionTimeoutMS: 8000, maxPoolSize: 10 });
+  const reset = () => {
+    if (globalForDb.mongo === client) globalForDb.mongo = undefined;
+  };
+  client.on("topologyClosed", reset);
+  client.connect().catch(reset);
+  return (globalForDb.mongo = client);
+}
+
+type Docs = {
+  users: UserDoc; sessions: SessionDoc; unitTypes: UnitTypeDoc; amenities: AmenityDoc; projects: ProjectDoc;
+  postCategories: PostCategoryDoc; posts: PostDoc; jobs: JobDoc; faqs: FaqDoc; partners: PartnerDoc;
+  pageSections: PageSectionDoc; homeShowcase: HomeShowcaseDoc; mainPost: MainPostDoc; calculator: CalculatorDoc;
+  leads: LeadDoc; jobApplications: JobApplicationDoc; subscribers: SubscriberDoc; rateLimits: RateLimitDoc;
+  auditLogs: AuditLogDoc;
 };
+// three typed views share the "compositions" collection
+const names: Record<keyof Docs, string> = {
+  users: "users", sessions: "sessions", unitTypes: "unitTypes", amenities: "amenities", projects: "projects",
+  postCategories: "postCategories", posts: "posts", jobs: "jobs", faqs: "faqs", partners: "partners",
+  pageSections: "pageSections", homeShowcase: "compositions", mainPost: "compositions", calculator: "compositions",
+  leads: "leads", jobApplications: "jobApplications", subscribers: "subscribers", rateLimits: "rateLimits",
+  auditLogs: "auditLogs",
+};
+
+// Resolved on every access, so call sites always get a collection of the live client.
+export const db = new Proxy({} as { [K in keyof Docs]: Collection<Docs[K]> }, {
+  get: (_, key: keyof Docs) => getClient().db().collection(names[key]), // db name comes from the connection string
+});
 
 // MongoDB has no schema to migrate, but uniqueness and expiry are enforced by indexes.
 // createIndex is idempotent, so this runs once per process instead of as a manual step
@@ -74,5 +83,5 @@ export const withId = <T extends { _id: string }>({ _id, ...rest }: T) => ({ id:
 // scripts only. Waits for index setup first, so closing can never interrupt it.
 export const closeDb = async () => {
   await ready;
-  await client.close();
+  await globalForDb.mongo?.close();
 };
