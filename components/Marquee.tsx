@@ -34,7 +34,7 @@ function MarqueeRow({
           <div className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap text-lg font-medium tracking-tight text-foreground">
             {item.src ? (
               // eslint-disable-next-line @next/next/no-img-element -- CMS logos, arbitrary host/size
-              <img src={item.src} alt={item.alt ?? item.label} className="max-h-8 w-auto object-contain" />
+              <img src={item.src} alt={item.alt ?? item.label} className="h-8 w-auto max-w-none shrink-0 object-contain" />
             ) : (
               item.label
             )}
