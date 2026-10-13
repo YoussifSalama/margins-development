@@ -6,6 +6,8 @@ import { usePersistentState } from "@/hooks/usePersistentState";
 const SCALE_START_MS = 6000;
 const TOTAL_MS = 10000;
 const SCALE_MS = TOTAL_MS - SCALE_START_MS;
+// video background colour — paints the reserved scrollbar gutter while the page is locked
+const GUTTER_COLOR = "#281a17";
 
 export default function Splash() {
   const [seen, setSeen] = usePersistentState("splash-seen", false);
@@ -23,6 +25,8 @@ export default function Splash() {
     const body = document.body;
     const prevHtmlOverflow = html.style.overflow;
     const prevBodyOverflow = body.style.overflow;
+    const prevHtmlBg = html.style.backgroundColor;
+    html.style.backgroundColor = GUTTER_COLOR;
     html.style.overflow = "hidden";
     body.style.overflow = "hidden";
 
@@ -43,6 +47,7 @@ export default function Splash() {
 
     return () => {
       html.style.overflow = prevHtmlOverflow;
+      html.style.backgroundColor = prevHtmlBg;
       body.style.overflow = prevBodyOverflow;
       document.removeEventListener("wheel", preventScroll);
       document.removeEventListener("touchmove", preventScroll);
@@ -57,7 +62,7 @@ export default function Splash() {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-hidden"
+      className="fixed inset-0 z-[60] overflow-hidden mix-blend-multiply"
       style={{
         background:
           "radial-gradient(139% 111% at 50.8% -4950%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.34) 99%)",

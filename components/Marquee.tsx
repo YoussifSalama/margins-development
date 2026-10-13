@@ -4,8 +4,12 @@ import { motion, useScroll, useTransform } from "motion/react";
 
 export type MarqueeItem = { label: string; src?: string; alt?: string };
 
+// the track is COPIES repeats of the list, so one repeat = 100/COPIES % and the loop wraps there
+const COPIES = 6;
+const PERIOD = 100 / COPIES;
+
 function wrapPercent(v: number) {
-  return (((v % 50) + 50) % 50) - 50;
+  return (((v % PERIOD) + PERIOD) % PERIOD) - PERIOD;
 }
 
 function MarqueeRow({
@@ -17,10 +21,10 @@ function MarqueeRow({
   direction?: "left" | "right";
   speed?: number;
 }) {
-  const track = [...items, ...items];
+  const track = Array.from({ length: COPIES }, () => items).flat();
   const { scrollY } = useScroll();
   const sign = direction === "left" ? -1 : 1;
-  const x = useTransform(scrollY, (latest) => `${wrapPercent(sign * latest * speed)}%`);
+  const x = useTransform(scrollY, (latest) => `${wrapPercent(sign * latest * speed * (2 / COPIES))}%`);
 
   return (
     <motion.div className="flex items-center" style={{ x }}>
