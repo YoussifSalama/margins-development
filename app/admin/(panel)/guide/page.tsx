@@ -3,6 +3,8 @@ import PageShell, { SectionCard } from "@/components/cms/page-shell";
 import { TourButton } from "@/components/cms/tour";
 import { requireUser } from "@/server/auth/session";
 import { cmsNav } from "@/components/cms/nav";
+import { SITE_URL } from "@/lib/site";
+import SiteMap from "./site-map";
 
 export const metadata = { title: "Guide" };
 
@@ -145,10 +147,14 @@ export default async function GuidePage() {
       )}
 
       <nav className="flex flex-wrap gap-2 text-sm">
-        {[["#ideas", "How it works"], ["#areas", "What each area does"], ["#howto", "How do I…"], ["#problems", "Something's not working"]].map(([href, label]) => (
+        {[["#sitemap", "Find it on the website"], ["#ideas", "How it works"], ["#areas", "What each area does"], ["#howto", "How do I…"], ["#problems", "Something's not working"]].map(([href, label]) => (
           <a key={href} href={href} className="rounded-full border bg-card px-3 py-1.5 font-medium hover:bg-muted">{label}</a>
         ))}
       </nav>
+
+      <section id="sitemap" className="scroll-mt-6">
+        <SiteMap siteUrl={`${SITE_URL}/en`} />
+      </section>
 
       <section id="ideas" className="scroll-mt-6">
         <SectionCard title="How it works" hint="Eight ideas explain almost everything in the CMS.">
