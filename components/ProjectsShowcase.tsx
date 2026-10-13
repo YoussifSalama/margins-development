@@ -3,6 +3,7 @@
 import { useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
+import { Link } from "@/i18n/navigation";
 import { FiMapPin } from "react-icons/fi";
 
 type ShowcaseProject = {
@@ -10,6 +11,7 @@ type ShowcaseProject = {
   eyebrow: string;
   title: string;
   location: string;
+  slug: string;
 };
 
 function ProjectRevealCard({
@@ -30,13 +32,14 @@ function ProjectRevealCard({
   return (
     <>
       <div ref={ref} className="h-dvh w-full" />
-      <div className="sticky top-0 h-dvh w-full overflow-hidden" style={{ zIndex: z, marginTop: "-100dvh" }}>
-        <motion.div className="absolute inset-0" style={{ x, y }}>
+      <div className="pointer-events-none sticky top-0 h-dvh w-full overflow-hidden" style={{ zIndex: z, marginTop: "-100dvh" }}>
+        <motion.div className="group pointer-events-auto absolute inset-0" style={{ x, y }}>
           <Image src={project.image} alt={project.title} fill sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-          <div className="relative flex h-full flex-col justify-end gap-2 px-6 pb-16 text-white sm:px-12 lg:px-20">
+          <Link href={`/projects/${project.slug}`} aria-label={project.title} className="absolute inset-0 z-10" />
+          <div className="pointer-events-none relative flex h-full flex-col justify-end gap-2 px-6 pb-16 text-white sm:px-12 lg:px-20">
             <p className="text-[13px] tracking-[-0.13px] text-accent">{project.eyebrow}</p>
-            <h3 className="font-heading text-[clamp(1.75rem,3vw+1rem,2.75rem)] uppercase leading-[1.15] tracking-[1px]">
+            <h3 className="font-heading decoration-accent underline-offset-8 transition-all group-hover:underline text-[clamp(1.75rem,3vw+1rem,2.75rem)] uppercase leading-[1.15] tracking-[1px]">
               {project.title}
             </h3>
             <p className="flex items-center gap-1.5 text-[14px] text-white-80">

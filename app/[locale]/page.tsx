@@ -63,6 +63,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               location: project.location,
               eyebrow: showcase.eyebrow,
               image: project.image,
+              slug: project.slug,
             }));
 
             return (
