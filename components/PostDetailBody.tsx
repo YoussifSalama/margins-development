@@ -22,7 +22,7 @@ export default function PostDetailBody({
   const t = useTranslations("posts");
 
   return (
-    <div>
+    <div className="bg-dark">
       <HomeHero title={post.title} media={post.image}>
         <div className="flex flex-col items-center gap-6">
           <div className="text-white">
@@ -45,14 +45,14 @@ export default function PostDetailBody({
         </div>
       </HomeHero>
 
-      {/* whole page is the primary brown; no light section on this page */}
-      <div className="bg-dark text-white">
-      <div className="px-6 py-16">
+      {/* bg-dark shows through the rounded top corners, matching the hero's bottom */}
+      <div className="bg-dark">
+      <div className="rounded-t-4xl bg-background px-6 py-16 sm:rounded-t-[48px]">
         <div className="container grid grid-cols-1 gap-16 lg:grid-cols-[1fr_420px]">
           <div className="flex flex-col gap-10">
             {/* the article body is CMS rich text; its <h2>s carry the ids the table of contents links to */}
             <Reveal amount={0.05}>
-              <RichText html={post.bodyHtml} className="text-white/80 [&_h2]:text-white!" />
+              <RichText html={post.bodyHtml} className="text-foreground/80" />
             </Reveal>
 
             <Reveal amount={0.1}>
@@ -90,7 +90,7 @@ export default function PostDetailBody({
         {related.length > 0 && (
           <div className="container mt-24">
             <Reveal>
-              <h2 className="font-heading text-[40px] leading-[1.1] text-white">
+              <h2 className="font-heading text-[40px] leading-[1.1] text-dark">
                 {t.rich("related", {
                   gold: (chunks) => (
                     <span className="text-accent">{chunks}</span>
@@ -98,7 +98,7 @@ export default function PostDetailBody({
                 })}
               </h2>
             </Reveal>
-            <div className="mt-10 grid grid-cols-1 gap-x-13.5 gap-y-16 lg:grid-cols-2 [&_.text-card-ink]:text-white/60">
+            <div className="mt-10 grid grid-cols-1 gap-x-13.5 gap-y-16 lg:grid-cols-2">
               {related.map((relatedPost, i) => (
                 <Reveal key={relatedPost.slug} delay={i * 0.12}>
                   <PostCard

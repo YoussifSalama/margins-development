@@ -7,7 +7,7 @@ import { FaInstagram, FaFacebookF, FaXTwitter, FaLink } from "react-icons/fa6";
 const instagramHref = "https://instagram.com/marginsdevelopment";
 
 const iconClass =
-  "flex size-10 items-center justify-center rounded-full border border-accent text-accent hover:bg-accent hover:text-black";
+  "flex size-10 items-center justify-center rounded-full border border-accent text-accent hover:bg-accent hover:text-white";
 
 export default function ShareLinks({
   label,
@@ -45,7 +45,7 @@ export default function ShareLinks({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[16px] text-white">{label}</p>
+      <p className="text-[16px] text-dark">{label}</p>
       <div className="flex items-center gap-4">
         <a href={instagramHref} target="_blank" rel="noopener noreferrer" className={iconClass}>
           <FaInstagram className="size-4" />
@@ -59,7 +59,7 @@ export default function ShareLinks({
         <button type="button" onClick={copyLink} aria-label="Copy link" className={`relative ${iconClass}`}>
           <FaLink className="size-4" />
           {copied && (
-            <span className="absolute -top-9 rounded-md bg-white px-2 py-1 text-xs whitespace-nowrap text-dark">
+            <span className="absolute -top-9 rounded-md bg-dark px-2 py-1 text-xs whitespace-nowrap text-white">
               {copiedLabel}
             </span>
           )}
