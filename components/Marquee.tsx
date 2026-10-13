@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "motion/react";
-// import Image from "next/image";
 
 export type MarqueeItem = { label: string; src?: string; alt?: string };
 
@@ -28,10 +27,13 @@ function MarqueeRow({
       {track.map((item, i) => (
         <div key={i} className="flex items-center">
           {i > 0 && <span aria-hidden className="mx-8 h-8 w-px bg-divider/10" />}
-          {/* words in use for now — image logos commented out, swap back when real partner logos land */}
           <div className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap text-lg font-medium tracking-tight text-foreground">
-            {/* <Image src={item.src} alt={item.alt} width={140} height={32} className="max-h-8 w-auto object-contain" /> */}
-            {item.label}
+            {item.src ? (
+              // eslint-disable-next-line @next/next/no-img-element -- CMS logos, arbitrary host/size
+              <img src={item.src} alt={item.alt ?? item.label} className="max-h-8 w-auto object-contain" />
+            ) : (
+              item.label
+            )}
           </div>
         </div>
       ))}
