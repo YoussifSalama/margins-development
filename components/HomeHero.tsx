@@ -57,7 +57,7 @@ export default function HomeHero({
             {descriptionHtml ? (
               <RichText html={descriptionHtml} className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80" />
             ) : (
-              <p className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80">{description}</p>
+              description && <p className="max-w-140 text-base leading-6 tracking-[-0.16px] text-white-80">{description}</p>
             )}
             {children ?? (
               <div className="mt-4 flex items-center gap-4">
@@ -71,6 +71,8 @@ export default function HomeHero({
             )}
           </motion.div>
         </MediaBackground>
+        {/* soft blur on the hero's last strip so the rounded section sliding over it doesn't meet a hard edge */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 backdrop-blur-sm [mask-image:linear-gradient(to_top,black,transparent)]" />
       </motion.section>
     </div>
   );

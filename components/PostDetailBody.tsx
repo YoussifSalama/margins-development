@@ -1,4 +1,4 @@
-import Image from "next/image";
+import HomeHero from "@/components/HomeHero";
 import { useTranslations } from "next-intl";
 import { FiArrowLeft } from "react-icons/fi";
 import { mediaHref, postHref, type Post, type PostCard as RelatedPost } from "@/lib/posts";
@@ -10,10 +10,7 @@ import TableOfContents from "@/components/TableOfContents";
 import RichText from "@/components/RichText";
 import PostGallery from "@/components/PostGallery";
 import PostCard from "@/components/PostCard";
-import * as motion from "motion/react-client";
 import Reveal from "@/components/Reveal";
-import StaggerReveal from "@/components/StaggerReveal";
-import { fadeUpBounce } from "@/lib/motion";
 
 export default function PostDetailBody({
   post,
@@ -26,27 +23,9 @@ export default function PostDetailBody({
 
   return (
     <div>
-      <section className="relative isolate flex min-h-95 items-end overflow-hidden px-6 pt-28 pb-10 sm:min-h-107.5 sm:pt-32 sm:pb-12 lg:min-h-131.5 lg:pb-13.5">
-        <Image
-          src={post.image}
-          alt=""
-          fill
-          sizes="100vw"
-          priority
-          className="-z-10 object-cover"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-hero-overlay-dark/70"
-        />
-        <StaggerReveal className="container flex flex-col items-center gap-6 text-center">
-          <motion.h1
-            variants={fadeUpBounce}
-            className="max-w-3xl font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.1] text-white"
-          >
-            {post.title}
-          </motion.h1>
-          <motion.div variants={fadeUpBounce} className="text-white">
+      <HomeHero title={post.title} media={post.image}>
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-white">
             <Breadcrumb
               items={[
                 { label: t("heroTitle"), href: mediaHref() },
@@ -55,20 +34,20 @@ export default function PostDetailBody({
                 { label: post.categoryName },
               ]}
             />
-          </motion.div>
-          <motion.div variants={fadeUpBounce}>
-            <Link
-              href={mediaHref(post.category)}
-              className="flex items-center gap-2 text-sm text-white/70 hover:text-accent rtl:flex-row-reverse"
-            >
-              <FiArrowLeft className="size-4 rtl:rotate-180" aria-hidden />
-              {t("backToCategory", { category: post.categoryName })}
-            </Link>
-          </motion.div>
-        </StaggerReveal>
-      </section>
+          </div>
+          <Link
+            href={mediaHref(post.category)}
+            className="flex items-center gap-2 text-sm text-white/70 hover:text-accent rtl:flex-row-reverse"
+          >
+            <FiArrowLeft className="size-4 rtl:rotate-180" aria-hidden />
+            {t("backToCategory", { category: post.categoryName })}
+          </Link>
+        </div>
+      </HomeHero>
 
-      <div className="bg-background px-6 py-16">
+      {/* bg-dark shows through the rounded top corners, matching the hero's bottom */}
+      <div className="bg-dark">
+      <div className="rounded-t-4xl bg-background px-6 py-16 sm:rounded-t-[48px]">
         <div className="container grid grid-cols-1 gap-16 lg:grid-cols-[1fr_420px]">
           <div className="flex flex-col gap-10">
             {/* the article body is CMS rich text; its <h2>s carry the ids the table of contents links to */}
@@ -134,6 +113,7 @@ export default function PostDetailBody({
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

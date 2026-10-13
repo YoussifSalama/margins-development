@@ -152,6 +152,8 @@ export default function ProjectHero({
             className="h-px w-full bg-hero-divider"
           />
         </div>
+        {/* soft blur on the hero's last strip so the rounded section sliding over it doesn't meet a hard edge */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 backdrop-blur-sm [mask-image:linear-gradient(to_top,black,transparent)]" />
       </motion.section>
     </div>
   );
