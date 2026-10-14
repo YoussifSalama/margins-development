@@ -148,7 +148,7 @@ export default function ProjectForm({
                       label="Category"
                       options={[{ value: "transport", label: "Transport" }, { value: "education", label: "Education" }, { value: "shopping", label: "Shopping" }, { value: "food", label: "Food" }]}
                     />
-                    <NumberField name={`${path}.distanceKm`} label="Distance (km)" />
+                    <NumberField name={`${path}.distanceKm`} label="Distance (min)" />
                   </div>
                   <BilingualField name={`${path}.name`} label="Name" />
                 </>

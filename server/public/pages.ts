@@ -153,7 +153,7 @@ export const getProjectsPage = cachedLoader(
   },
 );
 
-const distance = (km: number, locale: Locale) => `${km} ${locale === "ar" ? "كم" : "KM"}`;
+const distance = (km: number, locale: Locale) => `${km} ${locale === "ar" ? "دقيقة" : "MIN"}`;
 
 /** null when the slug doesn't exist or the project isn't published */
 export const getProjectPage = cachedLoader(

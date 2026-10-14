@@ -96,7 +96,7 @@ const byName: Record<string, string> = {
   lat: "Map latitude, e.g. 30.0444. Optional — helps search engines place the project.",
   lng: "Map longitude, e.g. 31.2357. Optional.",
   category: "Which tab this place appears under in the Location section.",
-  distanceKm: "Distance from the project in kilometres, e.g. 0.8.",
+  distanceKm: "Travel time from the project in minutes, e.g. 10.",
   unitTypeId: "Pick from the shared list of unit types (Shared → Lookups). Each type can be used once per project.",
   sizeRange: "The size range as visitors read it, e.g. “75 – 100 m²”.",
 
