@@ -73,7 +73,7 @@ export default function ProjectsHero({
         </div>
 
         {/* flat dark tint directly over the media, under the fade strips and the content */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-dark/50" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-dark/20" />
 
         <motion.div
           initial="hidden"

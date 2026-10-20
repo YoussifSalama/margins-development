@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { jobInput, type JobInput } from "@/lib/schemas/job";
 import { deleteJob, saveJob } from "@/server/jobs/actions";
 
-export default function JobForm({ id, values, slugLocked = false }: { id?: string; values: JobInput; slugLocked?: boolean }) {
+export default function JobForm({ id, values }: { id?: string; values: JobInput }) {
   return (
     <EntityForm<JobInput> noun="Job" basePath="/admin/content/jobs" id={id} schema={jobInput} values={values} save={saveJob} remove={deleteJob}>
       <Tabs defaultValue="details" className="gap-6">
@@ -22,7 +22,7 @@ export default function JobForm({ id, values, slugLocked = false }: { id?: strin
         <TabsContent value="details" className="flex flex-col gap-6">
           <SectionCard title="Listing">
             <BilingualField name="title" label="Job title" />
-            <SlugField source="title.en" locked={slugLocked} prefix="/careers/" />
+            <SlugField source="title.en" prefix="/careers/" />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
               <SelectField name="status" label="Status" options={[{ value: "draft", label: "Draft" }, { value: "open", label: "Open" }, { value: "closed", label: "Closed" }]} />
               <NumberField name="openings" label="Openings" />

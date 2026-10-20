@@ -5,6 +5,8 @@ import PostCard from "@/components/PostCard";
 import CategoryTabs, { DEFAULT_LIMIT } from "@/components/CategoryTabs";
 import Pagination from "@/components/Pagination";
 import Reveal from "@/components/Reveal";
+import { Link } from "@/i18n/navigation";
+import { Newspaper } from "lucide-react";
 
 // Filtering, the pinned main item and paging are all done server-side (getMediaPage);
 // this only lays out what it is given.
@@ -64,6 +66,26 @@ export default function PostsListing({
               </Reveal>
             ))}
           </div>
+        )}
+
+        {!featured && rest.length === 0 && (
+          <Reveal className="mt-16">
+            <div className="mx-auto flex max-w-xl flex-col items-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+              <span className="relative mb-6 flex size-20 items-center justify-center">
+                <span className="absolute inset-0 animate-ping rounded-full bg-accent/20 motion-reduce:animate-none" />
+                <span className="relative flex size-20 items-center justify-center rounded-full bg-accent/10 text-accent">
+                  <Newspaper className="size-9" aria-hidden />
+                </span>
+              </span>
+              <h2 className="text-2xl font-semibold">{t("empty.title")}</h2>
+              <p className="mt-3 text-muted">{t("empty.description")}</p>
+              {category && (
+                <Link href={mediaHref()} className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition hover:opacity-90">
+                  {t("empty.browseAll")}
+                </Link>
+              )}
+            </div>
+          </Reveal>
         )}
 
         <Pagination

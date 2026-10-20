@@ -22,7 +22,6 @@ export default async function EditPostPage({ params }: PageProps<"/admin/content
     >
       <PostForm
         id={post.id}
-        slugLocked={Boolean(post.publishedAt)}
         categories={categories.map((c) => ({ id: c.id, key: c.key, name: c.name.en, kind: c.kind }))}
         values={{
           slug: post.slug,

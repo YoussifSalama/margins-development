@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm, useFormContext, type DefaultValues, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -100,24 +100,33 @@ export default function EntityForm<Values extends FieldValues>({
   );
 }
 
-/** Shared across languages. Auto-fills from the English title until the editor types their own. */
-export function SlugField({ source, locked, prefix }: { source: string; locked?: boolean; prefix: string }) {
-  const { register, getValues, setValue } = useFormContext();
+/** Shared across languages. On create it follows the English title live until the editor types
+ *  their own (clearing it hands it back to the title); on edit it only changes by hand. */
+export function SlugField({ source, prefix }: { source: string; prefix: string }) {
+  const { register, setValue, watch, formState } = useFormContext();
+  // an existing item always has a slug, so an empty default means this is the create form
+  const [creating] = useState(!formState.defaultValues?.slug);
+  const [auto, setAuto] = useState(creating);
+  const title: string | undefined = watch(source);
+
+  useEffect(() => {
+    if (auto) setValue("slug", slugify(title ?? ""), { shouldDirty: true });
+  }, [auto, title, setValue]);
+
   return (
     <Field
       name="slug"
       label="URL slug"
-      hint={locked ? "Locked — this URL has been live and is kept stable for links and search engines." : `${prefix}<slug> — same in both languages.`}
+      hint={
+        creating
+          ? `${prefix}<slug> — same in both languages. Filled from the English title until you edit it.`
+          : `${prefix}<slug> — same in both languages. Changing it changes the live URL; old links stop working.`
+      }
     >
       <Input
         id="slug"
         dir="ltr"
-        readOnly={locked}
-        className={locked ? "bg-muted" : undefined}
-        {...register("slug")}
-        onFocus={() => {
-          if (!locked && !getValues("slug")) setValue("slug", slugify(getValues(source) ?? ""), { shouldDirty: true });
-        }}
+        {...register("slug", { onChange: (e) => setAuto(creating && !e.target.value) })}
       />
     </Field>
   );

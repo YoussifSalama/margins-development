@@ -16,6 +16,7 @@ export default function HomeHero({
   ctaProjects,
   ctaAbout,
   media,
+  tint = "bg-dark/20",
   children,
 }: {
   title: string;
@@ -26,6 +27,8 @@ export default function HomeHero({
   ctaProjects?: string;
   ctaAbout?: string;
   media: string;
+  /** tint over the media — the home page runs lighter than inner pages */
+  tint?: string;
   // replaces the CTA row (inner pages pass their breadcrumb here)
   children?: ReactNode;
 }) {
@@ -41,7 +44,7 @@ export default function HomeHero({
   return (
     <div ref={containerRef} className="relative h-dvh">
       <motion.section className="sticky top-0 bg-dark overflow-hidden" style={{ height }}>
-        <MediaBackground src={media} tint className="h-full">
+        <MediaBackground src={media} tint={tint} className="h-full">
           <motion.div
             initial="hidden"
             animate={ready ? "visible" : "hidden"}

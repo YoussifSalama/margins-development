@@ -42,6 +42,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         ctaProjects={t("ctaProjects")}
         ctaAbout={t("ctaAbout")}
         media={hero.media || "/pages/home/hero.png"}
+        tint="bg-dark/15"
       />
 
       <div className="relative">

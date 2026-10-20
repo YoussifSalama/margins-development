@@ -222,7 +222,7 @@ export const getMediaPage = cachedLoader(
   ["page:media", "page:settings", "posts"],
   async (localeArg: string, categoryKey?: string, pageArg?: number, limitArg?: number): Promise<PagePayload<MediaPage> | null> => {
     const locale = asLocale(localeArg);
-    const limit = limitArg && LIMITS.includes(limitArg) ? limitArg : 5; // page size only from the allowed list
+    const limit = limitArg && LIMITS.includes(limitArg) ? limitArg : 4; // grid page size, only from the allowed list (keep in sync with DEFAULT_LIMIT)
     const categoryDocs = await db.postCategories.find().sort({ position: 1 }).toArray();
     const categoryDoc = categoryKey ? categoryDocs.find((c) => c.key === categoryKey) : undefined;
     if (categoryKey && !categoryDoc) return null;
@@ -237,9 +237,15 @@ export const getMediaPage = cachedLoader(
     const pinned = docs.find((d) => d._id === pin?.postId);
     const ordered = pinned ? [pinned, ...docs.filter((d) => d !== pinned)] : docs;
 
-    const totalPages = Math.max(1, Math.ceil(ordered.length / limit));
+    // the lead item sits above the grid on page 1 only and is not counted in the page size,
+    // so every page's grid holds exactly `limit` posts
+    const [lead, ...rest] = ordered;
+    const totalPages = Math.max(1, Math.ceil(rest.length / limit));
     const current = Math.min(Math.max(pageArg || 1, 1), totalPages);
-    const slice = ordered.slice((current - 1) * limit, current * limit).map((d) => postCard(d, categoryDocs, locale));
+    const card = (d: PostDoc) => postCard(d, categoryDocs, locale);
+    const gridPosts = rest.slice((current - 1) * limit, current * limit).map(card);
+    const featured = current === 1 && lead ? card(lead) : null;
+    const slice = featured ? [featured, ...gridPosts] : gridPosts;
     const hero = as<MediaPage["hero"]>(s.hero);
     const category = categoryDoc ? { key: categoryDoc.key, name: pick(categoryDoc.name, locale) } : null;
     const path = category ? `/media/${category.key}` : "/media";
@@ -251,8 +257,8 @@ export const getMediaPage = cachedLoader(
         hero,
         categories: categoryDocs.map((c) => ({ key: c.key, name: pick(c.name, locale) })),
         category,
-        featured: current === 1 ? (slice[0] ?? null) : null,
-        posts: current === 1 ? slice.slice(1) : slice,
+        featured,
+        posts: gridPosts,
         pagination: { page: current, totalPages, limit },
       },
       seo: buildSeo({

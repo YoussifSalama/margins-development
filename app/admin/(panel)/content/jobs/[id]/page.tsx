@@ -16,7 +16,6 @@ export default async function EditJobPage({ params }: PageProps<"/admin/content/
     <PageShell tour="entity" eyebrow="Jobs" title={job.title.en} back={{ href: "/admin/content/jobs", label: "All jobs" }} actions={<StatusBadge status={job.status} />}>
       <JobForm
         id={job.id}
-        slugLocked={Boolean(job.postedAt)}
         values={{
           slug: job.slug,
           status: job.status,

@@ -485,6 +485,7 @@
   "posts": {
     "heroTitle": "Media Center",
     "heroDescription": "Explore Our News, Events & Blogs",
+    "empty": { "title": "No posts yet", "description": "Nothing has been published here yet. Check back soon for the latest updates.", "browseAll": "Browse all posts" },
     "tabs": { "all": "All" },
     "backToCategory": "Back to {category}",
     "meta": {

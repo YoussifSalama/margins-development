@@ -57,7 +57,6 @@ function AmenityPicker({ amenities }: { amenities: Option[] }) {
 export default function ProjectForm({
   id,
   values,
-  slugLocked = false,
   unitTypes,
   amenities,
   calculatorDefaults,
@@ -66,7 +65,6 @@ export default function ProjectForm({
 }: {
   id?: string;
   values: ProjectInput;
-  slugLocked?: boolean;
   unitTypes: Option[];
   amenities: Option[];
   calculatorDefaults: CalculatorDefaults;
@@ -88,7 +86,7 @@ export default function ProjectForm({
         <TabsContent value="overview" className="flex flex-col gap-6">
           <SectionCard title="Identity">
             <BilingualField name="name" label="Name" />
-            <SlugField source="name.en" locked={slugLocked} prefix="/projects/" />
+            <SlugField source="name.en" prefix="/projects/" />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <SelectField name="status" label="Status" options={[{ value: "draft", label: "Draft" }, { value: "published", label: "Published" }, { value: "archived", label: "Archived" }]} />
               <SelectField

@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 
-export const DEFAULT_LIMIT = 5;
+export const DEFAULT_LIMIT = 4; // keep in sync with getMediaPage
 
 type Tab = { label: string; category?: string; href: string };
 

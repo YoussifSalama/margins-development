@@ -15,7 +15,7 @@ import { deletePost, savePost } from "@/server/posts/actions";
 
 export type CategoryOption = { id: string; key: string; name: string; kind: "news" | "article" | "event" };
 
-function Fields({ slugLocked, categories }: { slugLocked: boolean; categories: CategoryOption[] }) {
+function Fields({ categories }: { categories: CategoryOption[] }) {
   const categoryId = useWatch({ name: "categoryId" }) as string;
   const category = categories.find((option) => option.id === categoryId);
   const isEvent = category?.kind === "event";
@@ -39,7 +39,7 @@ function Fields({ slugLocked, categories }: { slugLocked: boolean; categories: C
         </SectionCard>
         <SectionCard title="Article">
           <BilingualField name="title" label="Title" />
-          <SlugField source="title.en" locked={slugLocked} prefix={`/media/${category?.key ?? "…"}/`} />
+          <SlugField source="title.en" prefix={`/media/${category?.key ?? "…"}/`} />
           <BilingualField name="excerpt" label="Excerpt" multiline hint="Shown on cards and used as the default meta description." />
           <BilingualField name="authorLabel" label="Author" hint='e.g. "Margins Press Team"' />
           <BilingualRichText name="body" label="Body" hint="Use Heading for sections — they become the table of contents. Reading time is calculated automatically." />
@@ -73,7 +73,7 @@ function Fields({ slugLocked, categories }: { slugLocked: boolean; categories: C
   );
 }
 
-export default function PostForm({ id, values, slugLocked = false, categories }: { id?: string; values: PostInput; slugLocked?: boolean; categories: CategoryOption[] }) {
+export default function PostForm({ id, values, categories }: { id?: string; values: PostInput; categories: CategoryOption[] }) {
   // event rules depend on which categories are events → schema built from the list we were given
   const schema = useMemo(() => makePostInput(categories.filter((c) => c.kind === "event").map((c) => c.id)), [categories]);
   return (
@@ -86,7 +86,7 @@ export default function PostForm({ id, values, slugLocked = false, categories }:
       save={savePost}
       remove={deletePost}
     >
-      <Fields slugLocked={slugLocked} categories={categories} />
+      <Fields categories={categories} />
     </EntityForm>
   );
 }

@@ -74,7 +74,7 @@ function JobDetailBody({
           priority
           className="object-cover"
         />
-        <div aria-hidden className="absolute inset-0 bg-dark-overlay-90" />
+        <div aria-hidden className="absolute inset-0 bg-dark/50" />
       </div>
 
       <div className="px-6 pt-53 pb-24 sm:pt-65 lg:pt-77">

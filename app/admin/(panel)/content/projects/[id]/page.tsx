@@ -33,7 +33,6 @@ export default async function EditProjectPage({ params }: PageProps<"/admin/cont
     >
       <ProjectForm
         id={project.id}
-        slugLocked={project.status !== "draft"}
         calculatorDefaults={calculatorDefaults}
         canEditFigures={(await requireUser()).role === "admin"}
         inCalculator={calculatorIds.includes(project.id)}
