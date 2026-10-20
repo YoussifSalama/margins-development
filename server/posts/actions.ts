@@ -39,11 +39,10 @@ export const savePost = defineAction(postInput.safeExtend({ id: id.optional() })
   };
 
   if (id) {
-    const existing = await db.posts.findOne({ _id: id }, { projection: { slug: 1, publishedAt: 1 } });
+    const existing = await db.posts.findOne({ _id: id }, { projection: { slug: 1 } });
     if (!existing) throw new UserError("This post no longer exists.");
-    // once a post has been live its URL is permanent
-    if (existing.publishedAt) values.slug = existing.slug;
     await db.posts.updateOne({ _id: id }, { $set: values });
+    if (existing.slug !== values.slug) revalidateTag(`post:${existing.slug}`, { expire: 0 }); // the old URL stops serving
   } else {
     id = newId();
     await db.posts.insertOne({ _id: id, ...values, createdAt: now });

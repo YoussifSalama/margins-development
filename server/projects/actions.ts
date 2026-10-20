@@ -20,7 +20,7 @@ const orNull = (value: string) => value || null;
 // atomic document write — a half-saved project is impossible, without transactions.
 export const saveProject = defineAction(projectInput.safeExtend({ id: id.optional() }), async ({ id, ...input }, user) => {
   const now = new Date();
-  const existing = id ? await db.projects.findOne({ _id: id }, { projection: { slug: 1, status: 1, units: 1, investment: 1 } }) : null;
+  const existing = id ? await db.projects.findOne({ _id: id }, { projection: { slug: 1, units: 1, investment: 1 } }) : null;
   if (id && !existing) throw new UserError("This project no longer exists.");
 
   // a unit keeps its id across saves (matched by unit type), so anything that references it stays valid
@@ -44,8 +44,6 @@ export const saveProject = defineAction(projectInput.safeExtend({ id: id.optiona
 
   const values = {
     ...input,
-    // a project that is or was live keeps its URL
-    slug: existing && existing.status !== "draft" ? existing.slug : input.slug,
     coverImage: orNull(input.coverImage),
     heroMedia: orNull(input.heroMedia),
     mapImage: orNull(input.mapImage),
@@ -69,6 +67,7 @@ export const saveProject = defineAction(projectInput.safeExtend({ id: id.optiona
   }
 
   bust(values.slug);
+  if (existing && existing.slug !== values.slug) bust(existing.slug); // the old URL stops serving
   revalidateTag("calculator", { expire: 0 }); // unit prices and overrides feed the calculator
   return { id, slug: values.slug };
 });

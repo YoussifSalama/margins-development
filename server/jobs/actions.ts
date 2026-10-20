@@ -16,11 +16,10 @@ export const saveJob = defineAction(jobInput.safeExtend({ id: id.optional() }), 
   };
 
   if (id) {
-    const existing = await db.jobs.findOne({ _id: id }, { projection: { slug: 1, postedAt: 1 } });
+    const existing = await db.jobs.findOne({ _id: id }, { projection: { slug: 1 } });
     if (!existing) throw new UserError("This job no longer exists.");
-    // once a job has been posted its URL is permanent
-    if (existing.postedAt) values.slug = existing.slug;
     await db.jobs.updateOne({ _id: id }, { $set: values });
+    if (existing.slug !== values.slug) revalidateTag(`job:${existing.slug}`, { expire: 0 }); // the old URL stops serving
   } else {
     id = newId();
     await db.jobs.insertOne({ _id: id, ...values, createdAt: now });
