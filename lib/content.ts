@@ -71,7 +71,7 @@ export type ProjectDetail = ProjectCard & {
   summary: string;
   description: string;
   heroMedia: string;
-  /** below md; falls back to heroMedia */
+  /** below 1024px; falls back to heroMedia */
   heroMediaMobile: string;
   gallery: string[];
   facts: { year: string; location: string; sector: string; size: string; status: "planning" | "under_construction" | "completed" };
