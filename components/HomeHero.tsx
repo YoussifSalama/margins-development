@@ -16,6 +16,7 @@ export default function HomeHero({
   ctaProjects,
   ctaAbout,
   media,
+  mobileMedia,
   tint = "bg-dark/20",
   children,
 }: {
@@ -27,6 +28,8 @@ export default function HomeHero({
   ctaProjects?: string;
   ctaAbout?: string;
   media: string;
+  /** optional file for phones and tablets (below md); falls back to `media` */
+  mobileMedia?: string;
   /** tint over the media — the home page runs lighter than inner pages */
   tint?: string;
   // replaces the CTA row (inner pages pass their breadcrumb here)
@@ -44,7 +47,7 @@ export default function HomeHero({
   return (
     <div ref={containerRef} className="relative h-dvh">
       <motion.section className="sticky top-0 bg-dark overflow-hidden" style={{ height }}>
-        <MediaBackground src={media} tint={tint} className="h-full">
+        <MediaBackground src={media} mobileSrc={mobileMedia} tint={tint} className="h-full">
           <motion.div
             initial="hidden"
             animate={ready ? "visible" : "hidden"}

@@ -107,7 +107,9 @@ export default function ProjectForm({
           </SectionCard>
           <SectionCard title="Media">
             <MediaField name="coverImage" label="Cover image" hint="Required to publish. Used on cards, the Home showcase and social shares." />
+            <MediaField name="coverImageMobile" label="Home showcase image on phones & tablets" hint="Optional. Replaces the cover image in the Home showcase on screens under 768px." />
             <MediaField name="heroMedia" label="Hero image or video" accept="image/*,video/mp4" hint="Falls back to the cover image." />
+            <MediaField name="heroMediaMobile" label="Hero on phones & tablets" accept="image/*,video/mp4" hint="Optional. Replaces the hero on screens under 768px." />
             <MediaListField name="gallery" label="Gallery" />
           </SectionCard>
         </TabsContent>

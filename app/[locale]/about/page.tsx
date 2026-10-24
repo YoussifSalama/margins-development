@@ -49,7 +49,7 @@ export default async function About({ params }: PageProps<"/[locale]/about">) {
   return (
     <div className="bg-dark">
       <PageSeoScripts seo={seo} />
-      <PageHero title={hero.title} description={hero.description} current={hero.title} image={hero.image || heroImage} />
+      <PageHero title={hero.title} description={hero.description} current={hero.title} image={hero.image || heroImage} mobileImage={hero.mobileImage} />
       {/* bg-dark shows through the rounded top corners — it matches the hero's bottom gradient,
          so the section starts fully below the first screen yet the corners still read */}
       <div className="bg-dark">
@@ -97,30 +97,20 @@ export default async function About({ params }: PageProps<"/[locale]/about">) {
             </StaggerReveal>
           </div>
 
-          <div className="container mt-24 grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-3">
-            <StaggerReveal className="md:sticky md:top-24 md:self-start">
-              <motion.h2
-                variants={fadeUp}
-                className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] font-light tracking-[2px] text-black"
-              >
-                {chairman.eyebrow}
-                <br />
-                <span className="text-accent uppercase">
-                  {chairman.title}
-                </span>
-              </motion.h2>
-            </StaggerReveal>
-            <div className="flex flex-col gap-16 col-span-2">
-              {chairman.people.map((person, i) => (
-                <ChairmanCard
-                  key={person.name}
-                  image={person.image || chairmanImages[i % chairmanImages.length]}
-                  name={person.name}
-                  credential={person.credential}
-                  description={chairman.message}
-                />
-              ))}
-            </div>
+          <div className="container mt-24 flex flex-col gap-24">
+            {/* each person carries their own heading + message; section-level copy is the fallback */}
+            {chairman.people.map((person, i) => (
+              <ChairmanCard
+                key={person.name}
+                eyebrow={person.eyebrow || chairman.eyebrow}
+                title={person.title || chairman.title}
+                image={person.image || chairmanImages[i % chairmanImages.length]}
+                name={person.name}
+                credential={person.credential}
+                description={person.message || chairman.message}
+                flipped={i % 2 === 1}
+              />
+            ))}
           </div>
         </section>
       </div>

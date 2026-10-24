@@ -41,6 +41,7 @@ export default async function ProjectDetail({ params }: PageProps<"/[locale]/pro
       <ProjectHero
         name={project.name}
         heroMedia={project.heroMedia}
+        heroMediaMobile={project.heroMediaMobile}
         gallery={project.gallery}
         tagline={project.tagline}
         ctaProjects={t("ctaOurProjects")}

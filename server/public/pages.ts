@@ -22,7 +22,7 @@ const stripGold = (value: string) => value.replace(/<\/?gold>/g, "").replace(/\s
 
 const livePosts = () => ({ status: "published" as const, publishedAt: { $lte: new Date() } });
 
-const projectCard = (p: ProjectDoc, locale: Locale): ProjectCard => ({ slug: p.slug, name: pick(p.name, locale), location: pick(p.location, locale), image: media(p.coverImage) });
+const projectCard = (p: ProjectDoc, locale: Locale): ProjectCard => ({ slug: p.slug, name: pick(p.name, locale), location: pick(p.location, locale), image: media(p.coverImage), mobileImage: media(p.coverImageMobile) });
 
 function postCard(p: PostDoc, categories: PostCategoryDoc[], locale: Locale): PostCard {
   const category = categories.find((c) => c._id === p.categoryId);
@@ -180,6 +180,7 @@ export const getProjectPage = cachedLoader(
       summary: pick(p.summary, locale),
       description: pick(p.description, locale),
       heroMedia: media(p.heroMedia) || media(p.coverImage),
+      heroMediaMobile: media(p.heroMediaMobile),
       gallery: p.gallery.map(media).filter(Boolean),
       facts: { year: p.year ? String(p.year) : "", location: pick(p.location, locale), sector: pick(p.sector, locale), size: pick(p.sizeLabel, locale), status: p.buildStatus },
       storyBlocks: p.storyBlocks.map((b) => ({ heading: pick(b.heading, locale), paragraphs: pick(b.body, locale).split(/\n{2,}/).filter(Boolean), images: b.images.map(media).filter(Boolean) })),

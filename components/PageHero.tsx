@@ -9,6 +9,7 @@ export default function PageHero({
   current,
   crumbs,
   image,
+  mobileImage,
 }: {
   title: string;
   description: string;
@@ -16,9 +17,10 @@ export default function PageHero({
   /** full trail after Home; defaults to just `current` */
   crumbs?: Crumb[];
   image: string;
+  mobileImage?: string;
 }) {
   return (
-    <HomeHero title={title} descriptionHtml={description} media={image}>
+    <HomeHero title={title} descriptionHtml={description} media={image} mobileMedia={mobileImage}>
       <div className="mt-4">
         <Breadcrumb items={crumbs ?? [{ label: current }]} />
       </div>

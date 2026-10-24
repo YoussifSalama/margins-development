@@ -79,7 +79,9 @@ export type ProjectDoc = {
   unitsDescription: Localized | null;
   address: Localized | null;
   coverImage: string | null;
+  coverImageMobile: string | null;
   heroMedia: string | null;
+  heroMediaMobile: string | null;
   mapImage: string | null;
   gallery: string[];
   lat: number | null;

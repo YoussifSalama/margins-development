@@ -1,13 +1,15 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import Image from "next/image";
+import ResponsiveMedia from "@/components/ResponsiveMedia";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Link } from "@/i18n/navigation";
 import { FiMapPin } from "react-icons/fi";
 
 type ShowcaseProject = {
   image: string;
+  /** phones and tablets (below md) */
+  mobileImage?: string;
   eyebrow: string;
   title: string;
   location: string;
@@ -34,7 +36,7 @@ function ProjectRevealCard({
       <div ref={ref} className="h-dvh w-full" />
       <div className="pointer-events-none sticky top-0 h-dvh w-full overflow-hidden" style={{ zIndex: z, marginTop: "-100dvh" }}>
         <motion.div className="group pointer-events-auto absolute inset-0" style={{ x, y }}>
-          <Image src={project.image} alt={project.title} fill sizes="100vw" className="object-cover" />
+          <ResponsiveMedia src={project.image} mobileSrc={project.mobileImage} alt={project.title} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
           <Link href={`/projects/${project.slug}`} aria-label={project.title} className="absolute inset-0 z-10" />
           <div className="pointer-events-none relative flex h-full flex-col justify-end gap-2 px-6 pb-16 text-white sm:px-12 lg:px-20">

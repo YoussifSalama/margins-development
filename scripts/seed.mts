@@ -69,7 +69,7 @@ const unitImages = { apartments: "/pages/projects/location/unit-1.jpg", resident
 
 const blankProject = (): Omit<ProjectDoc, "_id" | "slug" | "name" | "location" | "position"> => ({
   status: "draft", buildStatus: "planning", year: null, tagline: null, summary: null, description: null, sector: null, sizeLabel: null,
-  locationDescription: null, facilitiesDescription: null, unitsDescription: null, address: null, coverImage: null, heroMedia: null,
+  locationDescription: null, facilitiesDescription: null, unitsDescription: null, address: null, coverImage: null, coverImageMobile: null, heroMedia: null, heroMediaMobile: null,
   mapImage: null, gallery: [], lat: null, lng: null, storyBlocks: [], places: [], amenityIds: [], units: [], investment: null,
   seo: null, createdAt: now, updatedAt: now,
 });
@@ -321,6 +321,9 @@ const sections: Record<string, Record<string, unknown>> = {
       title: l(en.about.chairman.title, ar.about.chairman.title),
       message: l(en.about.chairman.description, ar.about.chairman.description),
       people: en.about.chairman.people.map((person, i) => ({
+        eyebrow: l(en.about.chairman.eyebrow, ar.about.chairman.eyebrow),
+        title: l(en.about.chairman.title, ar.about.chairman.title),
+        message: l(en.about.chairman.description, ar.about.chairman.description),
         name: l(person.name, ar.about.chairman.people[i].name),
         credential: l(person.credential, ar.about.chairman.people[i].credential),
         image: [unsplash("1560250097-0b93528c311a", 800), unsplash("1500648767791-00dcc994a43e", 800)][i] ?? "",

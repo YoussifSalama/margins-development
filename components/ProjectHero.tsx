@@ -1,22 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useLocale } from "next-intl";
 import { motion, useScroll, useTransform } from "motion/react";
 import Button from "@/components/Button";
 import { heroEnterDelay } from "@/lib/motion";
 import { useSplashDone } from "@/hooks/useSplashDone";
 
-const isVideo = (src: string) => /\.(mp4|webm)(\?|$)/i.test(src);
-
-function Media({ src, name, priority }: { src: string; name: string; priority?: boolean }) {
-  return isVideo(src) ? (
-    <video src={src} autoPlay muted loop playsInline className="absolute inset-0 size-full object-cover" />
-  ) : (
-    <Image src={src} alt={name} fill sizes="(min-width: 1024px) 60vw, 90vw" className="object-cover" priority={priority} />
-  );
-}
+import ResponsiveMedia from "@/components/ResponsiveMedia";
 
 // One-shot intro: ONE flex row (real CSS `gap`, so spacing can't drift) carries the hero card
 // and up to this many gallery shots, sliding in together as a single train. The hero card is
@@ -36,6 +27,7 @@ const EXPAND = 0.9;
 export default function ProjectHero({
   name,
   heroMedia,
+  heroMediaMobile,
   gallery,
   tagline,
   ctaProjects,
@@ -43,6 +35,8 @@ export default function ProjectHero({
 }: {
   name: string;
   heroMedia: string;
+  /** phones and tablets (below md); falls back to `heroMedia` */
+  heroMediaMobile?: string;
   gallery: string[];
   tagline: string;
   ctaProjects: string;
@@ -87,14 +81,14 @@ export default function ProjectHero({
               {phase === "intro" && (
                 <motion.div layoutId="hero-media" className="relative shrink-0 overflow-hidden" style={{ width: CARD_W, height: CARD_H }}>
                   <div style={{ transform: rtl ? "scaleX(-1)" : undefined, position: "absolute", inset: 0 }}>
-                    <Media src={heroMedia} name={name} priority />
+                    <ResponsiveMedia src={heroMedia} mobileSrc={heroMediaMobile} alt={name} priority />
                   </div>
                 </motion.div>
               )}
               {fillers.map((src) => (
                 <div key={src} className="relative hidden shrink-0 overflow-hidden md:block" style={{ width: CARD_W, height: CARD_H }}>
                   <div style={{ transform: rtl ? "scaleX(-1)" : undefined, position: "absolute", inset: 0 }}>
-                    <Media src={src} name="" />
+                    <ResponsiveMedia src={src} />
                   </div>
                 </div>
               ))}
@@ -109,7 +103,7 @@ export default function ProjectHero({
             onLayoutAnimationComplete={() => phase === "growing" && setPhase("filled")}
             className="absolute inset-0 -z-10"
           >
-            <Media src={heroMedia} name={name} priority />
+            <ResponsiveMedia src={heroMedia} mobileSrc={heroMediaMobile} alt={name} priority />
           </motion.div>
         )}
 

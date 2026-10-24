@@ -32,6 +32,7 @@ export default async function MediaListing({ locale, query, categoryKey }: { loc
         current={hero.title}
         crumbs={category ? [{ label: hero.title, href: mediaHref() }, { label: category.name }] : undefined}
         image={hero.image || fallbackHero}
+        mobileImage={hero.mobileImage}
       />
       <PostsListing categories={categories} category={category?.key} featured={featured} posts={posts} pagination={pagination} />
     </div>

@@ -3,10 +3,13 @@ import { seoHelp } from "./help";
 
 const GOLD = "Wrap words in <gold>…</gold> to highlight them. A new line starts a new line on the site.";
 
-const hero = (withImage = true): FieldDef[] => [
+const MOBILE_HINT = "Optional. Shown on phones and tablets (screens under 768px) instead of the one above.";
+
+const hero = (withImage = true, withMobile = withImage): FieldDef[] => [
   { kind: "text", name: "title", label: "Title", required: true, hint: GOLD },
   { kind: "rich", basic: true, name: "description", label: "Description" },
   ...(withImage ? [{ kind: "media", name: "image", label: "Background image" } as FieldDef] : []),
+  ...(withMobile ? [{ kind: "media", name: "mobileImage", label: "Background image on phones & tablets", hint: MOBILE_HINT } as FieldDef] : []),
 ];
 
 // Same group on every page; entities carry the same shape in their own `seo` column.
@@ -47,6 +50,7 @@ export const pages = {
           { kind: "text", name: "title", label: "Title", required: true },
           { kind: "textarea", name: "subtitle", label: "Subtitle", max: 600 },
           { kind: "media", name: "media", label: "Background image or video", accept: "image/*,video/mp4" },
+          { kind: "media", name: "mobileMedia", label: "Background on phones & tablets", accept: "image/*,video/mp4", hint: MOBILE_HINT },
         ],
       },
       about: {
@@ -143,15 +147,19 @@ export const pages = {
       chairman: {
         label: "Chairman",
         fields: [
-          { kind: "text", name: "eyebrow", label: "Eyebrow" },
-          { kind: "text", name: "title", label: "Title" },
-          { kind: "textarea", name: "message", label: "Message" },
+          { kind: "text", name: "eyebrow", label: "Default eyebrow", hint: "Used for any person without their own." },
+          { kind: "text", name: "title", label: "Default title", hint: "Used for any person without their own." },
+          { kind: "textarea", name: "message", label: "Default message", hint: "Used for any person without their own." },
           {
             kind: "items", name: "people", label: "People", itemLabel: "Person", maxItems: 6,
+            hint: "Cards alternate: photo left, then photo right, and so on.",
             fields: [
+              { kind: "text", name: "eyebrow", label: "Eyebrow", hint: 'e.g. "Message From"' },
+              { kind: "text", name: "title", label: "Title", hint: 'e.g. "The Chairman", "The CFO"' },
               { kind: "text", name: "name", label: "Name", required: true },
               { kind: "text", name: "credential", label: "Credential" },
               { kind: "media", name: "image", label: "Photo" },
+              { kind: "textarea", name: "message", label: "Message" },
             ],
           },
         ],
@@ -191,7 +199,7 @@ export const pages = {
     path: "/careers",
     description: "Careers page copy plus the info shared by every job. Jobs live under Content → Jobs.",
     sections: {
-      hero: { label: "Hero", fields: hero() },
+      hero: { label: "Hero", fields: hero(true, false) },
       discover: {
         label: "Discover",
         fields: [
@@ -375,6 +383,7 @@ export const pages = {
         fields: [
           { kind: "textarea", name: "ctaHeading", label: "Call-to-action heading", max: 300 },
           { kind: "media", name: "ctaMedia", label: "Call-to-action background", accept: "image/*,video/mp4" },
+          { kind: "media", name: "ctaMobileMedia", label: "Call-to-action background on phones & tablets", accept: "image/*,video/mp4", hint: MOBILE_HINT },
           { kind: "textarea", name: "newsletterDisclaimer", label: "Newsletter disclaimer", max: 600, hint: "Wrap the policy link text in <link>…</link>." },
           { kind: "text", name: "copyright", label: "Copyright line", hint: "Use {year} for the current year." },
         ],

@@ -1,9 +1,10 @@
-import Image from "next/image";
 import { ReactNode } from "react";
+import ResponsiveMedia from "@/components/ResponsiveMedia";
 
 type Props = {
   src: string;
-  type?: "image" | "video";
+  /** shown instead of `src` below the md breakpoint (phones and tablets) */
+  mobileSrc?: string;
   overlay?: boolean;
   /** flat tint class (e.g. "bg-dark/20") straight over the media — hero sections only, not the footer CTA */
   tint?: string;
@@ -13,28 +14,15 @@ type Props = {
 
 export default function MediaBackground({
   src,
-  type,
+  mobileSrc,
   overlay = true,
   tint,
   className = "",
   children,
 }: Props) {
-  const isVideo = type === "video" || /\.(mp4|webm|mov)$/i.test(src);
-
   return (
     <div className={`relative isolate overflow-hidden ${className}`}>
-      {isVideo ? (
-        <video
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 -z-10 size-full object-cover"
-        />
-      ) : (
-        <Image src={src} alt="" fill sizes="100vw" className="-z-10 object-cover" />
-      )}
+      <ResponsiveMedia src={src} mobileSrc={mobileSrc} className="-z-10" />
       {tint && <div aria-hidden className={`absolute inset-0 -z-10 ${tint}`} />}
       {overlay && (
         <div

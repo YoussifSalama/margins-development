@@ -42,6 +42,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         ctaProjects={t("ctaProjects")}
         ctaAbout={t("ctaAbout")}
         media={hero.media || "/pages/home/hero.png"}
+        mobileMedia={hero.mobileMedia}
         tint="bg-dark/15"
       />
 
@@ -64,6 +65,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               location: project.location,
               eyebrow: showcase.eyebrow,
               image: project.image,
+              mobileImage: project.mobileImage,
               slug: project.slug,
             }));
 

@@ -50,6 +50,8 @@ const byName: Record<string, string> = {
   media: "The background of this block — a picture or a short MP4 video.",
   coverImage: "The main picture: used on cards, at the top of the page and when the page is shared. Required before publishing.",
   heroMedia: "The large picture or video at the very top of the page. If empty, the cover image is used.",
+  coverImageMobile: "Optional portrait version of the cover for the Home showcase on phones and tablets (screens under 768px).",
+  heroMediaMobile: "Optional portrait version of the hero for phones and tablets (screens under 768px). If empty, the hero above is used.",
   gallery: "Extra pictures shown in the gallery on the page, in this order.",
   logo: "The logo file. A transparent PNG or WebP looks best.",
   mapImage: "The map picture shown in the Location section.",

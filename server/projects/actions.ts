@@ -45,7 +45,9 @@ export const saveProject = defineAction(projectInput.safeExtend({ id: id.optiona
   const values = {
     ...input,
     coverImage: orNull(input.coverImage),
+    coverImageMobile: orNull(input.coverImageMobile),
     heroMedia: orNull(input.heroMedia),
+    heroMediaMobile: orNull(input.heroMediaMobile),
     mapImage: orNull(input.mapImage),
     units,
     investment,

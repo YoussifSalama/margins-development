@@ -36,15 +36,22 @@ const wipe = (rtl: boolean): Variants => ({
 });
 
 export default function ChairmanCard({
+  eyebrow,
+  title,
   image,
   name,
   credential,
   description,
+  flipped = false,
 }: {
+  eyebrow: string;
+  title: string;
   image: string;
   name: string;
   credential: string;
   description: string;
+  /** photo on the end side instead of the start side (from lg up) */
+  flipped?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const shown = useForwardInView(ref, 0.2);
@@ -60,46 +67,57 @@ export default function ChairmanCard({
       initial="hidden"
       animate={shown ? "visible" : "hidden"}
       variants={stagger}
-      className="flex flex-col gap-14.25 lg:flex-row"
+      className="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-3"
     >
-      <div className="w-full max-w-[433.36px]">
-        {/* observed on an unclipped wrapper: the observer counts the photo's own clip-path,
+      <motion.h2
+        variants={fadeUp}
+        className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] font-light tracking-[2px] text-black md:sticky md:top-24 md:self-start"
+      >
+        {eyebrow}
+        <br />
+        <span className="text-accent uppercase">{title}</span>
+      </motion.h2>
+      <div
+        className={`flex flex-col gap-14.25 md:col-span-2 ${flipped ? "lg:flex-row-reverse" : "lg:flex-row"}`}
+      >
+        <div className="w-full max-w-[433.36px]">
+          {/* observed on an unclipped wrapper: the observer counts the photo's own clip-path,
            so the quarter-size photo could never report 70% visible itself */}
-        <div ref={photoRef}>
-          <motion.div
-            variants={wipe(rtl)}
-            animate={photoShown ? "visible" : "hidden"}
-            className="relative aspect-[433.36/545] w-full overflow-hidden rounded-md"
+          <div ref={photoRef}>
+            <motion.div
+              variants={wipe(rtl !== flipped)}
+              animate={photoShown ? "visible" : "hidden"}
+              className="relative aspect-[433.36/545] w-full overflow-hidden rounded-md"
+            >
+              <Image
+                src={image}
+                alt={name}
+                fill
+                sizes="(min-width: 1024px) 433px, 100vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </div>
+          <motion.p
+            variants={fadeUp}
+            className="mt-6.5 text-center text-[24px] leading-7 font-semibold tracking-[-0.32px] text-black"
           >
-            <Image
-              src={image}
-              alt={name}
-              fill
-              sizes="(min-width: 1024px) 433px, 100vw"
-              className="object-cover"
-            />
-          </motion.div>
+            {name}
+          </motion.p>
+          <motion.p
+            variants={fadeUp}
+            className="mt-3.25 text-center text-[20px] leading-7 tracking-[-0.32px] text-dark"
+          >
+            {credential}
+          </motion.p>
         </div>
         <motion.p
           variants={fadeUp}
-          className="mt-6.5 text-center text-[24px] leading-7 font-semibold tracking-[-0.32px] text-black"
+          className="max-w-md text-[20px] leading-7 tracking-[-0.32px] text-black"
         >
-          {name}
-        </motion.p>
-        <motion.p
-          variants={fadeUp}
-          className="mt-3.25 text-center text-[20px] leading-7 tracking-[-0.32px] text-dark"
-        >
-          {credential}
+          {description}
         </motion.p>
       </div>
-      <motion.p
-        variants={fadeUp}
-        className="max-w-md text-[20px] leading-7 tracking-[-0.32px] text-black"
-      >
-        {description}
-      </motion.p>
     </motion.div>
   );
 }
-

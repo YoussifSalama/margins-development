@@ -124,7 +124,7 @@ export async function loadSite(locale: Locale): Promise<Site> {
     shareImage: organization.shareImage || "",
     contact: { phone: contact.phone, whatsapp: contact.whatsapp, email: contact.email, address: contact.address, mapUrl: contact.mapUrl },
     socials: ((s.socials.items as { platform: string; url: string }[]) ?? []).filter((social) => social.url),
-    footer: { ctaHeading: footer.ctaHeading, ctaMedia: footer.ctaMedia, newsletterDisclaimer: footer.newsletterDisclaimer, copyright: footer.copyright },
+    footer: { ctaHeading: footer.ctaHeading, ctaMedia: footer.ctaMedia, ctaMobileMedia: footer.ctaMobileMedia, newsletterDisclaimer: footer.newsletterDisclaimer, copyright: footer.copyright },
   };
 }
 

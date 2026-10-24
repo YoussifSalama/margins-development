@@ -83,7 +83,7 @@ export default function Footer({ site }: { site: Site }) {
         style={{ minHeight: ctaMinHeight }}
         className="flex flex-col"
       >
-        <MediaBackground src={site.footer.ctaMedia || CTA_MEDIA} className="flex flex-1 flex-col">
+        <MediaBackground src={site.footer.ctaMedia || CTA_MEDIA} mobileSrc={site.footer.ctaMobileMedia} className="flex flex-1 flex-col">
           <div className="flex flex-1 flex-col items-center justify-end px-6 py-28 text-center">
             <h2 className="max-w-xl text-[clamp(2rem,4vw+1rem,3.5rem)] font-light leading-[1.05] tracking-[2px] font-heading">
               {site.footer.ctaHeading || t("cta")}

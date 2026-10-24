@@ -15,7 +15,7 @@ export type Site = {
   shareImage: string;
   contact: { phone: string; whatsapp: string; email: string; address: string; mapUrl: string };
   socials: SocialLink[];
-  footer: { ctaHeading: string; ctaMedia: string; newsletterDisclaimer: string; copyright: string };
+  footer: { ctaHeading: string; ctaMedia: string; ctaMobileMedia: string; newsletterDisclaimer: string; copyright: string };
 };
 
 export type PageSeo = {
@@ -64,13 +64,15 @@ export type Post = PostCard & {
   event: { startsAt: string; endsAt: string | null; venue: string; registrationUrl: string | null; upcoming: boolean } | null;
 };
 
-export type ProjectCard = { slug: string; name: string; location: string; image: string };
+export type ProjectCard = { slug: string; name: string; location: string; image: string; /** Home showcase on phones & tablets */ mobileImage: string };
 
 export type ProjectDetail = ProjectCard & {
   tagline: string;
   summary: string;
   description: string;
   heroMedia: string;
+  /** below md; falls back to heroMedia */
+  heroMediaMobile: string;
   gallery: string[];
   facts: { year: string; location: string; sector: string; size: string; status: "planning" | "under_construction" | "completed" };
   storyBlocks: { heading: string; paragraphs: string[]; images: string[] }[];
@@ -100,10 +102,11 @@ export type Partner = { name: string; logo: string | null; url: string | null };
 
 // ─── page bodies ─────────────────────────────────────────────────────────────
 
-type Hero = { title: string; description: string; image: string };
+/** `mobileImage` is only offered on pages with a fullscreen hero (about, media, contact) */
+type Hero = { title: string; description: string; image: string; mobileImage?: string };
 
 export type HomePage = {
-  hero: { title: string; subtitle: string; media: string };
+  hero: { title: string; subtitle: string; media: string; mobileMedia: string };
   partners: Partner[];
   about: { text: string; stats: { value: string; label: string }[] };
   showcase: { eyebrow: string; projects: ProjectCard[] };
@@ -118,7 +121,7 @@ export type AboutPage = {
   whoWeAre: { eyebrow: string; title: string; description: string };
   stats: { value: string; label: string; caption: string; image: string }[];
   statement: { title: string; description: string };
-  chairman: { eyebrow: string; title: string; message: string; people: { name: string; credential: string; image: string }[] };
+  chairman: { eyebrow: string; title: string; message: string; people: { eyebrow: string; title: string; message: string; name: string; credential: string; image: string }[] };
 };
 
 export type Company = {

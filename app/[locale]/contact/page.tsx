@@ -49,7 +49,7 @@ export default async function Contact({ params }: PageProps<"/[locale]/contact">
   return (
     <div className="bg-dark">
       <PageSeoScripts seo={seo} />
-      <PageHero title={hero.title} description={hero.description} current={hero.title} image={hero.image || heroImage} />
+      <PageHero title={hero.title} description={hero.description} current={hero.title} image={hero.image || heroImage} mobileImage={hero.mobileImage} />
 
       <section
         className="bg-dark bg-cover bg-center py-16 lg:py-24"
