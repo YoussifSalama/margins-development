@@ -111,7 +111,9 @@ export default function ProjectHero({
         <div aria-hidden className="absolute inset-0 -z-10 bg-dark/20" />
 
         <div className="container flex w-full flex-col gap-11.5 pb-12 sm:pb-16 lg:pb-24.75">
-          <div className="flex flex-col items-end justify-between gap-10 lg:flex-row lg:items-end">
+          {/* phones: stack on the physical right in both languages (RTL would otherwise flip items-end to the left);
+              desktop: title at inline-start, tagline block at inline-end */}
+          <div className="flex flex-col items-end justify-between gap-10 rtl:items-start lg:flex-row lg:items-end">
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
@@ -125,7 +127,7 @@ export default function ProjectHero({
               initial={{ opacity: 0, y: 16 }}
               animate={phase === "filled" ? { opacity: 1, y: 0 } : {}}
               transition={{ type: "spring", duration: 0.9, bounce: 0.3 }}
-              className="flex flex-col items-end gap-6 text-right text-white sm:max-w-md"
+              className="flex flex-col items-end gap-6 text-right text-white rtl:items-start sm:max-w-md lg:rtl:items-end lg:rtl:text-left"
             >
               <p className="text-base leading-6 tracking-[-0.16px]">{tagline}</p>
               <div className="flex items-center gap-4">
