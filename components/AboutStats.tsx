@@ -34,7 +34,7 @@ export default function AboutStats({
         initial="hidden"
         animate={textShown ? "visible" : "hidden"}
         variants={fadeUp}
-        className="mt-16 mx-auto max-w-7xl! text-center text-[22px] leading-[1.4] tracking-[-0.6px] text-foreground sm:mt-24 sm:text-[34px] lg:mt-36"
+        className="container mt-16 max-w-7xl! text-center text-[22px] leading-[1.4] tracking-[-0.6px] text-foreground sm:mt-24 sm:text-[34px] lg:mt-36"
       >
         {aboutText}
       </motion.p>
