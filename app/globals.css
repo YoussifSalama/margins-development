@@ -127,6 +127,21 @@ body {
   }
 }
 
+/* sliders inside a .container: the track runs edge to edge while its first slide still lines up with the text */
+@media (max-width: 1023px) {
+  .bleed {
+    margin-inline: -2rem;
+    padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 750px) {
+  .bleed {
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+  }
+}
+
 /* pure-CSS scroll for VerticalMarquee — no client JS needed */
 @keyframes marquee-up {
   from {

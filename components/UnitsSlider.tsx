@@ -32,7 +32,7 @@ export default function UnitsSlider({
         </div>
       </div>
 
-      <CarouselContent className="-ml-4">
+      <CarouselContent viewportClassName="bleed" className="-ml-4">
         {units.map((unit) => (
           <CarouselItem
             key={unit.key}

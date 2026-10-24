@@ -28,7 +28,7 @@ export default function MoreProjectsSlider({
         </div>
       </div>
 
-      <CarouselContent className="-ml-8">
+      <CarouselContent viewportClassName="bleed" className="-ml-8">
         {projects.map((project) => (
           <CarouselItem key={project.slug} className="w-[min(85vw,480px)] pl-8 sm:w-125 lg:w-171">
             <ProjectCard

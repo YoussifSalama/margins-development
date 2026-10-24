@@ -116,7 +116,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </div>
           </div>
 
-          <CarouselContent>
+          <CarouselContent viewportClassName="bleed">
             {newsSlides.map((slide, i) => (
               <CarouselItem key={i} className="w-full">
                 <NewsEventsSlide posts={slide} />
