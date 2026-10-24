@@ -59,7 +59,7 @@ export default async function Contact({ params }: PageProps<"/[locale]/contact">
         }}
       >
         <div className="container grid grid-cols-1 gap-16 lg:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <Reveal>
               <h2 className="max-w-2xl whitespace-pre-line font-heading text-[clamp(2.5rem,4vw+2rem,6rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] font-normal tracking-[-2.16px] text-accent">
                 {form.title}

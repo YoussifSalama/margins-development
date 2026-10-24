@@ -113,10 +113,16 @@ body {
   max-width: 90%;
 }
 
-/* phones and small tablets: a real side gutter instead of a 2.5% sliver */
-@media (max-width: 750px) {
+/* below lg: a real side gutter (padding survives a max-w-* override, a % width doesn't) */
+@media (max-width: 1023px) {
   .container {
     max-width: 100%;
+    padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 750px) {
+  .container {
     padding-inline: 1.25rem;
   }
 }
