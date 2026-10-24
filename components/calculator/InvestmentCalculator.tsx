@@ -164,7 +164,9 @@ export default function InvestmentCalculator({
           ))}
         </motion.ol>
 
-        <div className="w-full overflow-x-clip">
+        {/* clips the step slide-in; the -mx/px pair moves the clip edge 1rem out so the cards'
+            ring and hover shadow aren't cut off at the sides */}
+        <div className="-mx-4 overflow-x-clip px-4">
           {/* no initial={false}: it would also mute the first-load stagger of the cards inside the step */}
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
