@@ -8,7 +8,7 @@ import { FiMapPin } from "react-icons/fi";
 
 type ShowcaseProject = {
   image: string;
-  /** phones and tablets (below md) */
+  /** phones and tablets (below 1024px) */
   mobileImage?: string;
   eyebrow: string;
   title: string;

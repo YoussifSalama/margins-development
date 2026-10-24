@@ -3,7 +3,7 @@ import { seoHelp } from "./help";
 
 const GOLD = "Wrap words in <gold>…</gold> to highlight them. A new line starts a new line on the site.";
 
-const MOBILE_HINT = "Optional. Shown on phones and tablets (screens under 768px) instead of the one above.";
+const MOBILE_HINT = "Optional. Shown on phones and tablets (screens under 1024px) instead of the one above.";
 
 const hero = (withImage = true, withMobile = withImage): FieldDef[] => [
   { kind: "text", name: "title", label: "Title", required: true, hint: GOLD },

@@ -35,7 +35,7 @@ export default function ProjectHero({
 }: {
   name: string;
   heroMedia: string;
-  /** phones and tablets (below md); falls back to `heroMedia` */
+  /** phones and tablets (below 1024px); falls back to `heroMedia` */
   heroMediaMobile?: string;
   gallery: string[];
   tagline: string;

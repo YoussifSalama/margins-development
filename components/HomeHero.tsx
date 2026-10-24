@@ -28,7 +28,7 @@ export default function HomeHero({
   ctaProjects?: string;
   ctaAbout?: string;
   media: string;
-  /** optional file for phones and tablets (below md); falls back to `media` */
+  /** optional file for phones and tablets (below 1024px); falls back to `media` */
   mobileMedia?: string;
   /** tint over the media — the home page runs lighter than inner pages */
   tint?: string;

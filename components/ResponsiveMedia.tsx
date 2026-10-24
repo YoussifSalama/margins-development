@@ -14,7 +14,7 @@ function Media({ src, alt, sizes, priority, className }: One) {
 
 /**
  * Image or video filling its (relative) parent. With `mobileSrc`, that file replaces `src`
- * below the md breakpoint (phones and tablets). `sizes` must be a single length (e.g. "100vw").
+ * below the lg breakpoint, 1024px (phones and tablets). `sizes` must be a single length (e.g. "100vw").
  */
 export default function ResponsiveMedia({
   src,
@@ -36,8 +36,8 @@ export default function ResponsiveMedia({
   // smallest srcset candidate, so it costs ~nothing; two videos still both load — move to <source media> if that bites.
   return (
     <>
-      <Media src={src} alt={alt} sizes={`(min-width: 768px) ${sizes}, 1px`} priority={priority} className={`hidden md:block ${className}`} />
-      <Media src={mobileSrc} alt={alt} sizes={`(min-width: 768px) 1px, ${sizes}`} priority={priority} className={`md:hidden ${className}`} />
+      <Media src={src} alt={alt} sizes={`(min-width: 1024px) ${sizes}, 1px`} priority={priority} className={`hidden lg:block ${className}`} />
+      <Media src={mobileSrc} alt={alt} sizes={`(min-width: 1024px) 1px, ${sizes}`} priority={priority} className={`lg:hidden ${className}`} />
     </>
   );
 }

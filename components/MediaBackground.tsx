@@ -3,7 +3,7 @@ import ResponsiveMedia from "@/components/ResponsiveMedia";
 
 type Props = {
   src: string;
-  /** shown instead of `src` below the md breakpoint (phones and tablets) */
+  /** shown instead of `src` below 1024px (phones and tablets) */
   mobileSrc?: string;
   overlay?: boolean;
   /** flat tint class (e.g. "bg-dark/20") straight over the media — hero sections only, not the footer CTA */
