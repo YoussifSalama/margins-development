@@ -55,7 +55,7 @@ export default function HomeHero({
             transition={{ ...enterSpring, delay: heroEnterDelay }}
             className="flex h-full flex-col items-center justify-end gap-6 px-6 pb-20 text-center text-white"
           >
-            <h1 className="font-heading text-[clamp(2.5rem,4vw+2rem,3.5rem)] leading-[1.05] tracking-[2px]">
+            <h1 className="font-heading text-[clamp(2.5rem,4vw+2rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
               <Gold text={title} />
             </h1>
             {/* `description` is plain text and is rendered as text. Only `descriptionHtml` — CMS rich text,

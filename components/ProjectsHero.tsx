@@ -83,7 +83,7 @@ export default function ProjectsHero({
           className="flex flex-col items-center gap-10 px-6 text-center text-white sm:gap-16 lg:gap-20"
         >
           <div className="flex flex-col items-center gap-5">
-            <h1 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+            <h1 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
               <Gold text={title} />
             </h1>
             <RichText html={description} className="max-w-lg text-[16px] leading-6 tracking-[-0.16px]" />

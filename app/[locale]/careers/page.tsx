@@ -65,7 +65,7 @@ export default async function Careers({ params }: PageProps<"/[locale]/careers">
           <StaggerReveal className="mt-4 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-32">
             <motion.h1
               variants={fadeUpBounce}
-              className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px] lg:max-w-204"
+              className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px] lg:max-w-204"
             >
               <Gold text={hero.title} />
             </motion.h1>
@@ -96,7 +96,7 @@ export default async function Careers({ params }: PageProps<"/[locale]/careers">
         <StaggerReveal className="mt-20 text-center sm:mt-32 lg:mt-49">
           <motion.h2
             variants={fadeUpBounce}
-            className="mx-auto max-w-4xl font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]"
+            className="mx-auto max-w-4xl font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]"
           >
             <Gold text={discover.title} />
           </motion.h2>
@@ -165,7 +165,7 @@ export default async function Careers({ params }: PageProps<"/[locale]/careers">
         {/* currently hiring */}
         <div className="mt-20 sm:mt-32 lg:mt-50.75">
           <Reveal>
-            <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+            <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
               <Gold text={hiring.heading} />
             </h2>
           </Reveal>
@@ -179,7 +179,7 @@ export default async function Careers({ params }: PageProps<"/[locale]/careers">
           <StaggerReveal className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-32">
             <motion.h2
               variants={fadeUpBounce}
-              className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px] lg:max-w-204"
+              className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px] lg:max-w-204"
             >
               <Gold text={values.title} />
             </motion.h2>

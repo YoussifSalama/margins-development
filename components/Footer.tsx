@@ -85,7 +85,7 @@ export default function Footer({ site }: { site: Site }) {
       >
         <MediaBackground src={site.footer.ctaMedia || CTA_MEDIA} mobileSrc={site.footer.ctaMobileMedia} className="flex flex-1 flex-col">
           <div className="flex flex-1 flex-col items-center justify-end px-6 py-28 text-center">
-            <h2 className="max-w-xl text-[clamp(2rem,4vw+1rem,3.5rem)] font-light leading-[1.05] tracking-[2px] font-heading">
+            <h2 className="max-w-xl text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] font-light leading-[1.05] tracking-[2px] font-heading">
               {site.footer.ctaHeading || t("cta")}
             </h2>
             <div className="mt-[31px] flex gap-2">

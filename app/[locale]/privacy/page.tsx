@@ -16,7 +16,7 @@ export default async function Privacy({ params }: PageProps<"/[locale]/privacy">
     <div className="bg-background px-6 pt-40 pb-24">
       <PageSeoScripts seo={seo} />
       <article className="container max-w-3xl">
-        <h1 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.1] text-dark">{page.title}</h1>
+        <h1 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.1] text-dark">{page.title}</h1>
         <RichText html={page.bodyHtml} className="mt-10 text-foreground/80" />
       </article>
     </div>

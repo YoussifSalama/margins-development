@@ -71,7 +71,7 @@ export default function ChairmanCard({
     >
       <motion.h2
         variants={fadeUp}
-        className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] font-light tracking-[2px] text-black md:sticky md:top-24 md:self-start"
+        className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] font-light tracking-[2px] text-black md:sticky md:top-24 md:self-start"
       >
         {eyebrow}
         <br />

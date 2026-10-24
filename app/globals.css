@@ -109,12 +109,15 @@ body {
 
 .container {
   margin-inline: auto;
+  width: 100%;
   max-width: 90%;
 }
 
+/* phones and small tablets: a real side gutter instead of a 2.5% sliver */
 @media (max-width: 750px) {
   .container {
-    max-width: 95%;
+    max-width: 100%;
+    padding-inline: 1.25rem;
   }
 }
 

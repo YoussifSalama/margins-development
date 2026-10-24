@@ -91,7 +91,7 @@ function JobDetailBody({
               <StaggerReveal stagger={0.12} className="flex flex-col gap-5">
                 <motion.h1
                   variants={fadeUpBounce}
-                  className="font-heading text-[clamp(2rem,4vw+1rem,3.75rem)] leading-[1.09] text-accent"
+                  className="font-heading text-[clamp(2rem,4vw+1rem,3.75rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.09] text-accent"
                 >
                   {role.title}
                 </motion.h1>

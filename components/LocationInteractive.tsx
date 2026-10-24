@@ -45,7 +45,7 @@ export default function LocationInteractive({
     <div className="grid gap-16 lg:grid-cols-2">
       <div className="flex flex-col gap-6">
         <div>
-          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
             {locationLine1} <span className="text-accent">{locationLine2}</span>
           </h2>
           <p className="mt-2 text-base text-story-text">{locationDescription}</p>
@@ -126,7 +126,7 @@ export default function LocationInteractive({
 
       <div className="flex flex-col gap-6">
         <div>
-          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
             {facilitiesLine1} <span className="text-accent">{facilitiesLine2}</span>
           </h2>
           <p className="mt-2 text-base text-story-text">{facilitiesDescription}</p>

@@ -17,7 +17,7 @@ export default async function ProjectsExplore({ locale, company }: { locale: str
     <section className="rounded-t-2xl bg-dark py-24 text-white">
       <div className="container flex flex-col gap-10">
         <Reveal>
-          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
             {t("exploreLine1")}
             <br />
             <span className="text-accent uppercase">{t("exploreLine2")}</span>
@@ -81,7 +81,7 @@ export default async function ProjectsExplore({ locale, company }: { locale: str
           </motion.p>
           <motion.p
             variants={fadeUpBounce}
-            className="text-[clamp(2.5rem,6vw,80px)] leading-tight tracking-[-3.2px]"
+            className="text-[clamp(2.5rem,6vw,80px)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-tight tracking-[-3.2px]"
           >
             {banner.title}
           </motion.p>
@@ -90,7 +90,7 @@ export default async function ProjectsExplore({ locale, company }: { locale: str
 
       <div className="container mt-24 grid gap-10 lg:grid-cols-2">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
-          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+          <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
             <Gold text={values.heading} className="text-accent uppercase" />
           </h2>
         </Reveal>

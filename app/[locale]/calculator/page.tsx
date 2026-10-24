@@ -36,7 +36,7 @@ export default async function CalculatorPage({ params }: PageProps<"/[locale]/ca
         </motion.p>
         <motion.h1
           variants={fadeUpBounce}
-          className="font-heading text-[clamp(2.5rem,4vw+1rem,3.5rem)] text-foreground"
+          className="font-heading text-[clamp(2.5rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] text-foreground"
         >
           <Gold text={intro.heading} />
         </motion.h1>

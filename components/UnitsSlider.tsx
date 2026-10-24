@@ -23,7 +23,7 @@ export default function UnitsSlider({
   return (
     <Carousel opts={{ direction: locale === "ar" ? "rtl" : "ltr", align: "start" }} className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
-        <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px]">
+        <h2 className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px]">
           {headingLine1} <span className="text-accent">{headingLine2}</span>
         </h2>
         <div className="hidden items-center gap-4 sm:flex">

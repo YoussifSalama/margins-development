@@ -21,7 +21,7 @@ export default function ProjectIntro({
       <StaggerReveal className="flex max-w-xl flex-col items-center gap-6 text-center">
         <motion.h2
           variants={fadeUpBounce}
-          className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.05] tracking-[2px] text-foreground"
+          className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.05] tracking-[2px] text-foreground"
         >
           {name}
         </motion.h2>

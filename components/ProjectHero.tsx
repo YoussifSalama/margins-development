@@ -116,7 +116,7 @@ export default function ProjectHero({
               initial={{ opacity: 0, y: 16 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
               transition={{ type: "spring", duration: 0.9, bounce: 0.3, delay: heroEnterDelay }}
-              className="font-heading text-[clamp(2.5rem,4vw+2rem,6rem)] uppercase leading-[1.05] tracking-[2px] text-white"
+              className="font-heading text-[clamp(2.5rem,4vw+2rem,6rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] uppercase leading-[1.05] tracking-[2px] text-white"
             >
               {name}
             </motion.h1>

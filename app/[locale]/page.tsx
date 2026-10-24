@@ -77,7 +77,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                       <StaggerReveal className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-24">
                         <motion.h2
                           variants={fadeUpBounce}
-                          className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.15] text-white"
+                          className="font-heading text-[clamp(2rem,4vw+1rem,3.5rem)] max-sm:text-[clamp(1.5rem,6.5vw,1.875rem)] leading-[1.15] text-white"
                         >
                           <Gold text={approach.heading} />
                         </motion.h2>

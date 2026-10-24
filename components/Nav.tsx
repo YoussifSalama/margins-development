@@ -60,9 +60,9 @@ export default function Nav() {
         className="container flex items-center justify-between py-3"
       >
         <Link href="/" aria-label={t("brand")}>
-          <Image src="/brand/logo.png" alt={t("brand")} width={1684} height={442} className="h-11 w-auto brightness-0 invert" priority />
+          <Image src="/brand/logo.png" alt={t("brand")} width={1684} height={442} className="h-8 w-auto brightness-0 invert lg:h-11" priority />
         </Link>
-        <ul className="hidden gap-10 text-sm font-medium tracking-tight md:flex">
+        <ul className="hidden gap-10 text-sm font-medium tracking-tight lg:flex">
           {links.map((link) => (
             <motion.li key={link.href} initial="rest" whileHover="hover" className="relative">
               <Link href={link.href}>
@@ -81,7 +81,7 @@ export default function Nav() {
         </ul>
         <div className="flex items-center gap-4">
           <LocaleSwitcher />
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Button href="/contact" variant="solid" className="h-11.5 px-6 text-sm">
               {t("contactCta")}
             </Button>
@@ -91,7 +91,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="flex size-11 shrink-0 items-center justify-center rounded-full text-white md:hidden"
+            className="flex size-11 shrink-0 items-center justify-center rounded-full text-white lg:hidden"
           >
             <span className="relative flex h-3.5 w-5 flex-col justify-between">
               <motion.span
@@ -115,7 +115,7 @@ export default function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="mx-5 mt-2 flex flex-col gap-1 rounded-3xl bg-dark/95 p-5 backdrop-blur-md md:hidden"
+            className="mx-5 mt-2 flex flex-col gap-1 rounded-3xl bg-dark/95 p-5 backdrop-blur-md lg:hidden"
           >
             {links.map((link) => (
               <Link
