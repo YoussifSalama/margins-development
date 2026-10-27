@@ -127,7 +127,7 @@ export type AboutPage = {
 export type Company = {
   vision: { title: string; description: string; image: string };
   mission: { title: string; description: string; image: string };
-  banner: { eyebrow: string; title: string; image: string };
+  banner: { eyebrow: string; title: string; image: string; mobileImage?: string };
   values: { heading: string; items: { title: string; description: string }[] };
 };
 

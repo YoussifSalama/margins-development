@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ResponsiveMedia from "@/components/ResponsiveMedia";
 import { getTranslations } from "next-intl/server";
 import * as motion from "motion/react-client";
 import Reveal from "@/components/Reveal";
@@ -64,13 +65,7 @@ export default async function ProjectsExplore({ locale, company }: { locale: str
       </div>
 
       <div className="relative mt-24 h-90 w-full overflow-hidden sm:h-110 lg:h-137">
-        <Image
-          src={banner.image || "/pages/projects/explore/banner.png"}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
+        <ResponsiveMedia src={banner.image || "/pages/projects/explore/banner.png"} mobileSrc={banner.mobileImage} />
         <div className="absolute inset-0 bg-gradient-to-r from-banner-grad-start to-banner-grad-end opacity-79" />
         <StaggerReveal className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center">
           <motion.p

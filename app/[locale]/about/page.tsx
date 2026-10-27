@@ -108,7 +108,6 @@ export default async function About({ params }: PageProps<"/[locale]/about">) {
                 name={person.name}
                 credential={person.credential}
                 description={person.message || chairman.message}
-                flipped={i % 2 === 1}
               />
             ))}
           </div>

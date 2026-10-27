@@ -331,7 +331,7 @@ export const pages = {
     sections: {
       vision: { label: "Vision", fields: [{ kind: "text", name: "title", label: "Title" }, { kind: "rich", basic: true, name: "description", label: "Description" }, { kind: "media", name: "image", label: "Image" }] },
       mission: { label: "Mission", fields: [{ kind: "text", name: "title", label: "Title" }, { kind: "rich", basic: true, name: "description", label: "Description" }, { kind: "media", name: "image", label: "Image" }] },
-      banner: { label: "Banner", fields: [{ kind: "text", name: "eyebrow", label: "Eyebrow" }, { kind: "text", name: "title", label: "Title" }, { kind: "media", name: "image", label: "Image" }] },
+      banner: { label: "Banner", fields: [{ kind: "text", name: "eyebrow", label: "Eyebrow" }, { kind: "text", name: "title", label: "Title" }, { kind: "media", name: "image", label: "Image" }, { kind: "media", name: "mobileImage", label: "Image on phones & tablets", hint: MOBILE_HINT }] },
       values: {
         label: "Values",
         fields: [

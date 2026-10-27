@@ -42,7 +42,6 @@ export default function ChairmanCard({
   name,
   credential,
   description,
-  flipped = false,
 }: {
   eyebrow: string;
   title: string;
@@ -50,8 +49,6 @@ export default function ChairmanCard({
   name: string;
   credential: string;
   description: string;
-  /** photo on the end side instead of the start side (from lg up) */
-  flipped?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const shown = useForwardInView(ref, 0.2);
@@ -78,14 +75,14 @@ export default function ChairmanCard({
         <span className="text-accent uppercase">{title}</span>
       </motion.h2>
       <div
-        className={`flex flex-col gap-14.25 md:col-span-2 ${flipped ? "lg:flex-row-reverse" : "lg:flex-row"}`}
+        className="flex flex-col gap-14.25 md:col-span-2 lg:flex-row"
       >
         <div className="w-full max-w-[433.36px]">
           {/* observed on an unclipped wrapper: the observer counts the photo's own clip-path,
            so the quarter-size photo could never report 70% visible itself */}
           <div ref={photoRef}>
             <motion.div
-              variants={wipe(rtl !== flipped)}
+              variants={wipe(rtl)}
               animate={photoShown ? "visible" : "hidden"}
               className="relative aspect-[433.36/545] w-full overflow-hidden rounded-md"
             >
