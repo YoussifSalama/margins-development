@@ -110,7 +110,7 @@ export default function ChairmanCard({
         </div>
         <motion.p
           variants={fadeUp}
-          className="max-w-md text-[20px] leading-7 tracking-[-0.32px] text-black"
+          className="max-w-md self-center text-[20px] leading-7 tracking-[-0.32px] text-black"
         >
           {description}
         </motion.p>
