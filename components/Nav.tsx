@@ -48,9 +48,8 @@ export default function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
-        scrolled ? "bg-dark/60 shadow-lg shadow-black/10 backdrop-blur-md" : "bg-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${scrolled ? "bg-dark/60 shadow-lg shadow-black/10 backdrop-blur-md" : "bg-transparent"
+        }`}
     >
       <motion.nav
         initial="hidden"
@@ -60,7 +59,7 @@ export default function Nav() {
         className="container flex items-center justify-between py-3"
       >
         <Link href="/" aria-label={t("brand")}>
-          <Image src="/brand/logo.png" alt={t("brand")} width={1684} height={442} className="h-8 w-auto brightness-0 invert lg:h-11" priority />
+          <Image src="/brand/logo.png" alt={t("brand")} width={3580} height={788} className="h-8 w-auto lg:h-11" priority />
         </Link>
         <ul className="hidden gap-10 text-sm font-medium tracking-tight lg:flex">
           {links.map((link) => (

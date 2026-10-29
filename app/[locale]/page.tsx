@@ -44,6 +44,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         media={hero.media || "/pages/home/hero.png"}
         mobileMedia={hero.mobileMedia}
         tint="bg-dark/15"
+        overlay={false}
       />
 
       <div className="relative">
